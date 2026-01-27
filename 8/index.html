@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rick & Morty Dex PRO+</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="root">
+  <h1>Rick & Morty Dex PRO+</h1>
+
+  <!-- Selector de modo -->
+  <div id="modeSelector">
+    <label for="mode">Select Mode:</label>
+    <select id="mode">
+      <option value="novice">Novato</option>
+      <option value="master">Maestro</option>
+      <option value="pro">Profesional</option>
+    </select>
+  </div>
+
+  <!-- Filtro de búsqueda -->
+  <div id="filters">
+    <input type="text" id="searchName" placeholder="Search by name">
+    <select id="filterSpecies">
+      <option value="">All Species</option>
+    </select>
+    <select id="filterStatus">
+      <option value="">All Status</option>
+      <option value="Alive">Alive</option>
+      <option value="Dead">Dead</option>
+      <option value="unknown">Unknown</option>
+    </select>
+    <button id="applyFilters" class="button">Apply Filters</button>
+  </div>
+
+  <!-- Información del personaje -->
+  <h2 id="name">Loading...</h2>
+  <img id="characterImg" src="https://via.placeholder.com/200x300?text=Loading..." alt="Character">
+  <p>Status: <span id="status"></span></p>
+  <p>Species: <span id="species"></span></p>
+  <p>Gender: <span id="gender"></span></p>
+
+  <!-- Location -->
+  <h3>Location</h3>
+  <p id="locationName"></p>
+  <img id="locationImg" src="https://via.placeholder.com/200x150?text=No+Image" alt="Location">
+
+  <!-- Episodios (solo visible en Maestro y Profesional) -->
+  <h3 id="episodesTitle">Episodes</h3>
+  <ul id="episodeList"></ul>
+  <div id="episodePagination">
+    <button id="prevEpisodePage" class="button">⬅️ Prev</button>
+    <button id="nextEpisodePage" class="button">Next ➡️</button>
+  </div>
+
+  <!-- Botones de navegación de personajes -->
+  <div class="buttons">
+    <button class="button" id="prevBtn">⬅️ Previous</button>
+    <button class="button" id="nextBtn">Next ➡️</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
