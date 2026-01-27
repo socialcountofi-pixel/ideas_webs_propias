@@ -1,0 +1,149 @@
+let currentId = 1;
+const maxId = 826;
+let mode = "novice";
+let episodePage = 0; // Para paginación de episodios
+const episodesPerPage = 5;
+
+// Obtener elementos
+const nameEl = document.getElementById("name");
+const charImgEl = document.getElementById("characterImg");
+const statusEl = document.getElementById("status");
+const speciesEl = document.getElementById("species");
+const genderEl = document.getElementById("gender");
+const locationNameEl = document.getElementById("locationName");
+const locationImgEl = document.getElementById("locationImg");
+const episodeListEl = document.getElementById("episodeList");
+const episodesTitleEl = document.getElementById("episodesTitle");
+const modeSelectEl = document.getElementById("mode");
+
+const searchNameEl = document.getElementById("searchName");
+const filterSpeciesEl = document.getElementById("filterSpecies");
+const filterStatusEl = document.getElementById("filterStatus");
+const applyFiltersBtn = document.getElementById("applyFilters");
+
+// Cambiar modo
+modeSelectEl.addEventListener("change", e => {
+  mode = e.target.value;
+  getCharacter(currentId);
+});
+
+// Función principal
+async function getCharacter(id) {
+  try {
+    if (id < 1) id = 1;
+    if (id > maxId) id = maxId;
+
+    const res = await fetch(`https://rickandmortyapi.com/api/character/${id}`);
+    if (!res.ok) throw new Error("Character not found");
+    const data = await res.json();
+    currentId = data.id;
+
+    // Render personaje
+    nameEl.textContent = data.name;
+    charImgEl.src = data.image || "https://via.placeholder.com/200x300?text=No+Image";
+    statusEl.textContent = data.status;
+    speciesEl.textContent = data.species;
+    genderEl.textContent = data.gender;
+
+    // Render location
+    let locationData = null;
+    if (data.location.url) {
+      const locRes = await fetch(data.location.url);
+      locationData = locRes.ok ? await locRes.json() : null;
+    }
+    locationNameEl.textContent = locationData?.name || data.location.name;
+    locationImgEl.src = locationData?.image || "https://via.placeholder.com/200x150?text=No+Image";
+
+    // Render episodios según modo y paginación
+    episodeListEl.innerHTML = "";
+    if (mode !== "novice") {
+      episodesTitleEl.style.display = "block";
+      const start = episodePage * episodesPerPage;
+      const end = start + episodesPerPage;
+      const epSlice = data.episode.slice(start, end);
+
+      for (let epUrl of epSlice) {
+        const epRes = await fetch(epUrl);
+        const epData = epRes.ok ? await epRes.json() : null;
+        const li = document.createElement("li");
+        li.textContent = epData ? `${epData.episode} - ${epData.name}` : "Unknown Episode";
+        if (mode === "pro" && epData?.air_date) li.textContent += ` (Air date: ${epData.air_date})`;
+        episodeListEl.appendChild(li);
+      }
+    } else {
+      episodesTitleEl.style.display = "none";
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Error loading character");
+  }
+}
+
+// Navegación personajes
+document.getElementById("nextBtn").addEventListener("click", () => {
+  currentId++;
+  if (currentId > maxId) currentId = 1;
+  episodePage = 0;
+  getCharacter(currentId);
+});
+document.getElementById("prevBtn").addEventListener("click", () => {
+  currentId--;
+  if (currentId < 1) currentId = maxId;
+  episodePage = 0;
+  getCharacter(currentId);
+});
+
+// Paginación episodios
+document.getElementById("nextEpisodePage").addEventListener("click", () => {
+  episodePage++;
+  getCharacter(currentId);
+});
+document.getElementById("prevEpisodePage").addEventListener("click", () => {
+  if (episodePage > 0) episodePage--;
+  getCharacter(currentId);
+});
+
+// Filtrado por nombre, especie o estado
+applyFiltersBtn.addEventListener("click", async () => {
+  const name = searchNameEl.value.trim();
+  const species = filterSpeciesEl.value;
+  const status = filterStatusEl.value;
+
+  let query = `https://rickandmortyapi.com/api/character/?page=1`;
+  if (name) query += `&name=${name}`;
+  if (species) query += `&species=${species}`;
+  if (status) query += `&status=${status}`;
+
+  try {
+    const res = await fetch(query);
+    const data = await res.json();
+    if (data.results && data.results.length > 0) {
+      currentId = data.results[0].id;
+      episodePage = 0;
+      getCharacter(currentId);
+    } else {
+      alert("No results found");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error fetching filtered data");
+  }
+});
+
+// Inicializar especie en filtro
+async function initSpeciesFilter() {
+  const res = await fetch("https://rickandmortyapi.com/api/character");
+  const data = await res.json();
+  const speciesSet = new Set(data.results.map(c => c.species));
+  speciesSet.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    filterSpeciesEl.appendChild(opt);
+  });
+}
+
+// Cargar primer personaje y especies
+getCharacter(currentId);
+initSpeciesFilter();
