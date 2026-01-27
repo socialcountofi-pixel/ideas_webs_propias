@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DigiAPI Explorer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🔹 DigiAPI Explorer 🔹</h1>
+    <p>Explora Digimon y toda su información relacionada con las 6 APIs oficiales de <a href="https://digi-api.com" target="_blank">DigiAPI</a>.</p>
+  </header>
+
+  <main>
+    <div class="search-bar">
+      <input type="text" id="digimonInput" placeholder="Ejemplo: agumon, patamon, 1...">
+      <button id="searchBtn">Buscar</button>
+    </div>
+
+    <div class="nav-buttons">
+      <button id="prevBtn">⬅️ Anterior</button>
+      <button id="nextBtn">➡️ Siguiente</button>
+    </div>
+
+    <section id="digimonInfo" class="hidden fade">
+  <h2 id="digiName"></h2>
+
+  <!-- Contenedor para todas las imágenes -->
+  <div id="digiImageContainer"></div>
+
+  <p><strong>ID:</strong> <span id="digiId"></span></p>
+
+  <p><strong>Nivel:</strong>
+    <span id="digiLevel"></span>
+    <em id="levelDetail"></em>
+    <ul id="digiLevels"></ul>
+  </p>
+
+  <p><strong>Tipo:</strong>
+    <span id="digiType"></span>
+    <em id="typeDetail"></em>
+    <ul id="digiTypes"></ul>
+  </p>
+
+  <p><strong>Atributo:</strong>
+    <span id="digiAttribute"></span>
+    <em id="attributeDetail"></em>
+    <ul id="digiAttributes"></ul>
+  </p>
+
+  <p><strong>Campo:</strong>
+    <span id="digiField"></span>
+    <em id="fieldDetail"></em>
+    <ul id="digiFields"></ul>
+  </p>
+
+  <img id="fieldImage" alt="Imagen del Campo Digimon" style="display:none; width:150px; margin-top:10px; border-radius:5px;">
+
+  <div id="skillsContainer">
+    <h3>Habilidades</h3>
+    <ul id="digiSkills"></ul>
+  </div>
+</section>
+ 
+
+<!-- EVOLUCIONES ANTERIORES -->
+<div id="priorEvolutionsContainer">
+  <h3>Evoluciones Anteriores</h3>
+  <ul id="priorEvolutions"></ul>
+</div>
+
+<!-- EVOLUCIONES SIGUIENTES -->
+<div id="nextEvolutionsContainer">
+  <h3>Evoluciones Siguientes</h3>
+  <ul id="nextEvolutions"></ul>
+</div>
+
+    <section id="errorMsg" class="hidden"></section>
+  </main>
+
+  <footer>
+    <p>Desarrollado con ❤️ usando JavaScript y las APIs de <a href="https://digi-api.com" target="_blank">DigiAPI</a></p>
+  </footer>
+
+  <script src="script.js"></script>
+  
+</body>
+</html>
+
