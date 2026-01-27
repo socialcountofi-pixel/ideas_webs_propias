@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokémon Type Analyzer</title>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #a8ff78, #78ffd6);
+        min-height: 100vh;
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        color: #2e7d32;
+        margin-bottom: 30px;
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    input, button {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+    }
+    button {
+        background: #2e7d32;
+        color: white;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    button:hover {
+        background: #1b5e20;
+    }
+    .type-section {
+        margin-top: 30px;
+        border-top: 2px solid #ddd;
+        padding-top: 20px;
+    }
+    h2 {
+        text-transform: capitalize;
+        color: #1b5e20;
+        margin-bottom: 10px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+    th, td {
+        padding: 10px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+    th {
+        background-color: #f0f0f0;
+    }
+    .type {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+
+    /* Colores de tipos */
+    .grass { background: #78C850; }
+    .fire { background: #F08030; }
+    .water { background: #6890F0; }
+    .ground { background: #E0C068; }
+    .rock { background: #B8A038; }
+    .flying { background: #A890F0; }
+    .bug { background: #A8B820; }
+    .poison { background: #A040A0; }
+    .ice { background: #98D8D8; color: #000; }
+    .dragon { background: #7038F8; }
+    .steel { background: #B8B8D0; color: #000; }
+    .electric { background: #F8D030; color: #000; }
+    .fairy { background: #EE99AC; }
+</style>
+</head>
+<body>
+    <h1>Pokémon Type Effectiveness Analyzer</h1>
+    <div class="container">
+        <p>Introduce uno o dos tipos (por ejemplo: <b>grass</b> o <b>grass, fairy</b>):</p>
+        <input type="text" id="typeInput" placeholder="Ejemplo: grass, fairy">
+        <button onclick="analyzeTypes()">Mostrar</button>
+
+        <div id="results"></div>
+    </div>
+
+<script>
+const typeChart = {
+    grass: {
+        offensive: {
+            super: ['ground','rock','water'],
+            not: ['flying','poison','bug','fire','grass','dragon','steel'],
+            none: []
+        },
+        defensive: {
+            weak: ['flying','poison','bug','fire','ice'],
+            resist: ['ground','water','grass','electric'],
+            immune: []
+        }
+    },
+    fairy: {
+        offensive: {
+            super: ['fighting','dragon','dark'],
+            not: ['fire','poison','steel'],
+            none: []
+        },
+        defensive: {
+            weak: ['poison','steel'],
+            resist: ['fighting','bug','dark'],
+            immune: ['dragon']
+        }
+    },
+    fire: {
+        offensive: {
+            super: ['bug','steel','grass','ice'],
+            not: ['rock','fire','water','dragon'],
+            none: []
+        },
+        defensive: {
+            weak: ['ground','rock','water'],
+            resist: ['bug','steel','fire','grass','ice','fairy'],
+            immune: []
+        }
+    },
+    water: {
+        offensive: {
+            super: ['ground','rock','fire'],
+            not: ['water','grass','dragon'],
+            none: []
+        },
+        defensive: {
+            weak: ['electric','grass'],
+            resist: ['steel','fire','water','ice'],
+            immune: []
+        }
+    }
+    // Puedes seguir agregando más tipos...
+};
+
+function createTypeBadge(type) {
+    return `<span class="type ${type}">${type}</span>`;
+}
+
+function createTableSection(title, data) {
+    return `
+        <tr><th>${title}</th><td>${data.length ? data.map(createTypeBadge).join(' ') : 'Ninguno'}</td></tr>
+    `;
+}
+
+function analyzeTypes() {
+    const input = document.getElementById('typeInput').value.toLowerCase().replace(/\s+/g, '');
+    const types = input.split(',').filter(Boolean);
+    const results = document.getElementById('results');
+    results.innerHTML = '';
+
+    if (types.length === 0) {
+        results.innerHTML = '<p>⚠️ Por favor introduce al menos un tipo.</p>';
+        return;
+    }
+
+    types.forEach(type => {
+        if (!typeChart[type]) {
+            results.innerHTML += `<p>❌ El tipo "${type}" no está definido.</p>`;
+            return;
+        }
+
+        const t = typeChart[type];
+        const offensiveTable = `
+            <table>
+                <tr><th colspan="2">🔺 Propiedades ofensivas</th></tr>
+                ${createTableSection('Super efectivo (×2)', t.offensive.super)}
+                ${createTableSection('No muy efectivo (×½)', t.offensive.not)}
+                ${createTableSection('Sin efecto (×0)', t.offensive.none)}
+            </table>
+        `;
+        const defensiveTable = `
+            <table>
+                <tr><th colspan="2">🛡️ Propiedades defensivas</th></tr>
+                ${createTableSection('Débil ante (×2)', t.defensive.weak)}
+                ${createTableSection('Resiste (×½)', t.defensive.resist)}
+                ${createTableSection('Inmune a (×0)', t.defensive.immune)}
+            </table>
+        `;
+
+        results.innerHTML += `
+            <div class="type-section">
+                <h2>${createTypeBadge(type)}</h2>
+                ${offensiveTable}
+                ${defensiveTable}
+            </div>
+        `;
+    });
+}
+</script>
+</body>
+</html>
