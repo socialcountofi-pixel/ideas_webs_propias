@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Evoluciones Detalladas</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(180deg, #c3f0c8, #a6e6b6);
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 { color: #2d572c; }
+
+    #pokemon-container {
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 95%;
+      max-width: 900px;
+    }
+
+    .buttons {
+      margin: 20px;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 0 10px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .evolution-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 20px;
+    }
+
+    .evo {
+      background: #e9fbe9;
+      border: 2px solid #a6d3a6;
+      border-radius: 12px;
+      padding: 15px;
+      width: 200px;
+      text-align: center;
+    }
+
+    .evo img {
+      width: 120px;
+      height: 120px;
+      margin: 5px auto;
+    }
+
+    .conditions {
+      font-size: 0.85em;
+      text-align: left;
+      background: #fff;
+      border-radius: 8px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    .conditions ul {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .conditions li {
+      margin: 3px 0;
+    }
+
+    .is-baby {
+      font-size: 0.9em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌱 Evoluciones Pokémon Detalladas</h1>
+
+  <div class="buttons">
+    <button id="prevBtn">⬅️ Anterior</button>
+    <button id="nextBtn">➡️ Siguiente</button>
+  </div>
+
+  <div id="pokemon-container">
+    <h2 id="pokemon-name">Cargando...</h2>
+    <div id="is-baby-info"></div>
+    <img id="pokemon-img" src="" alt="Pokémon principal">
+    <div class="evolution-list" id="evolution-chain"></div>
+  </div>
+
+  <script>
+    // --- Array completo de ejemplos de evolución ---
+    const listaPokemones = [
+      { id: 1, nombre: "bulbasaur" },          // Evolución por nivel
+      { id: 4, nombre: "charmander" },         // Por nivel
+      { id: 25, nombre: "pikachu" },           // Por piedra trueno
+      { id: 67, nombre: "machoke" },           // Por intercambio
+      { id: 133, nombre: "eevee" },            // Por amistad, piedra, hora, hada, etc.
+      { id: 744, nombre: "rockruff" },         // Por hora del día
+      { id: 215, nombre: "sneasel" },          // Por objeto equipado
+      { id: 415, nombre: "combee" },           // Por género
+      { id: 221, nombre: "piloswine" },        // Por movimiento aprendido
+      { id: 470, nombre: "leafeon" },          // Por lugar específico
+      { id: 808, nombre: "meltan" },           // Por conexión especial
+      { id: 236, nombre: "tyrogue" },          // Por stats físicos
+      { id: 349, nombre: "feebas" },           // Por belleza
+      { id: 700, nombre: "sylveon" },          // Por afecto + tipo hada
+      { id: 175, nombre: "togepi" },           // Forma bebé
+      { id: 999, nombre: "gimmighoul" }        // Ejemplo especial
+    ];
+
+    let indexActual = 0;
+
+    async function getPokemonData(idOrName) {
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${idOrName}`);
+      return res.json();
+    }
+
+    async function getSpeciesData(idOrName) {
+      const res = await fetch(`https://pokeapi.co/api/v2/pokemon-species/${idOrName}`);
+      return res.json();
+    }
+
+    async function getEvolutionChain(idOrName) {
+      const speciesData = await getSpeciesData(idOrName);
+      const evoRes = await fetch(speciesData.evolution_chain.url);
+      return evoRes.json();
+    }
+
+    async function renderPokemon(idOrName) {
+      const data = await getPokemonData(idOrName);
+      const species = await getSpeciesData(idOrName);
+      document.getElementById("pokemon-name").textContent = data.name.toUpperCase();
+      document.getElementById("pokemon-img").src = data.sprites.front_default;
+
+      document.getElementById("is-baby-info").innerHTML = species.is_baby
+        ? `<div class="is-baby">🍼 Este Pokémon es una forma bebé</div>`
+        : `<div class="is-baby">No es una forma bebé</div>`;
+
+      const evoData = await getEvolutionChain(idOrName);
+      renderEvolutions(evoData.chain);
+    }
+
+    async function renderEvolutions(chain) {
+      const container = document.getElementById("evolution-chain");
+      container.innerHTML = "";
+
+      async function recorrerCadena(nodo) {
+        const name = nodo.species.name;
+        const pokeData = await getPokemonData(name);
+        const speciesData = await getSpeciesData(name);
+
+        const div = document.createElement("div");
+        div.classList.add("evo");
+
+        // Manejar casos sin evolution_details o vacíos
+        let evoDetails = (nodo.evolution_details && nodo.evolution_details[0]) || null;
+
+        const condDiv = document.createElement("div");
+        condDiv.classList.add("conditions");
+        if (evoDetails) {
+          condDiv.innerHTML = `<h4>Condiciones:</h4>${formatConditions(evoDetails)}`;
+        } else {
+          condDiv.innerHTML = `<h4>Condiciones:</h4><ul><li>Sin condiciones específicas o datos no disponibles</li></ul>`;
+        }
+        div.appendChild(condDiv);
+
+        // Mostrar si es bebé
+        div.innerHTML += speciesData.is_baby ? `<div class="is-baby">🍼 Es bebé</div>` : "";
+
+        div.innerHTML += `<img src="${pokeData.sprites.front_default}" alt="${name}">
+                          <h4>${name.toUpperCase()}</h4>`;
+        container.appendChild(div);
+
+        // Recorre todas las ramas (para Eevee o Rockruff)
+        for (const siguiente of nodo.evolves_to) {
+          await recorrerCadena(siguiente);
+        }
+      }
+
+      await recorrerCadena(chain);
+    }
+
+    function formatConditions(details) {
+      let c = [];
+      if (details.trigger?.name) c.push(`<li><b>Trigger:</b> ${details.trigger.name}</li>`);
+      if (details.min_level) c.push(`<li><b>Nivel mínimo:</b> ${details.min_level}</li>`);
+      if (details.item) c.push(`<li><b>Objeto:</b> ${details.item.name}</li>`);
+      if (details.held_item) c.push(`<li><b>Objeto equipado:</b> ${details.held_item.name}</li>`);
+      if (details.min_happiness) c.push(`<li><b>Felicidad mínima:</b> ${details.min_happiness}</li>`);
+      if (details.min_affection) c.push(`<li><b>Afecto mínimo:</b> ${details.min_affection}</li>`);
+      if (details.min_beauty) c.push(`<li><b>Belleza mínima:</b> ${details.min_beauty}</li>`);
+      if (details.time_of_day) c.push(`<li><b>Hora del día:</b> ${details.time_of_day}</li>`);
+      if (details.location) c.push(`<li><b>Ubicación:</b> ${details.location.name}</li>`);
+      if (details.gender !== null) c.push(`<li><b>Género:</b> ${details.gender === 1 ? "Hembra" : "Macho"}</li>`);
+      if (details.needs_overworld_rain) c.push(`<li><b>Requiere lluvia:</b> Sí</li>`);
+      if (details.known_move) c.push(`<li><b>Debe conocer el movimiento:</b> ${details.known_move.name}</li>`);
+      if (details.known_move_type) c.push(`<li><b>Debe conocer un movimiento de tipo:</b> ${details.known_move_type.name}</li>`);
+      if (details.party_species) c.push(`<li><b>Debe tener en el equipo:</b> ${details.party_species.name}</li>`);
+      if (details.party_type) c.push(`<li><b>Debe tener un Pokémon de tipo:</b> ${details.party_type.name}</li>`);
+      if (details.trade_species) c.push(`<li><b>Debe intercambiar con:</b> ${details.trade_species.name}</li>`);
+      if (details.turn_upside_down) c.push(`<li><b>Debe girarse la consola (Inkay)</b></li>`);
+      if (details.relative_physical_stats !== null) {
+        if (details.relative_physical_stats === 1)
+          c.push(`<li><b>Condición:</b> Ataque > Defensa (Hitmonlee)</li>`);
+        else if (details.relative_physical_stats === -1)
+          c.push(`<li><b>Condición:</b> Ataque < Defensa (Hitmonchan)</li>`);
+        else
+          c.push(`<li><b>Condición:</b> Ataque = Defensa (Hitmontop)</li>`);
+      }
+      if (c.length === 0) c.push(`<li>Sin condiciones especiales.</li>`);
+      return `<ul>${c.join("")}</ul>`;
+    }
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      indexActual = (indexActual + 1) % listaPokemones.length;
+      renderPokemon(listaPokemones[indexActual].id);
+    });
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      indexActual = (indexActual - 1 + listaPokemones.length) % listaPokemones.length;
+      renderPokemon(listaPokemones[indexActual].id);
+    });
+
+    renderPokemon(listaPokemones[indexActual].id);
+  </script>
+</body>
+</html>
