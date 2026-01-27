@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digivice Mini-Juegos</title>
+<style>
+  body {
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Courier New', monospace;
+  }
+
+  .digivice {
+    width: 380px;
+    height: 600px;
+    background: #222;
+    border-radius: 40px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 0 60px #0ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .screen {
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle at 50% 50%, #002233, #001520);
+    border-radius: 25px;
+    border: 5px solid #0ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #0ff;
+    box-shadow: inset 0 0 30px #0ff;
+    margin-bottom: 20px;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .digimon-img {
+    width: 130px;
+    height: 130px;
+    border-radius: 10px;
+    transition: transform 0.3s, opacity 0.3s;
+    cursor: pointer;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .button {
+    width: 70px;
+    height: 70px;
+    background: #111;
+    border-radius: 50%;
+    border: 3px solid #0ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 0 20px #0ff;
+    transition: 0.2s;
+  }
+
+  .button:active {
+    background: #0ff;
+    color: #111;
+    box-shadow: 0 0 40px #0ff;
+    transform: scale(0.95);
+  }
+
+  .status, .xp-bar-container {
+    width: 100%;
+    color: #0ff;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  .xp-bar-container {
+    background: #111;
+    border: 2px solid #0ff;
+    border-radius: 10px;
+    height: 20px;
+    margin-top: 5px;
+    overflow: hidden;
+  }
+
+  .xp-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #0ff, #0aa);
+    width: 0%;
+    transition: width 0.5s;
+  }
+
+  .mini-game {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .mini-button {
+    background: #0ff;
+    color: #111;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 15px #0ff;
+    transition: 0.2s;
+  }
+
+  .mini-button:active {
+    transform: scale(0.9);
+    box-shadow: 0 0 30px #0ff;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="digivice">
+  <div class="screen" id="screen">
+    <img src="https://digimon.shadowsmith.com/img/koromon.jpg" alt="Digimon" class="digimon-img" id="digimonImg">
+    <div id="digimonName">Koromon</div>
+    <div id="digimonLevel">Nivel: 1</div>
+    <div id="digimonState">Estado: Feliz</div>
+  </div>
+
+  <div class="buttons">
+    <div class="button" id="prevBtn">◀</div>
+    <div class="button" id="nextBtn">▶</div>
+  </div>
+
+  <div class="status" id="status">XP: 0</div>
+  <div class="xp-bar-container">
+    <div class="xp-bar" id="xpBar"></div>
+  </div>
+
+  <div class="mini-game">
+    <button class="mini-button" id="trainBtn">Entrenar</button>
+    <button class="mini-button" id="feedBtn">Alimentar</button>
+    <button class="mini-button" id="battleBtn">Pelear</button>
+  </div>
+</div>
+
+<!-- Sonidos -->
+<audio id="digiviceSound" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+<audio id="evolutionSound" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+<audio id="attackSound" src="https://www.soundjay.com/buttons/sounds/button-4.mp3"></audio>
+<audio id="happySound" src="https://www.soundjay.com/button/beep-07.mp3"></audio>
+<audio id="battleSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+
+<script>
+const digimonImg = document.getElementById('digimonImg');
+const digimonName = document.getElementById('digimonName');
+const digimonLevel = document.getElementById('digimonLevel');
+const digimonState = document.getElementById('digimonState');
+const status = document.getElementById('status');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const xpBar = document.getElementById('xpBar');
+
+const digiviceSound = document.getElementById('digiviceSound');
+const evolutionSound = document.getElementById('evolutionSound');
+const attackSound = document.getElementById('attackSound');
+const happySound = document.getElementById('happySound');
+const battleSound = document.getElementById('battleSound');
+
+const trainBtn = document.getElementById('trainBtn');
+const feedBtn = document.getElementById('feedBtn');
+const battleBtn = document.getElementById('battleBtn');
+
+let nivel = 1;
+let xp = 0;
+
+const digimonEvolutions = [
+  { name: 'egg', img: 'https://digimon.shadowsmith.com/img/egg.jpg', state: 'Dormilón' },
+  { name: 'Botamon', img: 'https://digimon.shadowsmith.com/img/botamon.jpg', state: 'Dormilón' },
+  { name: 'Koromon', img: 'https://digimon.shadowsmith.com/img/koromon.jpg', state: 'Feliz' },
+  { name: 'Agumon', img: 'https://digimon.shadowsmith.com/img/agumon.jpg', state: 'Listo para pelear' },
+  { name: 'Greymon', img: 'https://digimon.shadowsmith.com/img/greymon.jpg', state: 'Fuerte' },
+  { name: 'MetalGreymon', img: 'https://digimon.shadowsmith.com/img/metalgreymon.jpg', state: 'Poderoso' },
+  { name: 'WarGreymon', img: 'https://digimon.shadowsmith.com/img/wargreymon.jpg', state: 'Legendario' }
+];
+
+function updateDigivice() {
+  if (nivel < 1) nivel = 1;
+  if (nivel > digimonEvolutions.length) nivel = digimonEvolutions.length;
+
+  const index = nivel - 1;
+  const digimon = digimonEvolutions[index];
+
+  digimonImg.style.opacity = 0;
+  setTimeout(() => {
+    digimonImg.src = digimon.img;
+    digimonName.textContent = digimon.name;
+    digimonLevel.textContent = `Nivel: ${nivel}`;
+    digimonState.textContent = `Estado: ${digimon.state}`;
+    digimonImg.style.opacity = 1;
+    digimonImg.style.transform = 'scale(1.3)';
+    setTimeout(() => digimonImg.style.transform = 'scale(1)', 400);
+    evolutionSound.play();
+  }, 300);
+
+  xp = 0;
+  xpBar.style.width = '0%';
+  status.textContent = `XP: ${xp}`;
+}
+
+function gainXP(amount) {
+  xp += amount;
+  if (xp > 100) xp = 100;
+  xpBar.style.width = `${xp}%`;
+  status.textContent = `XP: ${xp}`;
+
+  if (xp >= 100 && nivel < digimonEvolutions.length) {
+    nivel++;
+    updateDigivice();
+  }
+}
+
+// Botones de control
+prevBtn.addEventListener('click', () => {
+  nivel--;
+  updateDigivice();
+  digiviceSound.play();
+});
+nextBtn.addEventListener('click', () => {
+  nivel++;
+  updateDigivice();
+  digiviceSound.play();
+});
+
+// Interacciones
+digimonImg.addEventListener('click', () => {
+  attackSound.play();
+  digimonImg.style.transform = 'scale(1.5)';
+  setTimeout(() => digimonImg.style.transform = 'scale(1)', 200);
+  gainXP(20);
+});
+
+// Mini-juegos
+trainBtn.addEventListener('click', () => {
+  digimonState.textContent = "Entrenando...";
+  gainXP(15);
+  happySound.play();
+  setTimeout(() => digimonState.textContent = digimonEvolutions[nivel-1].state, 1000);
+});
+
+feedBtn.addEventListener('click', () => {
+  digimonState.textContent = "Comiendo...";
+  gainXP(10);
+  happySound.play();
+  setTimeout(() => digimonState.textContent = digimonEvolutions[nivel-1].state, 1000);
+});
+
+battleBtn.addEventListener('click', () => {
+  digimonState.textContent = "En batalla!";
+  gainXP(25);
+  battleSound.play();
+  digimonImg.style.transform = 'rotate(-20deg)';
+  setTimeout(() => digimonImg.style.transform = 'rotate(20deg)', 150);
+  setTimeout(() => digimonImg.style.transform = 'rotate(0deg)', 300);
+  setTimeout(() => digimonState.textContent = digimonEvolutions[nivel-1].state, 500);
+});
+
+// Evolución automática
+setInterval(() => gainXP(5), 15000);
+
+updateDigivice();
+</script>
+
+</body>
+</html>
