@@ -1,0 +1,5 @@
+*{position: center; text-align: center; font-family: Arial, sans-serif; margin: 0; padding: 0; box-sizing: border-box;
+    background-color: aquamarine;}
+    .user-info {background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: inline-block; margin-top: 50px;}
+    .user-contact {background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: inline-block; margin-top: 50px;}
+    .user-location {background-color: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: inline-block; margin-top: 50px;}
