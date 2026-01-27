@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digimon Data Explorer</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #0b0c10;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background: #1f2833;
+      padding: 1.5em;
+      box-shadow: 0 0 10px #45a29e;
+    }
+
+    h1 {
+      color: #66fcf1;
+      margin-bottom: 10px;
+    }
+
+    select, button {
+      padding: 10px;
+      margin: 5px;
+      border-radius: 5px;
+      border: none;
+      background: #45a29e;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    section {
+      margin: 20px auto;
+      width: 90%;
+      max-width: 1000px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #1f2833;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 0 0 8px #45a29e;
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      background: #0b0c10;
+    }
+
+    .card h3 {
+      color: #66fcf1;
+      margin: 10px 0 5px 0;
+    }
+
+    .card p {
+      font-size: 0.9em;
+    }
+
+    footer {
+      margin: 40px 0;
+      color: #888;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🐉 Digimon Data Explorer</h1>
+    <select id="apiSelector">
+      <option value="digimon">Digimon</option>
+      <option value="attribute">Atributos</option>
+      <option value="field">Campos</option>
+      <option value="level">Niveles</option>
+      <option value="type">Tipos</option>
+      <option value="skill">Habilidades</option>
+    </select>
+    <button onclick="fetchData()">Cargar Datos</button>
+  </header>
+
+  <section>
+    <div id="content" class="grid"></div>
+  </section>
+
+  <footer>Powered by digi-api.com | Creado por ChatGPT 💻</footer>
+
+  <script>
+    const BASE_URL = "https://digi-api.com/api/v1/";
+
+    async function fetchData() {
+      const type = document.getElementById("apiSelector").value;
+      const content = document.getElementById("content");
+      content.innerHTML = `<p>Cargando ${type}...</p>`;
+
+      try {
+        const res = await fetch(`${BASE_URL}${type}`);
+        const data = await res.json();
+        const items = extractItems(data);
+        renderData(type, items);
+      } catch (err) {
+        console.error(err);
+        content.innerHTML = `<p>Error al cargar los datos 😢</p>`;
+      }
+    }
+
+    // Detecta dinámicamente los datos válidos
+    function extractItems(data) {
+      if (Array.isArray(data)) return data;
+      if (Array.isArray(data.content)) return data.content;
+      if (Array.isArray(data.attributes)) return data.attributes;
+      if (Array.isArray(data.fields)) return data.fields;
+      if (Array.isArray(data.levels)) return data.levels;
+      if (Array.isArray(data.types)) return data.types;
+      if (Array.isArray(data.skills)) return data.skills;
+
+      const values = Object.values(data);
+      for (let val of values) {
+        if (Array.isArray(val)) return val;
+      }
+      console.warn("Estructura no reconocida:", data);
+      return [];
+    }
+
+    function renderData(type, items) {
+      const content = document.getElementById("content");
+      content.innerHTML = "";
+
+      if (!items || items.length === 0) {
+        content.innerHTML = "<p>No se encontraron datos 😢</p>";
+        return;
+      }
+
+      switch (type) {
+        case "digimon":
+          items.slice(0, 20).forEach(d => {
+            // Imagen segura
+            const image = (d.images && d.images.length > 0 && d.images[0].href)
+              ? d.images[0].href
+              : "https://upload.wikimedia.org/wikipedia/commons/6/6c/No_image_3x4.svg";
+
+            const level = d.levels?.[0]?.level || "Desconocido";
+            const attribute = d.attributes?.[0]?.attribute || "Desconocido";
+            const typeD = d.types?.[0]?.type || "Desconocido";
+
+            content.innerHTML += `
+              <div class="card">
+                <img src="${image}" alt="${d.name}" />
+                <h3>${d.name}</h3>
+                <p><b>Nivel:</b> ${level}</p>
+                <p><b>Atributo:</b> ${attribute}</p>
+                <p><b>Tipo:</b> ${typeD}</p>
+              </div>`;
+          });
+          break;
+
+        case "attribute":
+          items.forEach(a => {
+            content.innerHTML += `<div class="card"><h3>${a.attribute || a.name}</h3></div>`;
+          });
+          break;
+
+        case "field":
+          items.forEach(f => {
+            const img = f.image || "https://upload.wikimedia.org/wikipedia/commons/6/6c/No_image_3x4.svg";
+            content.innerHTML += `
+              <div class="card">
+                <img src="${img}" alt="${f.field}" />
+                <h3>${f.field}</h3>
+              </div>`;
+          });
+          break;
+
+        case "level":
+          items.forEach(l => {
+            content.innerHTML += `<div class="card"><h3>${l.level}</h3></div>`;
+          });
+          break;
+
+        case "type":
+          items.forEach(t => {
+            content.innerHTML += `<div class="card"><h3>${t.type}</h3></div>`;
+          });
+          break;
+
+        case "skill":
+          items.slice(0, 20).forEach(s => {
+            content.innerHTML += `
+              <div class="card">
+                <h3>${s.skill}</h3>
+                <p>${s.description || "Sin descripción disponible."}</p>
+              </div>`;
+          });
+          break;
+      }
+    }
+
+    // Carga inicial
+    fetchData();
+  </script>
+</body>
+</html>
