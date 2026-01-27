@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokémon Type Effectiveness Analyzer</title>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #fdfbfb, #ebedee);
+        margin: 0;
+        padding: 20px;
+        color: #333;
+    }
+    h1 {
+        text-align: center;
+        color: #2e7d32;
+        margin-bottom: 20px;
+    }
+    .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    input, button {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+        border: 1px solid #aaa;
+    }
+    button {
+        background: #2e7d32;
+        color: white;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    button:hover {
+        background: #1b5e20;
+    }
+    .type-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        margin: 20px 0;
+    }
+    .type-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        color: white;
+        cursor: pointer;
+        text-transform: capitalize;
+        transition: transform 0.2s;
+    }
+    .type-btn:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+    }
+    .active {
+        outline: 3px solid gold;
+        transform: scale(1.1);
+    }
+    .type-section {
+        display: none;
+        margin-top: 20px;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+    .type-section.active {
+        display: block;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+        text-transform: capitalize;
+        margin-top: 10px;
+        color: #1b5e20;
+    }
+    .block {
+        background: #f8f8f8;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .block h3 {
+        margin-top: 0;
+        color: #444;
+    }
+    .type-list {
+        margin-top: 5px;
+    }
+    .type {
+        display: inline-block;
+        padding: 5px 8px;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        text-transform: capitalize;
+        margin: 3px;
+    }
+
+    /* Colores por tipo */
+    .grass { background: #78C850; }
+    .fire { background: #F08030; }
+    .water { background: #6890F0; }
+    .ground { background: #E0C068; }
+    .rock { background: #B8A038; }
+    .flying { background: #A890F0; }
+    .bug { background: #A8B820; }
+    .poison { background: #A040A0; }
+    .ice { background: #98D8D8; color: #000; }
+    .dragon { background: #7038F8; }
+    .steel { background: #B8B8D0; color: #000; }
+    .electric { background: #F8D030; color: #000; }
+    .fairy { background: #EE99AC; }
+</style>
+</head>
+<body>
+    <h1>Pokémon Type Effectiveness Analyzer</h1>
+    <div class="container">
+        <p>Introduce uno o dos tipos separados por coma (por ejemplo: <b>fire, grass</b>):</p>
+        <input type="text" id="typeInput" placeholder="Ejemplo: fire, grass">
+        <button onclick="showTypes()">Mostrar</button>
+
+        <div id="typeButtons" class="type-buttons"></div>
+        <div id="typeSections"></div>
+    </div>
+
+<script>
+const typeChart = {
+    grass: {
+        offensive: {
+            super: ['ground','rock','water'],
+            not: ['flying','poison','bug','fire','grass','dragon','steel'],
+            none: []
+        },
+        defensive: {
+            weak: ['flying','poison','bug','fire','ice'],
+            resist: ['ground','water','grass','electric'],
+            immune: []
+        }
+    },
+    fire: {
+        offensive: {
+            super: ['bug','steel','grass','ice'],
+            not: ['rock','fire','water','dragon'],
+            none: []
+        },
+        defensive: {
+            weak: ['ground','rock','water'],
+            resist: ['bug','steel','fire','grass','ice','fairy'],
+            immune: []
+        }
+    },
+    water: {
+        offensive: {
+            super: ['ground','rock','fire'],
+            not: ['water','grass','dragon'],
+            none: []
+        },
+        defensive: {
+            weak: ['electric','grass'],
+            resist: ['steel','fire','water','ice'],
+            immune: []
+        }
+    }
+};
+
+// 🧩 Función para crear etiquetas de tipo
+function createTypeBadge(type) {
+    return `<span class="type ${type}">${type}</span>`;
+}
+
+// 🧱 Crear bloque de propiedades
+function createPropertyBlock(title, categories) {
+    return `
+        <div class="block">
+            <h3>${title}</h3>
+            <div class="type-list"><b>Super efectivo (×2):</b> ${categories.super.map(createTypeBadge).join(' ') || 'Ninguno'}</div>
+            <div class="type-list"><b>No muy efectivo (×½):</b> ${categories.not.map(createTypeBadge).join(' ') || 'Ninguno'}</div>
+            <div class="type-list"><b>Sin efecto (×0):</b> ${categories.none.map(createTypeBadge).join(' ') || 'Ninguno'}</div>
+        </div>
+    `;
+}
+
+// 🧱 Crear bloque defensivo
+function createDefenseBlock(categories) {
+    return `
+        <div class="block">
+            <h3>Propiedades defensivas</h3>
+            <div class="type-list"><b>Débil ante (×2):</b> ${categories.weak.map(createTypeBadge).join(' ') || 'Ninguno'}</div>
+            <div class="type-list"><b>Resiste (×½):</b> ${categories.resist.map(createTypeBadge).join(' ') || 'Ninguno'}</div>
+            <div class="type-list"><b>Inmune (×0):</b> ${categories.immune.map(createTypeBadge).join(' ') || 'Ninguno'}</div>
+        </div>
+    `;
+}
+
+// 🔍 Mostrar los tipos y sus botones
+function showTypes() {
+    const input = document.getElementById('typeInput').value.toLowerCase().replace(/\s+/g, '');
+    const types = input.split(',').filter(Boolean);
+    const buttonContainer = document.getElementById('typeButtons');
+    const sectionContainer = document.getElementById('typeSections');
+    buttonContainer.innerHTML = '';
+    sectionContainer.innerHTML = '';
+
+    if (types.length === 0) {
+        buttonContainer.innerHTML = '<p>⚠️ Introduce al menos un tipo.</p>';
+        return;
+    }
+
+    types.forEach((type, index) => {
+        if (!typeChart[type]) {
+            buttonContainer.innerHTML += `<p>❌ Tipo "${type}" no reconocido.</p>`;
+            return;
+        }
+
+        // Crear botón
+        const btn = document.createElement('button');
+        btn.classList.add('type-btn', type);
+        btn.textContent = type;
+        btn.onclick = () => selectType(index);
+        buttonContainer.appendChild(btn);
+
+        // Crear sección oculta
+        const section = document.createElement('div');
+        section.classList.add('type-section');
+        section.id = `type-${index}`;
+        section.innerHTML = `
+            <h2>${type}</h2>
+            ${createPropertyBlock('Propiedades ofensivas', typeChart[type].offensive)}
+            ${createDefenseBlock(typeChart[type].defensive)}
+        `;
+        sectionContainer.appendChild(section);
+    });
+
+    // Activar el primero por defecto
+    if (types.length > 0) selectType(0);
+}
+
+// ✨ Activar un tipo específico
+function selectType(index) {
+    const allSections = document.querySelectorAll('.type-section');
+    const allButtons = document.querySelectorAll('.type-btn');
+
+    allSections.forEach((sec, i) => sec.classList.toggle('active', i === index));
+    allButtons.forEach((btn, i) => btn.classList.toggle('active', i === index));
+}
+</script>
+</body>
+</html>
