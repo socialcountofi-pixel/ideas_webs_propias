@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Condicionales en inglés — Guía</title>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <style>
         :root{font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;color:#111;background:#f7f7fb}
         body{margin:0;padding:28px;line-height:1.6}
@@ -19,52 +18,11 @@
         .muted{color:#64748b;font-size:14px}
         .exercise{margin:12px 0;padding:12px;border-radius:6px;background:#fff7ed;border-left:4px solid #f59e0b}
         .answer{display:none;margin-top:8px;padding:10px;background:#ecfccb;border-radius:6px}
-        .pista{display:none;margin-top:8px;padding:10px;background:#e0f2fe;border-radius:6px}
-        button.toggle,.toggle_p{margin-top:8px;background:#6366f1;color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
+        button.toggle{margin-top:8px;background:#6366f1;color:#fff;border:none;padding:8px 10px;border-radius:6px;cursor:pointer}
         footer{margin-top:20px;color:#64748b;font-size:14px}
         nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
         nav a{color:#334155;text-decoration:none;padding:6px 8px;border-radius:6px;background:#f1f5f9}
         code{background:#0f172a;color:#fff;padding:2px 6px;border-radius:4px;font-size:90%}
-
-
-        /* =========================
-   Contenedor de pestañas
-   ========================= */
-.tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-/* =========================
-   Botones de pestañas
-   ========================= */
-.tab-titulo {
-    padding: 10px 20px;
-    cursor: pointer;
-    background: #2c3e50;
-    color: #fff;
-    border: none;
-    font-size: 16px;
-}
-
-/* =========================
-   Pestaña activa
-   ========================= */
-.tab-titulo.active {
-    background: #16a085;
-    /* Comentario tonto: "La pestaña feliz que está activa" 😄 */
-}
-
-/* =========================
-   Contenido de pestaña
-   ========================= */
-.tab-content {
-    padding: 15px;
-    border: 1px solid #ccc;
-    display: none; /* oculto por defecto */
-    /* Comentario tonto: "Aquí duerme el contenido hasta que alguien lo despierte" 💤 */
-}
     </style>
 </head>
 <body>
@@ -73,12 +31,12 @@
         <p class="muted">Una guía en español con explicación, estructura y ejemplos para <strong>zero, first, second, third, mixed conditionals</strong> y usos comunes. Incluye ejercicios con respuestas.</p>
 
         <nav>
-            <!--<a href="#zero">Zero</a>
+            <a href="#zero">Zero</a>
             <a href="#first">First</a>
             <a href="#second">Second</a>
             <a href="#third">Third</a>
             <a href="#mixed">Mixed</a>
-            <a href="#otros">Usos y variantes</a>-->
+            <a href="#otros">Usos y variantes</a>
             <a href="#ejercicios">Ejercicios</a>
         </nav>
 
@@ -87,25 +45,7 @@
             <p>Los condicionales expresan relaciones entre una condición y una consecuencia. En inglés hay varias estructuras según la probabilidad y el tiempo (presente, pasado, posibilidad real o hipotética).</p>
         </section>
 
-        <div id="tabs-container">
-
-    <!-- =========================
-         Pestañas / Tabs
-         ========================= -->
-    <div class="tabs">
-        <button class="tab-titulo active" data-tab="tab1">zero</button>
-        <button class="tab-titulo" data-tab="tab2">First</button>
-        <button class="tab-titulo" data-tab="tab3">Second</button>
-        <button class="tab-titulo" data-tab="tab4">Third</button>
-        <button class="tab-titulo" data-tab="tab5">Mixed</button>
-        <button class="tab-titulo" data-tab="tab6">Usos y variantes</button>
-    </div>
-
-    <!-- =========================
-         Contenido de cada pestaña
-         ========================= -->
-    <div class="tab-content" id="tab1">
-       <section id="zero">
+        <section id="zero">
             <h2>Zero conditional (verdades generales)</h2>
             <p>Uso: hechos generales, leyes de la naturaleza, rutinas. La condición y la consecuencia suelen estar en presente simple.</p>
             <div class="formula">Estructura: <strong>If + presente simple, presente simple</strong></div>
@@ -114,9 +54,7 @@
                 <div class="example">If it <strong>rains</strong>, the ground <strong>gets</strong> wet.</div>
             </div>
         </section>
-    </div>
 
-    <div class="tab-content" id="tab2" style="display:none;">
         <section id="first">
             <h2>First conditional (posible en el futuro)</h2>
             <p>Uso: situaciones reales y posibles en el futuro; la condición es probable.</p>
@@ -127,10 +65,8 @@
             </div>
             <p class="muted">También se usan otras modalidades en la cláusula principal: <code>can</code>, <code>may</code>, o el imperativo.</p>
         </section>
-    </div>
 
-    <div class="tab-content" id="tab3" style="display:none;">
-       <section id="second">
+        <section id="second">
             <h2>Second conditional (hipótesis en el presente / futuro improbable)</h2>
             <p>Uso: situaciones hipotéticas o improbables ahora o en el futuro.</p>
             <div class="formula">Estructura: <strong>If + pasado simple, would + verbo</strong></div>
@@ -140,9 +76,7 @@
             </div>
             <p class="muted">Nota: el pasado simple aquí no indica tiempo pasado real, sino grado de irrealidad.</p>
         </section>
-    </div>
 
-    <div class="tab-content" id="tab4" style="display:none;">
         <section id="third">
             <h2>Third conditional (hipótesis sobre el pasado)</h2>
             <p>Uso: imaginar resultados diferentes en el pasado — lamentaciones, arrepentimientos, o explicación de resultados pasados.</p>
@@ -152,9 +86,7 @@
                 <div class="example">If I <strong>had known</strong> about the party, I <strong>would have gone</strong>.</div>
             </div>
         </section>
-    </div>
 
-    <div class="tab-content" id="tab5" style="display:none;">
         <section id="mixed">
             <h2>Mixed conditionals</h2>
             <p>Uso: combinar tiempos cuando la condición en un tiempo produce una consecuencia en otro.</p>
@@ -163,10 +95,7 @@
                 <div class="example">If she <strong>were</strong> younger (present), she <strong>would have applied</strong> (past).</div>
             </div>
         </section>
-    </div>
 
-    <div class="tab-content" id="tab6" style="display:none;">
-        <p>otros</p>
         <section id="otros">
             <h2>Otros usos y variantes</h2>
             <h3>Inversión</h3>
@@ -184,9 +113,6 @@
             <p>Para comparar o describir situaciones irreales:</p>
             <div class="example">He talks as if he <strong>knew</strong> everything. (pero no sabe)</div>
         </section>
-    </div>
-
-</div>
 
         <section id="ejercicios">
             <h2>Ejercicios</h2>
@@ -195,8 +121,6 @@
             <div class="exercise">
                 <div>1) If it _____ (rain) tomorrow, we _____ (cancel) the trip.</div>
                 <button class="toggle" data-target="a1">Mostrar respuesta</button>
-                <button class="toggle_p" data-target_p="p1">Mostrar Pista</button>
-                <div id="p1" class="pista">Pista: tomorrow Usa el tiempo presente en la cláusula condicional.</div>
                 <div id="a1" class="answer">If it <strong>rains</strong> tomorrow, we <strong>will cancel</strong> the trip. (First conditional)</div>
             </div>
 
@@ -248,7 +172,6 @@
             <div>¿Quieres más ejercicios, traducciones o una versión imprimible? Dime y la preparo.</div>
         </footer>
     </div>
-    
 
     <script>
         document.querySelectorAll('button.toggle').forEach(btn=>{
@@ -265,58 +188,6 @@
                 }
             });
         });
-
-        document.querySelectorAll('button.toggle_p').forEach(btn=>{
-            btn.addEventListener('click',()=>{
-                const id = btn.getAttribute('data-target_p');
-                const el = document.getElementById(id);
-                if(!el) return;
-                if(el.style.display === 'block'){
-                    el.style.display = 'none';
-                    btn.textContent = 'Mostrar Pista';
-                } else {
-                    el.style.display = 'block';
-                    btn.textContent = 'Ocultar Pista';
-                }
-            });
-        });
-        // Esperamos a que el DOM esté listo
-$(document).ready(function () {
-
-    // Evento click para cada pestaña
-    $(".tab-titulo").click(function () {
-
-        // -------------------------
-        // Paso 1: Desactivar todas las pestañas
-        // -------------------------
-        $(".tab-titulo").removeClass("active");
-        // Comentario tonto: "Fuera estrés, solo una pestaña puede mandar a la vez" 😅
-
-        // Activar la pestaña clickeada
-        $(this).addClass("active");
-        // Comentario profesional: Permite cambiar el estilo visual de la pestaña activa
-
-        // -------------------------
-        // Paso 2: Animación
-        // -------------------------
-        // Ocultamos todo el contenido con slideUp (animación suave)
-        $(".tab-content").slideUp(250);
-        // Comentario tonto: "Todos los demás contenidos se esconden bajo la alfombra" 🧹
-
-        // Mostramos el contenido correspondiente con slideDown
-        var tabId = $(this).data("tab");  // Obtenemos el id del contenido
-        $("#" + tabId).slideDown(250);
-        // Comentario profesional: Uso de data attributes para asociar pestañas con contenido
-        // Comentario tonto: "Solo el elegido puede salir a jugar al mundo visible" ⚽
-
-    });
-
-    // -------------------------
-    // Paso 3: Mostrar el contenido de la primera pestaña al cargar
-    // -------------------------
-    $(".tab-content").first().show(); // Aunque el CSS lo oculta por defecto
-});
     </script>
-    
 </body>
 </html>
