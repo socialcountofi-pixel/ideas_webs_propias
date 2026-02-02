@@ -7,6 +7,44 @@
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
+<!--index-->
+<h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
+
+<div class="container">
+  <input type="text" id="pokemonInput" placeholder="Introduce nombre o ID (ej: wailord)">
+  <button onclick="buscarPokemon()">Buscar Pokémon</button>
+
+  <h2>Altura</h2>
+  <div class="comparacion-vertical" id="comparacionAltura">
+    <div id="barraAlturaAsh" class="barra barra-ash" style="height:50px;"></div>
+    <div class="imagen-con-info">
+      <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+      <span id="ashAlturaTexto">1.69 m</span>
+    </div>
+    <div class="imagen-con-info">
+      <img id="pokemonAlturaImg" src="" alt="Pokémon">
+      <span id="pokemonAlturaTexto"></span>
+    </div>
+    <div id="barraAlturaPokemon" class="barra barra-pokemon" style="height:50px;"></div>
+  </div>
+
+  <h2>Peso</h2>
+  <div class="comparacion-vertical" id="comparacionPeso">
+    <div id="barraPesoAsh" class="barra barra-ash" style="height:50px;"></div>
+    <div class="imagen-con-info">
+      <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+      <span id="ashPesoTexto">40.0 kg</span>
+    </div>
+    <div class="imagen-con-info">
+      <img id="pokemonPesoImg" src="" alt="Pokémon">
+      <span id="pokemonPesoTexto"></span>
+    </div>
+    <div id="barraPesoPokemon" class="barra barra-pokemon" style="height:50px;"></div>
+  </div>
+
+  <div class="info" id="info"></div>
+</div>
+
 
 <h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
 
@@ -45,88 +83,105 @@
   <div class="info" id="info"></div>
 </div>
 
-<script>
-const alturaAsh = 1.69;
-const pesoAsh = 40.0;
-const maxBarHeight = 150;
+<!--index5-->
 
-const barraAlturaAsh = document.getElementById("barraAlturaAsh");
-const barraAlturaPokemon = document.getElementById("barraAlturaPokemon");
-const barraPesoAsh = document.getElementById("barraPesoAsh");
-const barraPesoPokemon = document.getElementById("barraPesoPokemon");
+<h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
+<div class="container">
+  <input type="text" id="pokemonInput" placeholder="Introduce nombre o ID (ej: wailord)">
+  <button onclick="buscarPokemon()">Buscar Pokémon</button>
 
-const ashAlturaImg = document.getElementById("ashAlturaImg");
-const ashPesoImg = document.getElementById("ashPesoImg");
-const pokemonAlturaImg = document.getElementById("pokemonAlturaImg");
-const pokemonPesoImg = document.getElementById("pokemonPesoImg");
+  <h2>Comparación de Altura</h2>
+  <div id="alturaContainer" class="comparacion">
+    <div class="barra-container">
+      <div class="barra" id="barraAltura"></div>
+      <img id="ashAlturaImg" class="persona" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+      <img id="pokemonAlturaImg" class="persona" src="" alt="Pokémon">
+      <p>Ash vs Pokémon</p>
+    </div>
+  </div>
 
-const ashAlturaTexto = document.getElementById("ashAlturaTexto");
-const ashPesoTexto = document.getElementById("ashPesoTexto");
-const pokemonAlturaTexto = document.getElementById("pokemonAlturaTexto");
-const pokemonPesoTexto = document.getElementById("pokemonPesoTexto");
+  <h2>Comparación de Peso</h2>
+  <div id="pesoContainer" class="comparacion">
+    <div class="barra-container">
+      <div class="barra" id="barraPeso"></div>
+      <img id="ashPesoImg" class="persona" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+      <img id="pokemonPesoImg" class="persona" src="" alt="Pokémon">
+      <p>Ash vs Pokémon</p>
+    </div>
+  </div>
 
-const infoDiv = document.getElementById("info");
+  <div class="info" id="info"></div>
+</div>
 
-async function cargarImagen(url){
-  return new Promise(resolve=>{
-    const img = new Image();
-    img.src = url;
-    img.onload = ()=>resolve(url);
-    img.onerror = ()=>resolve("https://via.placeholder.com/150?text=No+Image");
-  });
-}
+<!--index6-->
+<h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
 
-async function buscarPokemon(){
-  const nombre = document.getElementById("pokemonInput").value.toLowerCase().trim();
-  if(!nombre) return alert("Introduce nombre o ID de Pokémon");
-  
-  try{
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
-    if(!res.ok) throw new Error("Pokémon no encontrado");
-    const data = await res.json();
+<div class="container">
+  <input type="text" id="pokemonInput" placeholder="Introduce nombre o ID (ej: wailord)">
+  <button onclick="buscarPokemon()">Buscar Pokémon</button>
 
-    const nombrePokemon = data.name;
-    const alturaPokemon = data.height/10;
-    const pesoPokemon = data.weight/10;
-    const img = data.sprites.other["official-artwork"].front_default || data.sprites.front_default;
-    const imgUrl = await cargarImagen(img);
+  <h2>Altura</h2>
+  <div class="comparacion-vertical" id="comparacionAltura">
+    <div id="barraAlturaAsh" class="barra barra-ash" style="height:50px;"></div>
+    <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+    <img id="pokemonAlturaImg" src="" alt="Pokémon">
+    <div id="barraAlturaPokemon" class="barra barra-pokemon" style="height:50px;"></div>
+  </div>
 
-    pokemonAlturaImg.src = imgUrl;
-    pokemonPesoImg.src = imgUrl;
+  <h2>Peso</h2>
+  <div class="comparacion-vertical" id="comparacionPeso">
+    <div id="barraPesoAsh" class="barra barra-ash" style="height:50px;"></div>
+    <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+    <img id="pokemonPesoImg" src="" alt="Pokémon">
+    <div id="barraPesoPokemon" class="barra barra-pokemon" style="height:50px;"></div>
+  </div>
 
-    // --- Altura barras ---
-    barraAlturaAsh.style.height = `${(alturaAsh/Math.max(alturaAsh,alturaPokemon))*maxBarHeight}px`;
-    barraAlturaPokemon.style.height = `${(alturaPokemon/Math.max(alturaAsh,alturaPokemon))*maxBarHeight}px`;
+  <div class="info" id="info"></div>
+</div>
+<!--index7-->
+<h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
+<div class="container">
+  <input type="text" id="pokemonInput" placeholder="Introduce nombre o ID (ej: wailord)">
+  <button onclick="buscarPokemon()">Buscar Pokémon</button>
 
-    // --- Peso barras ---
-    barraPesoAsh.style.height = `${(pesoAsh/Math.max(pesoAsh,pesoPokemon))*maxBarHeight}px`;
-    barraPesoPokemon.style.height = `${(pesoPokemon/Math.max(pesoAsh,pesoPokemon))*maxBarHeight}px`;
+  <h2>Comparación de Altura</h2>
+  <div id="alturaContainer" class="comparacion">
+    <div class="barra-container">
+      <div class="barra" style="height:300px;">
+        <div class="relleno" id="rellenoAshAltura"></div>
+        <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+      </div>
+      <p>Ash: 1.69 m</p>
+    </div>
+    <div class="barra-container">
+      <div class="barra" style="height:300px;">
+        <div class="relleno" id="rellenoPokemonAltura"></div>
+        <img id="pokemonAlturaImg" src="" alt="Pokémon">
+      </div>
+      <p id="pokemonAlturaTexto"></p>
+    </div>
+  </div>
 
-    // --- Texto debajo de imágenes ---
-    ashAlturaTexto.textContent = `${alturaAsh.toFixed(2)} m`;
-    pokemonAlturaTexto.textContent = `${alturaPokemon.toFixed(2)} m`;
+  <h2>Comparación de Peso</h2>
+  <div id="pesoContainer" class="comparacion">
+    <div class="barra-container">
+      <div class="barra" style="height:300px;">
+        <div class="relleno" id="rellenoAshPeso"></div>
+        <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+      </div>
+      <p>Ash: 40.0 kg</p>
+    </div>
+    <div class="barra-container">
+      <div class="barra" style="height:300px;">
+        <div class="relleno" id="rellenoPokemonPeso"></div>
+        <img id="pokemonPesoImg" src="" alt="Pokémon">
+      </div>
+      <p id="pokemonPesoTexto"></p>
+    </div>
+  </div>
 
-    ashPesoTexto.textContent = `${pesoAsh.toFixed(1)} kg`;
-    pokemonPesoTexto.textContent = `${pesoPokemon.toFixed(1)} kg`;
-
-    // --- Info general ---
-    infoDiv.innerHTML=`
-      <h3>${nombrePokemon.toUpperCase()}</h3>
-      <p><strong>ID Pokédex:</strong> ${data.id}</p>
-      <p><strong>Comparativa de altura:</strong> 
-        ${alturaPokemon>alturaAsh?`${nombrePokemon} es más alto que Ash`:
-          alturaPokemon<alturaAsh?`Ash es más alto que ${nombrePokemon}`:`Tienen la misma altura`}
-      </p>
-      <p><strong>Comparativa de peso:</strong> 
-        ${pesoPokemon>pesoAsh?`${nombrePokemon} es más pesado que Ash`:
-          pesoPokemon<pesoAsh?`Ash es más pesado que ${nombrePokemon}`:`Tienen el mismo peso`}
-      </p>
-    `;
-  }catch(err){
-    alert(err.message);
-  }
-}
-</script>
-
+  <div class="info" id="info"></div>
+</div>
+<script src="script.js" type="text/javascript"></script>
 </body>
 </html>
