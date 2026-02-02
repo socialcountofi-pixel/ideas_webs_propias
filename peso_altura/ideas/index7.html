@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparador de Altura y Peso Pokémon 🧢⚡</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background: linear-gradient(180deg, #b3e5fc, #e1f5fe);
+    margin: 0;
+    padding: 0;
+  }
+  h1 {
+    background-color: #0288d1;
+    color: white;
+    margin: 0;
+    padding: 15px;
+    font-size: 1.8rem;
+  }
+  .container { margin: 20px; padding: 0 10px; }
+  input, button { padding: 10px; font-size: 1rem; margin-top: 10px; }
+  button {
+    background-color: #0288d1;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 5px;
+    transition: background 0.3s;
+  }
+  button:hover { background-color: #0277bd; }
+
+  .comparacion {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 40px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  .barra-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .barra {
+    position: relative;
+    width: 100px;
+    background: #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .relleno {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #0288d1;
+    transition: height 0.5s ease;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .barra img {
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 0;
+    border: 4px solid transparent;
+    border-radius: 10px;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+  }
+
+  .info {
+    margin-top: 20px;
+    background: white;
+    display: inline-block;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    text-align: left;
+    max-width: 90%;
+  }
+
+  @media (max-width: 600px) {
+    .comparacion { gap: 20px; }
+    .barra { width: 60px; height: 200px; }
+    .barra img { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
+<div class="container">
+  <input type="text" id="pokemonInput" placeholder="Introduce nombre o ID (ej: wailord)">
+  <button onclick="buscarPokemon()">Buscar Pokémon</button>
+
+  <h2>Comparación de Altura</h2>
+  <div id="alturaContainer" class="comparacion">
+    <div class="barra-container">
+      <div class="barra" style="height:300px;">
+        <div class="relleno" id="rellenoAshAltura"></div>
+        <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+      </div>
+      <p>Ash: 1.69 m</p>
+    </div>
+    <div class="barra-container">
+      <div class="barra" style="height:300px;">
+        <div class="relleno" id="rellenoPokemonAltura"></div>
+        <img id="pokemonAlturaImg" src="" alt="Pokémon">
+      </div>
+      <p id="pokemonAlturaTexto"></p>
+    </div>
+  </div>
+
+  <h2>Comparación de Peso</h2>
+  <div id="pesoContainer" class="comparacion">
+    <div class="barra-container">
+      <div class="barra" style="height:300px;">
+        <div class="relleno" id="rellenoAshPeso"></div>
+        <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+      </div>
+      <p>Ash: 40.0 kg</p>
+    </div>
+    <div class="barra-container">
+      <div class="barra" style="height:300px;">
+        <div class="relleno" id="rellenoPokemonPeso"></div>
+        <img id="pokemonPesoImg" src="" alt="Pokémon">
+      </div>
+      <p id="pokemonPesoTexto"></p>
+    </div>
+  </div>
+
+  <div class="info" id="info"></div>
+</div>
+
+<script>
+const alturaAsh = 1.69;
+const pesoAsh = 40.0;
+
+const ashAlturaImg = document.getElementById("ashAlturaImg");
+const ashPesoImg = document.getElementById("ashPesoImg");
+const pokemonAlturaImg = document.getElementById("pokemonAlturaImg");
+const pokemonPesoImg = document.getElementById("pokemonPesoImg");
+
+const rellenoAshAltura = document.getElementById("rellenoAshAltura");
+const rellenoPokemonAltura = document.getElementById("rellenoPokemonAltura");
+const rellenoAshPeso = document.getElementById("rellenoAshPeso");
+const rellenoPokemonPeso = document.getElementById("rellenoPokemonPeso");
+
+const pokemonAlturaTexto = document.getElementById("pokemonAlturaTexto");
+const pokemonPesoTexto = document.getElementById("pokemonPesoTexto");
+const infoDiv = document.getElementById("info");
+
+async function buscarPokemon() {
+  const nombre = document.getElementById("pokemonInput").value.toLowerCase().trim();
+  if (!nombre) return alert("Introduce un nombre o ID de Pokémon");
+
+  try {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+    if (!res.ok) throw new Error("Pokémon no encontrado");
+    const data = await res.json();
+
+    const alturaPokemon = data.height / 10;
+    const pesoPokemon = data.weight / 10;
+    const imgUrl = data.sprites.other["official-artwork"].front_default || data.sprites.front_default || "https://via.placeholder.com/150";
+
+    actualizarAltura(alturaPokemon, imgUrl);
+    actualizarPeso(pesoPokemon, imgUrl);
+
+    infoDiv.innerHTML = `
+      <h3>${data.name.toUpperCase()}</h3>
+      <p><strong>ID Pokédex:</strong> ${data.id}</p>
+      <p><strong>Comparativa de altura:</strong> 
+        ${alturaPokemon > alturaAsh ? `Más alto que Ash` : alturaPokemon < alturaAsh ? `Ash es más alto` : `Misma altura`}
+      </p>
+      <p><strong>Comparativa de peso:</strong> 
+        ${pesoPokemon > pesoAsh ? `Más pesado que Ash` : pesoPokemon < pesoAsh ? `Ash es más pesado` : `Mismo peso`}
+      </p>
+    `;
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+function actualizarAltura(alturaPokemon, imgUrl) {
+  const maxAltura = 300; 
+  const alturaMax = Math.max(alturaAsh, alturaPokemon);
+
+  rellenoAshAltura.style.height = `${(alturaAsh/alturaMax)*maxAltura}px`;
+  rellenoPokemonAltura.style.height = `${(alturaPokemon/alturaMax)*maxAltura}px`;
+
+  ashAlturaImg.style.height = `${(alturaAsh/alturaMax)*maxAltura}px`;
+  pokemonAlturaImg.style.height = `${(alturaPokemon/alturaMax)*maxAltura}px`;
+  pokemonAlturaImg.src = imgUrl;
+
+  pokemonAlturaTexto.textContent = `Altura: ${alturaPokemon.toFixed(2)} m`;
+}
+
+function actualizarPeso(pesoPokemon, imgUrl) {
+  const maxPeso = 300; 
+  const pesoMax = Math.max(pesoAsh, pesoPokemon);
+
+  rellenoAshPeso.style.height = `${(pesoAsh/pesoMax)*maxPeso}px`;
+  rellenoPokemonPeso.style.height = `${(pesoPokemon/pesoMax)*maxPeso}px`;
+
+  ashPesoImg.style.height = `${(pesoAsh/pesoMax)*maxPeso}px`;
+  pokemonPesoImg.style.height = `${(pesoPokemon/pesoMax)*maxPeso}px`;
+  pokemonPesoImg.src = imgUrl;
+
+  pokemonPesoTexto.textContent = `Peso: ${pesoPokemon.toFixed(1)} kg`;
+}
+</script>
+
+</body>
+</html>

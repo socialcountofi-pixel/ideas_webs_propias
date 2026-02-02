@@ -1,0 +1,9 @@
+/*constantes iniciales */
+const alturaAsh = 1.69;
+const pesoAsh = 40.0;
+const maxBarHeight = 150;
+/*funcion de busqueda para que busque por pantalla y despues pase el dato a una funcion*/
+/*una funcion para cargar la imagen de ash al cargar la aplicacion*/
+/*una funcion para que cargue barra de imagenes o lo que sea */
+/*funcion para compara los alturas y peso*/
+/*funcion para mostrar los datos*/
