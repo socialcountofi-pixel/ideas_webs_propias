@@ -21,7 +21,6 @@ const pokemonPesoTexto = document.getElementById("pokemonPesoTexto");
 
 const infoDiv = document.getElementById("info");
 
-
 const rellenoAshAltura = document.getElementById("rellenoAshAltura");
 const rellenoPokemonAltura = document.getElementById("rellenoPokemonAltura");
 const rellenoAshPeso = document.getElementById("rellenoAshPeso");
@@ -46,17 +45,19 @@ async function buscarPokemon(){
     if(!res.ok) throw new Error("Pokémon no encontrado");
     const data = await res.json();
  return data;
- buscarPokemon1(data);buscarPokemon2(data);buscarPokemon3(data);buscarPokemon4(data);
 
- 
+ buscarPokemon1(data);
+ buscarPokemon2(data);
+ buscarPokemon3(data);
+ buscarPokemon4(data);
+
   }catch(err){
     alert(err.message);
   }
 }
 
-async function buscarPokemon1(datos){
-   
-
+async function buscarPokemon1(data){
+  
     const nombrePokemon = data.name;
     const alturaPokemon = data.height/10;
     const pesoPokemon = data.weight/10;
@@ -94,7 +95,7 @@ async function buscarPokemon1(datos){
           pesoPokemon<pesoAsh?`Ash es más pesado que ${nombrePokemon}`:`Tienen el mismo peso`}
       </p>
     `;
-  
+
 }
 /*index 5 */
 
@@ -118,31 +119,6 @@ async function buscarPokemon2(datos) {
       </p>
     `;
   
-}
-
-function actualizarAltura(alturaPokemon, imgUrl) {
-  const maxAlturaPx = 300; 
-  const alturaMax = Math.max(alturaAsh, alturaPokemon);
-
-  ashAlturaImg.style.height = `${(alturaAsh/alturaMax)*maxAlturaPx}px`;
-  pokemonAlturaImg.style.height = `${(alturaPokemon/alturaMax)*maxAlturaPx}px`;
-  pokemonAlturaImg.src = imgUrl;
-
-  // Posición absoluta desde bottom
-  ashAlturaImg.style.bottom = `0px`;
-  pokemonAlturaImg.style.bottom = `0px`;
-}
-
-function actualizarPeso(pesoPokemon, imgUrl) {
-  const maxPesoPx = 300; 
-  const pesoMax = Math.max(pesoAsh, pesoPokemon);
-
-  ashPesoImg.style.height = `${(pesoAsh/pesoMax)*maxPesoPx}px`;
-  pokemonPesoImg.style.height = `${(pesoPokemon/pesoMax)*maxPesoPx}px`;
-  pokemonPesoImg.src = imgUrl;
-
-  ashPesoImg.style.bottom = `0px`;
-  pokemonPesoImg.style.bottom = `0px`;
 }
 
 /*index 6 */
@@ -208,6 +184,10 @@ async function buscarPokemon4(datos) {
 }
 
 function actualizarAltura(alturaPokemon, imgUrl) {
+  // Posición absoluta desde bottom
+  ashAlturaImg.style.bottom = `0px`;
+  pokemonAlturaImg.style.bottom = `0px`;
+
   const maxAltura = 300; 
   const alturaMax = Math.max(alturaAsh, alturaPokemon);
 
@@ -222,6 +202,10 @@ function actualizarAltura(alturaPokemon, imgUrl) {
 }
 
 function actualizarPeso(pesoPokemon, imgUrl) {
+   // Posición absoluta desde bottom
+  ashAlturaImg.style.bottom = `0px`;
+  pokemonAlturaImg.style.bottom = `0px`;
+
   const maxPeso = 300; 
   const pesoMax = Math.max(pesoAsh, pesoPokemon);
 
@@ -233,4 +217,5 @@ function actualizarPeso(pesoPokemon, imgUrl) {
   pokemonPesoImg.src = imgUrl;
 
   pokemonPesoTexto.textContent = `Peso: ${pesoPokemon.toFixed(1)} kg`;
+  
 }
