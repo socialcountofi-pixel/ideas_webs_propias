@@ -1,5 +1,3 @@
-/*index */
-
 const alturaAsh = 1.69;
 const pesoAsh = 40.0;
 const maxBarHeight = 150;
@@ -21,12 +19,6 @@ const pokemonPesoTexto = document.getElementById("pokemonPesoTexto");
 
 const infoDiv = document.getElementById("info");
 
-const rellenoAshAltura = document.getElementById("rellenoAshAltura");
-const rellenoPokemonAltura = document.getElementById("rellenoPokemonAltura");
-const rellenoAshPeso = document.getElementById("rellenoAshPeso");
-const rellenoPokemonPeso = document.getElementById("rellenoPokemonPeso");
-
-
 async function cargarImagen(url){
   return new Promise(resolve=>{
     const img = new Image();
@@ -37,27 +29,25 @@ async function cargarImagen(url){
 }
 
 async function buscarPokemon(){
-  const nombre = document.getElementById("pokemonInput").value.toLowerCase().trim();
+const nombre = document.getElementById("pokemonInput").value.toLowerCase().trim();
   if(!nombre) return alert("Introduce nombre o ID de Pokémon");
   
   try{
     const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
     if(!res.ok) throw new Error("Pokémon no encontrado");
     const data = await res.json();
- return data;
+    MostrarPokemon(data);
+    MostrarPokemon2(data);
+    MostrarPokemon3(data);
 
- buscarPokemon1(data);
- buscarPokemon2(data);
- buscarPokemon3(data);
- buscarPokemon4(data);
-
-  }catch(err){
+    return data; 
+    
+    }catch(err){
     alert(err.message);
   }
 }
+async function MostrarPokemon(data){
 
-async function buscarPokemon1(data){
-  
     const nombrePokemon = data.name;
     const alturaPokemon = data.height/10;
     const pesoPokemon = data.weight/10;
@@ -95,12 +85,18 @@ async function buscarPokemon1(data){
           pesoPokemon<pesoAsh?`Ash es más pesado que ${nombrePokemon}`:`Tienen el mismo peso`}
       </p>
     `;
-
 }
-/*index 5 */
 
+/*caso2 */
 
-async function buscarPokemon2(datos) {
+const ashAlturaImg2 = document.getElementById("ashAlturaImg2");
+const pokemonAlturaImg2 = document.getElementById("pokemonAlturaImg2");
+const ashPesoImg2 = document.getElementById("ashPesoImg2");
+const pokemonPesoImg2 = document.getElementById("pokemonPesoImg2");
+const infoDiv2 = document.getElementById("info2");
+
+async function MostrarPokemon2(data) {
+
     const alturaPokemon = data.height / 10;
     const pesoPokemon = data.weight / 10;
     const imgUrl = data.sprites.other["official-artwork"].front_default || data.sprites.front_default || "https://via.placeholder.com/150";
@@ -108,7 +104,7 @@ async function buscarPokemon2(datos) {
     actualizarAltura(alturaPokemon, imgUrl);
     actualizarPeso(pesoPokemon, imgUrl);
 
-    infoDiv.innerHTML = `
+    infoDiv2.innerHTML = `
       <h3>${data.name.toUpperCase()}</h3>
       <p><strong>ID Pokédex:</strong> ${data.id}</p>
       <p><strong>Comparativa de altura:</strong> 
@@ -118,32 +114,69 @@ async function buscarPokemon2(datos) {
         ${pesoPokemon > pesoAsh ? `Más pesado que Ash` : pesoPokemon < pesoAsh ? `Ash es más pesado` : `Mismo peso`}
       </p>
     `;
-  
 }
 
-/*index 6 */
+function actualizarAltura(alturaPokemon, imgUrl) {
+  const maxAlturaPx = 300; 
+  const alturaMax = Math.max(alturaAsh, alturaPokemon);
 
-async function buscarPokemon3(datos){
+  ashAlturaImg2.style.height = `${(alturaAsh/alturaMax)*maxAlturaPx}px`;
+  pokemonAlturaImg2.style.height = `${(alturaPokemon/alturaMax)*maxAlturaPx}px`;
+  pokemonAlturaImg2.src = imgUrl;
 
+  // Posición absoluta desde bottom
+  ashAlturaImg2.style.bottom = `0px`;
+  pokemonAlturaImg2.style.bottom = `0px`;
+}
+
+function actualizarPeso(pesoPokemon, imgUrl) {
+  const maxPesoPx = 300; 
+  const pesoMax = Math.max(pesoAsh, pesoPokemon);
+
+  ashPesoImg2.style.height = `${(pesoAsh/pesoMax)*maxPesoPx}px`;
+  pokemonPesoImg2.style.height = `${(pesoPokemon/pesoMax)*maxPesoPx}px`;
+  pokemonPesoImg2.src = imgUrl;
+
+  ashPesoImg2.style.bottom = `0px`;
+  pokemonPesoImg2.style.bottom = `0px`;
+}
+
+/*caso3*/
+ 
+const barraAlturaAsh3 = document.getElementById("barraAlturaAsh3");
+const barraAlturaPokemon3 = document.getElementById("barraAlturaPokemon3");
+const barraPesoAsh3 = document.getElementById("barraPesoAsh3");
+const barraPesoPokemon3 = document.getElementById("barraPesoPokemon3");
+
+const ashAlturaImg3 = document.getElementById("ashAlturaImg3");
+const ashPesoImg3 = document.getElementById("ashPesoImg3");
+const pokemonAlturaImg3 = document.getElementById("pokemonAlturaImg3");
+const pokemonPesoImg3 = document.getElementById("pokemonPesoImg3");
+
+const infoDiv3 = document.getElementById("info3");
+
+
+async function MostrarPokemon3(data){
+  
     const nombrePokemon = data.name;
     const alturaPokemon = data.height/10;
     const pesoPokemon = data.weight/10;
     const img = data.sprites.other["official-artwork"].front_default || data.sprites.front_default;
     const imgUrl = await cargarImagen(img);
 
-    pokemonAlturaImg.src = imgUrl;
-    pokemonPesoImg.src = imgUrl;
+    pokemonAlturaImg3.src = imgUrl;
+    pokemonPesoImg3.src = imgUrl;
 
     // --- Altura barras ---
-    barraAlturaAsh.style.height = `${(alturaAsh/Math.max(alturaAsh,alturaPokemon))*maxBarHeight}px`;
-    barraAlturaPokemon.style.height = `${(alturaPokemon/Math.max(alturaAsh,alturaPokemon))*maxBarHeight}px`;
+    barraAlturaAsh3.style.height = `${(alturaAsh/Math.max(alturaAsh,alturaPokemon))*maxBarHeight}px`;
+    barraAlturaPokemon3.style.height = `${(alturaPokemon/Math.max(alturaAsh,alturaPokemon))*maxBarHeight}px`;
 
     // --- Peso barras ---
-    barraPesoAsh.style.height = `${(pesoAsh/Math.max(pesoAsh,pesoPokemon))*maxBarHeight}px`;
-    barraPesoPokemon.style.height = `${(pesoPokemon/Math.max(pesoAsh,pesoPokemon))*maxBarHeight}px`;
+    barraPesoAsh3.style.height = `${(pesoAsh/Math.max(pesoAsh,pesoPokemon))*maxBarHeight}px`;
+    barraPesoPokemon3.style.height = `${(pesoPokemon/Math.max(pesoAsh,pesoPokemon))*maxBarHeight}px`;
 
     // --- Info ---
-    infoDiv.innerHTML=`
+    infoDiv3.innerHTML=`
       <h3>${nombrePokemon.toUpperCase()}</h3>
       <p><strong>ID Pokédex:</strong> ${data.id}</p>
       <p><strong>Comparativa de altura:</strong> 
@@ -155,67 +188,5 @@ async function buscarPokemon3(datos){
           pesoPokemon<pesoAsh?`Ash es más pesado que ${nombrePokemon}`:`Tienen el mismo peso`}
       </p>
     `;
-  
-}
-
-/*index 7 */
-
-
-async function buscarPokemon4(datos) {
-  
-    const alturaPokemon = data.height / 10;
-    const pesoPokemon = data.weight / 10;
-    const imgUrl = data.sprites.other["official-artwork"].front_default || data.sprites.front_default || "https://via.placeholder.com/150";
-
-    actualizarAltura(alturaPokemon, imgUrl);
-    actualizarPeso(pesoPokemon, imgUrl);
-
-    infoDiv.innerHTML = `
-      <h3>${data.name.toUpperCase()}</h3>
-      <p><strong>ID Pokédex:</strong> ${data.id}</p>
-      <p><strong>Comparativa de altura:</strong> 
-        ${alturaPokemon > alturaAsh ? `Más alto que Ash` : alturaPokemon < alturaAsh ? `Ash es más alto` : `Misma altura`}
-      </p>
-      <p><strong>Comparativa de peso:</strong> 
-        ${pesoPokemon > pesoAsh ? `Más pesado que Ash` : pesoPokemon < pesoAsh ? `Ash es más pesado` : `Mismo peso`}
-      </p>
-    `;
-  
-}
-
-function actualizarAltura(alturaPokemon, imgUrl) {
-  // Posición absoluta desde bottom
-  ashAlturaImg.style.bottom = `0px`;
-  pokemonAlturaImg.style.bottom = `0px`;
-
-  const maxAltura = 300; 
-  const alturaMax = Math.max(alturaAsh, alturaPokemon);
-
-  rellenoAshAltura.style.height = `${(alturaAsh/alturaMax)*maxAltura}px`;
-  rellenoPokemonAltura.style.height = `${(alturaPokemon/alturaMax)*maxAltura}px`;
-
-  ashAlturaImg.style.height = `${(alturaAsh/alturaMax)*maxAltura}px`;
-  pokemonAlturaImg.style.height = `${(alturaPokemon/alturaMax)*maxAltura}px`;
-  pokemonAlturaImg.src = imgUrl;
-
-  pokemonAlturaTexto.textContent = `Altura: ${alturaPokemon.toFixed(2)} m`;
-}
-
-function actualizarPeso(pesoPokemon, imgUrl) {
-   // Posición absoluta desde bottom
-  ashAlturaImg.style.bottom = `0px`;
-  pokemonAlturaImg.style.bottom = `0px`;
-
-  const maxPeso = 300; 
-  const pesoMax = Math.max(pesoAsh, pesoPokemon);
-
-  rellenoAshPeso.style.height = `${(pesoAsh/pesoMax)*maxPeso}px`;
-  rellenoPokemonPeso.style.height = `${(pesoPokemon/pesoMax)*maxPeso}px`;
-
-  ashPesoImg.style.height = `${(pesoAsh/pesoMax)*maxPeso}px`;
-  pokemonPesoImg.style.height = `${(pesoPokemon/pesoMax)*maxPeso}px`;
-  pokemonPesoImg.src = imgUrl;
-
-  pokemonPesoTexto.textContent = `Peso: ${pesoPokemon.toFixed(1)} kg`;
   
 }

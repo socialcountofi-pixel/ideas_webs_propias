@@ -1,129 +1,12 @@
-
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(180deg, #b3e5fc, #e1f5fe);
-    margin: 0;
-    padding: 0;
-  
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(180deg, #b3e5fc, #e1f5fe);
-    margin: 0;
-    padding: 0;
-  }
-  h1 { background-color: #0288d1; color: white; margin:0; padding:15px; font-size:1.8rem;
-
-background-color: #0288d1;
-    color: white;
-    margin: 0;
-    padding: 15px;
-    font-size: 1.8rem;
-}
-  .container { margin:20px;margin: 20px; padding: 0 10px; }
-
-  input, button { padding:10px; font-size:1rem; margin-top:10px; padding: 10px; font-size: 1rem; margin-top: 10px; }
-  button { background-color:#0288d1; color:white; border:none; cursor:pointer; border-radius:5px; margin-left:5px; transition:0.3s;
-background-color: #0288d1;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 5px;
-    transition: background 0.3s;}
-  button:hover { background-color:#0277bd; background-color: #0277bd;}
- .comparacion {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 40px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-  }
-  .comparacion-vertical {
-    display:flex;
-    flex-direction:row;
-    align-items:flex-end;
-    justify-content:center;
-    gap:10px;
-    margin:20px 0;
-  }
-
-  .barra {
-    width: 20px;
-    border-radius:10px;
-    transition: height 0.5s;
-     position: relative;
-    width: 40px;
-    background: #e0e0e0;
-    border-radius: 12px;
-    overflow: visible;
-    height: 300px;
-  }
-  .barra-container {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    position: relative;
-    width: 120px;
-  }
-  .barra-ash { background-color:#4caf50;}
-  .barra-pokemon { background-color:#f44336;}
-
-  .imagen-con-info {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:5px;
-  }
-
-  .comparacion-vertical img {
-    max-height:150px;
-    width:auto;
-    border:4px solid transparent;
-    border-radius:10px;
-    background-color:rgba(255,255,255,0.6);
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-  }
-
-  .info {
-    margin-top:20px;
-    background:white;
-    display:inline-block;
-    padding:15px 20px;
-    border-radius:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.25);
-    text-align:left;
-    max-width:90%;
-    margin-top: 20px;
-    background: white;
-    display: inline-block;
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    text-align: left;
-    max-width: 90%;
-  }
-.persona {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    border: 4px solid transparent;
-    border-radius: 10px;
-    transition: all 0.5s ease;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-  }
  
-  @media (max-width: 600px) {
-    .barra { width: 25px; height: 200px; }
-    .persona { width: 100%; }
-  }
-
-
-
-  /*index*/
-
-  body {
+ .caso2,caso3{
+  float: flex;
+  position :left;
+  width: 100%;
+  margin: auto;
+  padding: 0;
+}
+ body {
     font-family: Arial, sans-serif;
     text-align: center;
     background: linear-gradient(180deg, #b3e5fc, #e1f5fe);
@@ -131,7 +14,7 @@ background-color: #0288d1;
     padding: 0;
   }
   h1 { background-color: #0288d1; color: white; margin:0; padding:15px; font-size:1.8rem;}
-  .container { margin:20px; }
+  .container, .container2, .container3 { margin:20px; padding: 0 10px;  }
 
   input, button { padding:10px; font-size:1rem; margin-top:10px;}
   button { background-color:#0288d1; color:white; border:none; cursor:pointer; border-radius:5px; margin-left:5px; transition:0.3s;}
@@ -181,23 +64,8 @@ background-color: #0288d1;
     max-width:90%;
   }
 
-  /*index 5*/
-  
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(180deg, #b3e5fc, #e1f5fe);
-    margin: 0;
-    padding: 0;
-  }
-  h1 {
-    background-color: #0288d1;
-    color: white;
-    margin: 0;
-    padding: 15px;
-    font-size: 1.8rem;
-  }
-  .container { margin: 20px; padding: 0 10px; }
+  /*caso2*/
+   
   input, button { padding: 10px; font-size: 1rem; margin-top: 10px; }
   button {
     background-color: #0288d1;
@@ -210,7 +78,7 @@ background-color: #0288d1;
   }
   button:hover { background-color: #0277bd; }
 
-  .comparacion {
+  .comparacion2 {
     display: flex;
     justify-content: center;
     align-items: flex-end;
@@ -219,7 +87,7 @@ background-color: #0288d1;
     flex-wrap: wrap;
   }
 
-  .barra-container {
+  .barra-container2 {
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
@@ -227,7 +95,7 @@ background-color: #0288d1;
     width: 120px;
   }
 
-  .barra {
+  .barra2 {
     position: relative;
     width: 40px;
     background: #e0e0e0;
@@ -236,7 +104,7 @@ background-color: #0288d1;
     height: 300px;
   }
 
-  .persona {
+  .persona2 {
     position: absolute;
     bottom: 0;
     width: 100%;
@@ -246,7 +114,7 @@ background-color: #0288d1;
     filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
   }
 
-  .info {
+  .info2 {
     margin-top: 20px;
     background: white;
     display: inline-block;
@@ -258,27 +126,18 @@ background-color: #0288d1;
   }
 
   @media (max-width: 600px) {
-    .barra { width: 25px; height: 200px; }
-    .persona { width: 100%; }
+    .barra2 { width: 25px; height: 200px; }
+    .persona2 { width: 100%; }
   }
 
-  /*index 6*/
-  
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(180deg, #b3e5fc, #e1f5fe);
-    margin: 0;
-    padding: 0;
-  }
-  h1 { background-color: #0288d1; color: white; margin:0; padding:15px; font-size:1.8rem;}
-  .container { margin:20px; }
+  /*caso 3*/
+  .container3 { margin:20px; }
 
   input, button { padding:10px; font-size:1rem; margin-top:10px;}
   button { background-color:#0288d1; color:white; border:none; cursor:pointer; border-radius:5px; margin-left:5px; transition:0.3s;}
   button:hover { background-color:#0277bd;}
 
-  .comparacion-vertical {
+  .comparacion-vertical3 {
     display:flex;
     flex-direction:row;
     align-items:flex-end;
@@ -287,15 +146,15 @@ background-color: #0288d1;
     margin:20px 0;
   }
 
-  .barra {
+  .barra3 {
     width: 20px;
     border-radius:10px;
     transition: height 0.5s;
   }
-  .barra-ash { background-color:#4caf50;}
-  .barra-pokemon { background-color:#f44336;}
+  .barra-ash3 { background-color:#4caf50;}
+  .barra-pokemon3 { background-color:#f44336;}
 
-  .comparacion-vertical img {
+  .comparacion-vertical3 img {
     max-height:150px;
     width:auto;
     border:4px solid transparent;
@@ -304,7 +163,7 @@ background-color: #0288d1;
     filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
   }
 
-  .info {
+  .info3 {
     margin-top:20px;
     background:white;
     display:inline-block;
@@ -313,92 +172,4 @@ background-color: #0288d1;
     box-shadow:0 2px 8px rgba(0,0,0,0.25);
     text-align:left;
     max-width:90%;
-  }
-
-  /*index 7*/
-  
-  body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(180deg, #b3e5fc, #e1f5fe);
-    margin: 0;
-    padding: 0;
-  }
-  h1 {
-    background-color: #0288d1;
-    color: white;
-    margin: 0;
-    padding: 15px;
-    font-size: 1.8rem;
-  }
-  .container { margin: 20px; padding: 0 10px; }
-  input, button { padding: 10px; font-size: 1rem; margin-top: 10px; }
-  button {
-    background-color: #0288d1;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 5px;
-    transition: background 0.3s;
-  }
-  button:hover { background-color: #0277bd; }
-
-  .comparacion {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 40px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-  }
-
-  .barra-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .barra {
-    position: relative;
-    width: 100px;
-    background: #e0e0e0;
-    border-radius: 12px;
-    overflow: hidden;
-  }
-
-  .relleno {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background-color: #0288d1;
-    transition: height 0.5s ease;
-    border-radius: 12px 12px 0 0;
-  }
-
-  .barra img {
-    width: 100%;
-    height: auto;
-    position: relative;
-    top: 0;
-    border: 4px solid transparent;
-    border-radius: 10px;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-  }
-
-  .info {
-    margin-top: 20px;
-    background: white;
-    display: inline-block;
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    text-align: left;
-    max-width: 90%;
-  }
-
-  @media (max-width: 600px) {
-    .comparacion { gap: 20px; }
-    .barra { width: 60px; height: 200px; }
-    .barra img { width: 100%; }
   }
