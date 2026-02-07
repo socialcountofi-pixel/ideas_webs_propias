@@ -1,175 +1,27 @@
- 
- .caso2,caso3{
-  float: flex;
-  position :left;
-  width: 100%;
-  margin: auto;
-  padding: 0;
+.comparacion {
+  display:flex;
+  align-items:flex-end;
+  gap:10px;
+  justify-content:center;
 }
- body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    background: linear-gradient(180deg, #b3e5fc, #e1f5fe);
-    margin: 0;
-    padding: 0;
-  }
-  h1 { background-color: #0288d1; color: white; margin:0; padding:15px; font-size:1.8rem;}
-  .container, .container2, .container3 { margin:20px; padding: 0 10px;  }
 
-  input, button { padding:10px; font-size:1rem; margin-top:10px;}
-  button { background-color:#0288d1; color:white; border:none; cursor:pointer; border-radius:5px; margin-left:5px; transition:0.3s;}
-  button:hover { background-color:#0277bd;}
+.barra {
+  width:20px;
+  background:#ccc;
+  border-radius:10px;
+  transition:height 0.5s;
+}
 
-  .comparacion-vertical {
-    display:flex;
-    flex-direction:row;
-    align-items:flex-end;
-    justify-content:center;
-    gap:10px;
-    margin:20px 0;
-  }
+/* V1 */
+.v1 /*.barra-ash*/{ background:#4caf50; }
+.v1 /*.barra-pokemon*/ { background:#f44336; }
 
-  .barra {
-    width: 20px;
-    border-radius:10px;
-    transition: height 0.5s;
-  }
-  .barra-ash { background-color:#4caf50;}
-  .barra-pokemon { background-color:#f44336;}
+/* V2 */
+.v2 img { position:absolute; bottom:0; }
+.v2 /*.comparacion*/ { position:relative; height:300px; }
 
-  .imagen-con-info {
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:5px;
-  }
+/* V3 */
+.v3 /*.barra*/ { width:10px; opacity:0.7; }
 
-  .comparacion-vertical img {
-    max-height:150px;
-    width:auto;
-    border:4px solid transparent;
-    border-radius:10px;
-    background-color:rgba(255,255,255,0.6);
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-  }
-
-  .info {
-    margin-top:20px;
-    background:white;
-    display:inline-block;
-    padding:15px 20px;
-    border-radius:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.25);
-    text-align:left;
-    max-width:90%;
-  }
-
-  /*caso2*/
-   
-  input, button { padding: 10px; font-size: 1rem; margin-top: 10px; }
-  button {
-    background-color: #0288d1;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 5px;
-    transition: background 0.3s;
-  }
-  button:hover { background-color: #0277bd; }
-
-  .comparacion2 {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 40px;
-    margin-top: 30px;
-    flex-wrap: wrap;
-  }
-
-  .barra-container2 {
-    display: flex;
-    flex-direction: column-reverse;
-    align-items: center;
-    position: relative;
-    width: 120px;
-  }
-
-  .barra2 {
-    position: relative;
-    width: 40px;
-    background: #e0e0e0;
-    border-radius: 12px;
-    overflow: visible;
-    height: 300px;
-  }
-
-  .persona2 {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    border: 4px solid transparent;
-    border-radius: 10px;
-    transition: all 0.5s ease;
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-  }
-
-  .info2 {
-    margin-top: 20px;
-    background: white;
-    display: inline-block;
-    padding: 15px 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-    text-align: left;
-    max-width: 90%;
-  }
-
-  @media (max-width: 600px) {
-    .barra2 { width: 25px; height: 200px; }
-    .persona2 { width: 100%; }
-  }
-
-  /*caso 3*/
-  .container3 { margin:20px; }
-
-  input, button { padding:10px; font-size:1rem; margin-top:10px;}
-  button { background-color:#0288d1; color:white; border:none; cursor:pointer; border-radius:5px; margin-left:5px; transition:0.3s;}
-  button:hover { background-color:#0277bd;}
-
-  .comparacion-vertical3 {
-    display:flex;
-    flex-direction:row;
-    align-items:flex-end;
-    justify-content:center;
-    gap:10px;
-    margin:20px 0;
-  }
-
-  .barra3 {
-    width: 20px;
-    border-radius:10px;
-    transition: height 0.5s;
-  }
-  .barra-ash3 { background-color:#4caf50;}
-  .barra-pokemon3 { background-color:#f44336;}
-
-  .comparacion-vertical3 img {
-    max-height:150px;
-    width:auto;
-    border:4px solid transparent;
-    border-radius:10px;
-    background-color:rgba(255,255,255,0.6);
-    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
-  }
-
-  .info3 {
-    margin-top:20px;
-    background:white;
-    display:inline-block;
-    padding:15px 20px;
-    border-radius:12px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.25);
-    text-align:left;
-    max-width:90%;
-  }
+/* V4 */
+.v4 .barra { width:30px; border-radius:0; }

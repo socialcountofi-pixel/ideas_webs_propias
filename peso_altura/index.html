@@ -4,102 +4,49 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Comparador Pokémon 🧢⚡</title>
+
 <link rel="stylesheet" href="style.css" type="text/css">
 </head>
 <body>
 
 <h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
-<div id="caso1">
+
 <div class="container">
-  <input type="text" id="pokemonInput" placeholder="Introduce nombre o ID (ej: wailord)">
+  <input type="text" id="pokemonInput" placeholder="Introduce nombre o ID">
   <button onclick="buscarPokemon()">Buscar Pokémon</button>
 
-  <h2>Altura</h2>
-  <div class="comparacion-vertical" id="comparacionAltura">
-    <div id="barraAlturaAsh" class="barra barra-ash" style="height:50px;"></div>
-    <div class="imagen-con-info">
-      <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
-      <span id="ashAlturaTexto">1.69 m</span>
-    </div>
-    <div class="imagen-con-info">
-      <img id="pokemonAlturaImg" src="" alt="Pokémon">
-      <span id="pokemonAlturaTexto"></span>
-    </div>
-    <div id="barraAlturaPokemon" class="barra barra-pokemon" style="height:50px;"></div>
-  </div>
+  <select id="modoVista" onchange="cambiarVista()">
+    <option value="v1">Barras separadas</option>
+    <option value="v2">Superpuesto</option>
+    <option value="v3">Minimal</option>
+    <option value="v4">Infografía</option>
+  </select>
 
-  <h2>Peso</h2>
-  <div class="comparacion-vertical" id="comparacionPeso">
-    <div id="barraPesoAsh" class="barra barra-ash" style="height:50px;"></div>
-    <div class="imagen-con-info">
-      <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
-      <span id="ashPesoTexto">40.0 kg</span>
+  <div id="comparador" class="v1">
+
+    <!-- ALTURA -->
+    <h2>Altura</h2>
+    <div class="comparacion">
+      <div class="barra barra-ash" id="alturaAsh"></div>
+      <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+      <img id="pokemonAlturaImg">
+      <div class="barra barra-pokemon" id="alturaPokemon"></div>
     </div>
-    <div class="imagen-con-info">
-      <img id="pokemonPesoImg" src="" alt="Pokémon">
-      <span id="pokemonPesoTexto"></span>
+
+    <!-- PESO -->
+    <h2>Peso</h2>
+    <div class="comparacion">
+      <div class="barra barra-ash" id="pesoAsh"></div>
+      <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+      <img id="pokemonPesoImg">
+      <div class="barra barra-pokemon" id="pesoPokemon"></div>
     </div>
-    <div id="barraPesoPokemon" class="barra barra-pokemon" style="height:50px;"></div>
+
   </div>
 
   <div class="info" id="info"></div>
 </div>
-</div>
-<h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
-<div id="caso2">
-<div class="container2">
-  <!--<input type="text2" id="pokemonInput2" placeholder="Introduce nombre o ID (ej: wailord)">
-  <button onclick="buscarPokemon()">Buscar Pokémon</button>-->
 
-  <h2>Comparación de Altura</h2>
-  <div id="alturaContainer2" class="comparacion2">
-    <div class="barra-container2">
-      <div class="barra2" id="barraAltura2"></div>
-      <img id="ashAlturaImg2" class="persona2" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
-      <img id="pokemonAlturaImg2" class="persona2" src="" alt="Pokémon">
-      <p>Ash vs Pokémon</p>
-    </div>
-  </div>
-
-  <h2>Comparación de Peso</h2>
-  <div id="pesoContainer2" class="comparacion2">
-    <div class="barra-container2">
-      <div class="barra2" id="barraPeso2"></div>
-      <img id="ashPesoImg2" class="persona2" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
-      <img id="pokemonPesoImg2" class="persona2" src="" alt="Pokémon">
-      <p>Ash vs Pokémon</p>
-    </div>
-  </div>
-
-  <div class="info2" id="info2"></div>
-</div>
-</div>
-  <h1>Comparador de Altura y Peso Pokémon 🧢⚡</h1>
-<div id="caso3">
-<div class="container3">
-  <!--<input type="text" id="pokemonInput3" placeholder="Introduce nombre o ID (ej: wailord)">
-  <button onclick="buscarPokemon()">Buscar Pokémon</button>-->
-
-  <h2>Altura</h2>
-  <div class="comparacion-vertical3" id="comparacionAltura">
-    <div id="barraAlturaAsh" class="barra barra-ash3" style="height:50px;"></div>
-    <img id="ashAlturaImg3" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
-    <img id="pokemonAlturaImg3" src="" alt="Pokémon">
-    <div id="barraAlturaPokemon3" class="barra barra-pokemon3" style="height:50px;"></div>
-  </div>
-
-  <h2>Peso</h2>
-  <div class="comparacion-vertical3" id="comparacionPeso">
-    <div id="barraPesoAsh3" class="barra barra-ash" style="height:50px;"></div>
-    <img id="ashPesoImg3" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
-    <img id="pokemonPesoImg3" src="" alt="Pokémon">
-    <div id="barraPesoPokemon3" class="barra barra-pokemon3" style="height:50px;"></div>
-  </div>
-
-  <div class="info3" id="info3"></div>
-</div>
-</div>
 <script src="script.js"></script>
-
 </body>
 </html>
