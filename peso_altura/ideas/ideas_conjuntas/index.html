@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparador Pokémon 🧢⚡</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  body { font-family: Arial; text-align:center; margin:0; padding:0; background: #e1f5fe; }
+  h1 { background:#0288d1; color:white; margin:0; padding:15px; }
+  .container { margin:20px; }
+  input, button, select { padding:10px; margin:10px; font-size:1rem; }
+  button { cursor:pointer; background:#0288d1; color:white; border:none; border-radius:5px; }
+  button:hover { background:#0277bd; }
+  .vista { display:none; margin-top:20px; }
+  .comparacion { display:flex; justify-content:center; align-items:flex-end; gap:40px; flex-wrap:wrap; }
+  .barra-container { display:flex; flex-direction:column; align-items:center; }
+  .barra { position:relative; width:100px; height:300px; background:#e0e0e0; border-radius:12px; overflow:hidden; }
+  .relleno { position:absolute; bottom:0; width:100%; background:#0288d1; border-radius:12px 12px 0 0; transition:height 0.5s ease; }
+  .barra img { width:100%; border:4px solid transparent; border-radius:10px; filter:drop-shadow(2px 4px 6px rgba(0,0,0,0.3)); position:relative; top:0; }
+  .info { margin-top:20px; background:white; padding:15px 20px; border-radius:12px; display:inline-block; text-align:left; box-shadow:0 2px 8px rgba(0,0,0,0.25); max-width:90%; }
+</style>
+</head>
+<body>
+
+<h1>Comparador Pokémon 🧢⚡</h1>
+
+<div class="container">
+  <input type="text" id="pokemonInput" placeholder="Nombre o ID (ej: wailord)">
+  <button onclick="buscarPokemon()">Buscar Pokémon</button>
+
+  <select id="modoVista" onchange="cambiarVista()">
+    <option value="minimal" selected>Minimal</option>
+    <option value="barras">Barras separadas</option>
+    <option value="laterales">Barras laterales</option>
+    <option value="conjunta">Barra conjunta</option>
+    <option value="relleno">Barras con relleno</option>
+  </select>
+
+  <!-- VISTA MINIMAL -->
+  <div id="vistaMinimal" class="vista">
+    <div id="resultadoMinimal"></div>
+  </div>
+
+  <!-- VISTA BARRAS SEPARADAS -->
+  <div id="vistaBarras" class="vista">
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+        </div>
+        <p id="ashAlturaTexto">1.69 m</p>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <img id="pokemonAlturaImg" src="" alt="Pokémon">
+        </div>
+        <p id="pokemonAlturaTexto"></p>
+      </div>
+    </div>
+
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+        </div>
+        <p id="ashPesoTexto">40 kg</p>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <img id="pokemonPesoImg" src="" alt="Pokémon">
+        </div>
+        <p id="pokemonPesoTexto"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA BARRAS LATERALES -->
+  <div id="vistaLaterales" class="vista">
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div id="barraAlturaAsh" class="relleno"></div>
+          <img src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+        </div>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div id="barraAlturaPokemon" class="relleno"></div>
+          <img id="pokemonAlturaImg" src="" alt="Pokémon">
+        </div>
+      </div>
+    </div>
+
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div id="barraPesoAsh" class="relleno"></div>
+          <img src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+        </div>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div id="barraPesoPokemon" class="relleno"></div>
+          <img id="pokemonPesoImg" src="" alt="Pokémon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA BARRA CONJUNTA -->
+  <div id="vistaConjunta" class="vista">
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+        </div>
+        <div class="barra-container">
+          <img id="pokemonAlturaImg" src="" alt="Pokémon">
+        </div>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+        </div>
+        <div class="barra-container">
+          <img id="pokemonPesoImg" src="" alt="Pokémon">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VISTA BARRAS CON RELLENO -->
+  <div id="vistaRelleno" class="vista">
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoAshAltura"></div>
+          <img id="ashAlturaImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+        </div>
+        <p>Ash: 1.69 m</p>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoPokemonAltura"></div>
+          <img id="pokemonAlturaImg" src="" alt="Pokémon">
+        </div>
+        <p id="pokemonAlturaTexto"></p>
+      </div>
+    </div>
+
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoAshPeso"></div>
+          <img id="ashPesoImg" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png" alt="Ash">
+        </div>
+        <p>Ash: 40 kg</p>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoPokemonPeso"></div>
+          <img id="pokemonPesoImg" src="" alt="Pokémon">
+        </div>
+        <p id="pokemonPesoTexto"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="info" class="info"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
