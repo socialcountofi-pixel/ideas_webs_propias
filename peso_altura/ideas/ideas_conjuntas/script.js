@@ -1,177 +1,97 @@
-/* =====================================================
-   JavaScript completo para Comparador Pokémon
-   Funciona con todas las vistas sin fallos
-===================================================== */
+const alturaAsh = 1.69;
+const pesoAsh = 40.0;
+const MAX_BAR = 300;
 
-document.addEventListener("DOMContentLoaded", () => {
+let datosPokemon = null;
 
-  /* =====================================================
-     DATOS FIJOS (NO CAMBIAN)
-  ==================================================== */
-  const alturaAsh = 1.69;
-  const pesoAsh = 40.0;
-  const MAX_BAR = 300;
+const pokemonInput = document.getElementById("pokemonInput");
+const modoVista = document.getElementById("modoVista");
+const infoDiv = document.getElementById("info");
+const resultadoMinimal = document.getElementById("resultadoMinimal");
 
-  /* =====================================================
-     ESTADO GLOBAL
-  ==================================================== */
-  let datosPokemon = null;
+async function cargarImagen(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve(url);
+    img.onerror = () => resolve("https://via.placeholder.com/150?text=No+Image");
+  });
+}
 
-  /* =====================================================
-     REFERENCIAS GENERALES
-  ==================================================== */
-  const pokemonInput = document.getElementById("pokemonInput");
-  const modoVista = document.getElementById("modoVista");
-  const infoDiv = document.getElementById("info");
-  const resultadoMinimal = document.getElementById("resultadoMinimal");
+async function buscarPokemon() {
+  const nombre = pokemonInput.value.trim().toLowerCase();
+  if (!nombre) return alert("Introduce nombre o ID de Pokémon");
 
-  // Barras y fotos (relleno, laterales, conjunta)
-  const ashAlturaImg = document.getElementById("ashAlturaImg");
-  const ashPesoImg = document.getElementById("ashPesoImg");
-  const pokemonAlturaImg = document.getElementById("pokemonAlturaImg");
-  const pokemonPesoImg = document.getElementById("pokemonPesoImg");
+  try {
+    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
+    if (!res.ok) throw new Error("Pokémon no encontrado");
+    const data = await res.json();
 
-  const rellenoAshAltura = document.getElementById("rellenoAshAltura");
-  const rellenoPokemonAltura = document.getElementById("rellenoPokemonAltura");
-  const rellenoAshPeso = document.getElementById("rellenoAshPeso");
-  const rellenoPokemonPeso = document.getElementById("rellenoPokemonPeso");
+    const imgUrl = await cargarImagen(
+      data.sprites.other["official-artwork"].front_default || data.sprites.front_default
+    );
 
-  const pokemonAlturaTexto = document.getElementById("pokemonAlturaTexto");
-  const pokemonPesoTexto = document.getElementById("pokemonPesoTexto");
+    datosPokemon = {
+      nombre: data.name,
+      altura: data.height / 10,
+      peso: data.weight / 10,
+      img: imgUrl,
+      id: data.id
+    };
 
-  /* =====================================================
-     UTILIDAD: cargar imagen segura
-  ==================================================== */
-  async function cargarImagen(url) {
-    return new Promise(resolve => {
-      const img = new Image();
-      img.src = url;
-      img.onload = () => resolve(url);
-      img.onerror = () => resolve("https://via.placeholder.com/150?text=No+Image");
-    });
+    infoDiv.innerHTML = `
+      <h3>${data.name.toUpperCase()}</h3>
+      <p><strong>ID Pokédex:</strong> ${data.id}</p>
+    `;
+
+    actualizarImagenes();
+    cambiarVista();
+  } catch (err) {
+    alert(err.message);
   }
+}
 
-  /* =====================================================
-     FUNCIÓN PRINCIPAL (global)
-  ==================================================== */
-  window.buscarPokemon = async function() {
-    const nombre = pokemonInput.value.trim().toLowerCase();
-    if (!nombre) { alert("Introduce un nombre o ID de Pokémon"); return; }
+function actualizarImagenes() {
+  const vistas = ["barras", "laterales", "conjunta", "relleno"];
+  vistas.forEach(vista => {
+    document.getElementById(`pokemonAlturaImg_${vista}`).src = datosPokemon.img;
+    document.getElementById(`pokemonPesoImg_${vista}`).src = datosPokemon.img;
 
-    try {
-      const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${nombre}`);
-      if (!res.ok) throw new Error("Pokémon no encontrado");
-      const data = await res.json();
+    document.getElementById(`ashAlturaImg_${vista}`).src = "https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png";
+    document.getElementById(`ashPesoImg_${vista}`).src = "https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png";
 
-      const imgUrl = await cargarImagen(
-        data.sprites.other["official-artwork"].front_default ||
-        data.sprites.front_default
-      );
+    if (document.getElementById(`pokemonAlturaTexto_${vista}`))
+      document.getElementById(`pokemonAlturaTexto_${vista}`).textContent = `Altura: ${datosPokemon.altura.toFixed(2)} m`;
+    if (document.getElementById(`pokemonPesoTexto_${vista}`))
+      document.getElementById(`pokemonPesoTexto_${vista}`).textContent = `Peso: ${datosPokemon.peso.toFixed(1)} kg`;
+  });
+}
 
-      datosPokemon = {
-        nombre: data.name,
-        altura: data.height / 10,
-        peso: data.weight / 10,
-        img: imgUrl,
-        id: data.id
-      };
+function cambiarVista() {
+  if (!datosPokemon) return;
 
-      infoDiv.innerHTML = `<h3>${data.name.toUpperCase()}</h3><p><strong>ID Pokédex:</strong> ${data.id}</p>`;
-      cambiarVista();
+  document.querySelectorAll(".vista").forEach(v => v.style.display = "none");
+  const modo = modoVista.value;
 
-    } catch(err) {
-      alert(err.message);
-    }
+  if (modo === "minimal") {
+    document.getElementById("vistaMinimal").style.display = "block";
+    vistaMinimal(datosPokemon);
+  } else if (modo === "barras") {
+    document.getElementById("vistaBarras").style.display = "block";
+  } else if (modo === "laterales") {
+    document.getElementById("vistaLaterales").style.display = "block";
+  } else if (modo === "conjunta") {
+    document.getElementById("vistaConjunta").style.display = "block";
+  } else if (modo === "relleno") {
+    document.getElementById("vistaRelleno").style.display = "block";
   }
+}
 
-  /* =====================================================
-     CONTROL DE VISTAS (global)
-  ==================================================== */
-  window.cambiarVista = function() {
-    if (!datosPokemon) return;
-    document.querySelectorAll(".vista").forEach(v => v.style.display = "none");
-    const modo = modoVista.value;
-
-    if (modo === "minimal") { document.getElementById("vistaMinimal").style.display = "block"; vistaMinimal(datosPokemon); }
-    if (modo === "barras") { document.getElementById("vistaBarras").style.display = "block"; vistaBarras(datosPokemon); }
-    if (modo === "laterales") { document.getElementById("vistaLaterales").style.display = "block"; vistaLaterales(datosPokemon); }
-    if (modo === "conjunta") { document.getElementById("vistaConjunta").style.display = "block"; vistaConjunta(datosPokemon); }
-    if (modo === "relleno") { document.getElementById("vistaRelleno").style.display = "block"; vistaRelleno(datosPokemon); }
-  }
-
-  /* =====================================================
-     VISTA 1: MINIMAL
-  ==================================================== */
-  function vistaMinimal(d) {
-    if (d.altura > alturaAsh) {
-      resultadoMinimal.innerHTML = `🟢 <b>${d.nombre}</b> es más grande que Ash`;
-    } else if (d.altura < alturaAsh) {
-      resultadoMinimal.innerHTML = `🔵 Ash es más grande que <b>${d.nombre}</b>`;
-    } else {
-      resultadoMinimal.innerHTML = `⚖️ Ash y <b>${d.nombre}</b> miden lo mismo`;
-    }
-  }
-
-  /* =====================================================
-     VISTA 2: BARRAS SEPARADAS
-  ==================================================== */
-  function vistaBarras(d) {
-    pokemonAlturaImg.src = d.img;
-    pokemonPesoImg.src = d.img;
-
-    pokemonAlturaTexto.textContent = `${d.altura.toFixed(2)} m`;
-    pokemonPesoTexto.textContent = `${d.peso.toFixed(1)} kg`;
-  }
-
-  /* =====================================================
-     VISTA 3: BARRAS LATERALES
-  ==================================================== */
-  function vistaLaterales(d) {
-    const hMax = Math.max(alturaAsh, d.altura);
-    const pMax = Math.max(pesoAsh, d.peso);
-
-    pokemonAlturaImg.src = d.img;
-    pokemonPesoImg.src = d.img;
-
-    document.getElementById("barraAlturaAsh").style.height = `${(alturaAsh/hMax)*MAX_BAR}px`;
-    document.getElementById("barraAlturaPokemon").style.height = `${(d.altura/hMax)*MAX_BAR}px`;
-    document.getElementById("barraPesoAsh").style.height = `${(pesoAsh/pMax)*MAX_BAR}px`;
-    document.getElementById("barraPesoPokemon").style.height = `${(d.peso/pMax)*MAX_BAR}px`;
-  }
-
-  /* =====================================================
-     VISTA 4: BARRA CONJUNTA
-  ==================================================== */
-  function vistaConjunta(d) {
-    const hMax = Math.max(alturaAsh, d.altura);
-    const pMax = Math.max(pesoAsh, d.peso);
-
-    ashAlturaImg.style.height = `${(alturaAsh/hMax)*MAX_BAR}px`;
-    pokemonAlturaImg.style.height = `${(d.altura/hMax)*MAX_BAR}px`;
-    ashPesoImg.style.height = `${(pesoAsh/pMax)*MAX_BAR}px`;
-    pokemonPesoImg.style.height = `${(d.peso/pMax)*MAX_BAR}px`;
-
-    pokemonAlturaImg.src = d.img;
-    pokemonPesoImg.src = d.img;
-  }
-
-  /* =====================================================
-     VISTA 5: BARRAS CON RELLENO
-  ==================================================== */
-  function vistaRelleno(d) {
-    const hMax = Math.max(alturaAsh, d.altura);
-    const pMax = Math.max(pesoAsh, d.peso);
-
-    rellenoAshAltura.style.height = `${(alturaAsh/hMax)*MAX_BAR}px`;
-    rellenoPokemonAltura.style.height = `${(d.altura/hMax)*MAX_BAR}px`;
-    rellenoAshPeso.style.height = `${(pesoAsh/pMax)*MAX_BAR}px`;
-    rellenoPokemonPeso.style.height = `${(d.peso/pMax)*MAX_BAR}px`;
-
-    pokemonAlturaImg.src = d.img;
-    pokemonPesoImg.src = d.img;
-
-    pokemonAlturaTexto.textContent = `Altura: ${d.altura.toFixed(2)} m`;
-    pokemonPesoTexto.textContent = `Peso: ${d.peso.toFixed(1)} kg`;
-  }
-
-});
+function vistaMinimal(d) {
+  if (d.altura > alturaAsh)
+    resultadoMinimal.innerHTML = `🟢 <b>${d.nombre}</b> es más grande que Ash`;
+  else if (d.altura < alturaAsh)
+    resultadoMinimal.innerHTML = `🔵 Ash es más grande que <b>${d.nombre}</b>`;
+  else
+    resultadoMinimal.innerHTML = `⚖️ Ash y <b>${d.nombre}</b> miden lo mismo`;
+}
