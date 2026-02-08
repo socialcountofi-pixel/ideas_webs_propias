@@ -49,6 +49,28 @@ button:hover { background-color: #0277bd; }
   align-items: center;
 }
 
+.barra {
+  width: 80px;
+  height: 200px;
+  background: #e0e0e0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  position: relative;
+}
+
+.relleno {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  height: 0;
+  border-radius: 12px 12px 0 0;
+  transition: height 0.8s ease-out;
+}
+
+.relleno.ash { background-color: #0288d1; }       
+.relleno.pokemon { background-color: #ff5722; }  
+
 img {
   max-width: 150px;
   height: auto;

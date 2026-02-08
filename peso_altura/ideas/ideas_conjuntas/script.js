@@ -1,6 +1,6 @@
 const alturaAsh = 1.69;
 const pesoAsh = 40.0;
-const MAX_BAR = 300;
+const MAX_BAR = 200;
 
 let datosPokemon = null;
 
@@ -44,46 +44,24 @@ async function buscarPokemon() {
       <p><strong>ID Pokédex:</strong> ${data.id}</p>
     `;
 
-    actualizarImagenes();
+    actualizarBarrasAnimadas();
     cambiarVista();
   } catch (err) {
     alert(err.message);
   }
 }
 
-function actualizarImagenes() {
-  const vistas = ["barras", "laterales", "conjunta", "relleno"];
-  vistas.forEach(vista => {
-    document.getElementById(`pokemonAlturaImg_${vista}`).src = datosPokemon.img;
-    document.getElementById(`pokemonPesoImg_${vista}`).src = datosPokemon.img;
-
-    document.getElementById(`ashAlturaImg_${vista}`).src = "https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png";
-    document.getElementById(`ashPesoImg_${vista}`).src = "https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png";
-
-    if (document.getElementById(`pokemonAlturaTexto_${vista}`))
-      document.getElementById(`pokemonAlturaTexto_${vista}`).textContent = `Altura: ${datosPokemon.altura.toFixed(2)} m`;
-    if (document.getElementById(`pokemonPesoTexto_${vista}`))
-      document.getElementById(`pokemonPesoTexto_${vista}`).textContent = `Peso: ${datosPokemon.peso.toFixed(1)} kg`;
-  });
-}
-
 function cambiarVista() {
   if (!datosPokemon) return;
-
   document.querySelectorAll(".vista").forEach(v => v.style.display = "none");
   const modo = modoVista.value;
 
   if (modo === "minimal") {
     document.getElementById("vistaMinimal").style.display = "block";
     vistaMinimal(datosPokemon);
-  } else if (modo === "barras") {
-    document.getElementById("vistaBarras").style.display = "block";
-  } else if (modo === "laterales") {
-    document.getElementById("vistaLaterales").style.display = "block";
-  } else if (modo === "conjunta") {
-    document.getElementById("vistaConjunta").style.display = "block";
-  } else if (modo === "relleno") {
-    document.getElementById("vistaRelleno").style.display = "block";
+  } else {
+    const idVista = `vista${modo.charAt(0).toUpperCase() + modo.slice(1)}`;
+    document.getElementById(idVista).style.display = "block";
   }
 }
 
@@ -94,4 +72,45 @@ function vistaMinimal(d) {
     resultadoMinimal.innerHTML = `🔵 Ash es más grande que <b>${d.nombre}</b>`;
   else
     resultadoMinimal.innerHTML = `⚖️ Ash y <b>${d.nombre}</b> miden lo mismo`;
+}
+
+function actualizarBarrasAnimadas() {
+  const vistas = ["barras","laterales","conjunta","relleno"];
+  vistas.forEach(vista => {
+    ["Altura","Peso"].forEach(prop => {
+      const ashH = prop==="Altura"? alturaAsh : pesoAsh;
+      const pokeH = prop==="Altura"? datosPokemon.altura : datosPokemon.peso;
+      const maxH = Math.max(ashH, pokeH);
+
+      const rAsh = document.getElementById(`rellenoAsh${prop}_${vista}`);
+      const rPoke = document.getElementById(`rellenoPokemon${prop}_${vista}`);
+
+      if(rAsh) {
+        rAsh.classList.add("ash");
+        rAsh.style.height = "0px";
+        setTimeout(()=> {
+          rAsh.style.height = `${(ashH/maxH)*MAX_BAR}px`;
+        },50);
+      }
+
+      if(rPoke) {
+        rPoke.classList.add("pokemon");
+        rPoke.style.height = "0px";
+        setTimeout(()=> {
+          rPoke.style.height = `${(pokeH/maxH)*MAX_BAR}px`;
+        },50);
+      }
+
+      const tPoke = document.getElementById(`pokemon${prop}Texto_${vista}`);
+      if(tPoke) tPoke.textContent = prop==="Altura"? `Altura: ${pokeH.toFixed(2)} m` : `Peso: ${pokeH.toFixed(1)} kg`;
+
+      const tAsh = document.getElementById(`ash${prop}Texto_${vista}`);
+      if(tAsh) tAsh.textContent = prop==="Altura"? `Altura: ${ashH} m` : `Peso: ${ashH} kg`;
+    });
+
+    const imgAsh = document.getElementById(`ashAlturaImg_${vista}`);
+    const imgPoke = document.getElementById(`pokemonAlturaImg_${vista}`);
+    if(imgAsh) imgAsh.src = "https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png";
+    if(imgPoke) imgPoke.src = datosPokemon.img;
+  });
 }
