@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Comparador Pokémon 🧢⚡</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Comparador Pokémon 🧢⚡</h1>
+
+<div class="container">
+  <input type="text" id="pokemonInput" placeholder="Nombre o ID (ej: wailord)">
+  <button onclick="buscarPokemon()">Buscar</button>
+
+  <select id="modoVista" onchange="cambiarVista()">
+    <option value="minimal" selected>Minimal</option>
+    <option value="barras">Barras separadas</option>
+    <option value="laterales">Barras laterales</option>
+    <option value="conjunta">Barra conjunta</option>
+    <option value="relleno">Barras con relleno</option>
+  </select>
+
+  <!-- VISTAS -->
+  <div id="vistaMinimal" class="vista">
+    <div id="resultadoMinimal"></div>
+  </div>
+
+  <!-- BARRAS SEPARADAS -->
+  <div id="vistaBarras" class="vista">
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoAshAltura_barras"></div>
+        </div>
+        <img id="ashAlturaImg_barras" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+        <p id="ashAlturaTexto_barras">1.69 m</p>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoPokemonAltura_barras"></div>
+        </div>
+        <img id="pokemonAlturaImg_barras" src="">
+        <p id="pokemonAlturaTexto_barras"></p>
+      </div>
+    </div>
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoAshPeso_barras"></div>
+        </div>
+        <img id="ashPesoImg_barras" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+        <p id="ashPesoTexto_barras">40 kg</p>
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoPokemonPeso_barras"></div>
+        </div>
+        <img id="pokemonPesoImg_barras" src="">
+        <p id="pokemonPesoTexto_barras"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BARRAS LATERALES -->
+  <div id="vistaLaterales" class="vista">
+    <div class="comparacion lateral">
+      <div class="barra-container">
+        <div class="barra-lateral">
+          <div class="relleno-lateral" id="rellenoAshAltura_lateral"></div>
+        </div>
+        <img id="ashAlturaImg_laterales" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+      </div>
+      <div class="barra-container">
+        <div class="barra-lateral">
+          <div class="relleno-lateral" id="rellenoPokemonAltura_lateral"></div>
+        </div>
+        <img id="pokemonAlturaImg_laterales" src="">
+      </div>
+    </div>
+    <div class="comparacion lateral">
+      <div class="barra-container">
+        <div class="barra-lateral">
+          <div class="relleno-lateral" id="rellenoAshPeso_lateral"></div>
+        </div>
+        <img id="ashPesoImg_laterales" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+      </div>
+      <div class="barra-container">
+        <div class="barra-lateral">
+          <div class="relleno-lateral" id="rellenoPokemonPeso_lateral"></div>
+        </div>
+        <img id="pokemonPesoImg_laterales" src="">
+      </div>
+    </div>
+  </div>
+
+  <!-- BARRA CONJUNTA -->
+  <div id="vistaConjunta" class="vista">
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoAshAltura_conjunta"></div>
+        </div>
+        <img id="ashAlturaImg_conjunta" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoPokemonAltura_conjunta"></div>
+        </div>
+        <img id="pokemonAlturaImg_conjunta" src="">
+      </div>
+    </div>
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoAshPeso_conjunta"></div>
+        </div>
+        <img id="ashPesoImg_conjunta" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoPokemonPeso_conjunta"></div>
+        </div>
+        <img id="pokemonPesoImg_conjunta" src="">
+      </div>
+    </div>
+  </div>
+
+  <!-- BARRAS CON RELLENO -->
+  <div id="vistaRelleno" class="vista">
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoAshAltura_relleno"></div>
+        </div>
+        <img id="ashAlturaImg_relleno" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoPokemonAltura_relleno"></div>
+        </div>
+        <img id="pokemonAlturaImg_relleno" src="">
+        <p id="pokemonAlturaTexto_relleno"></p>
+      </div>
+    </div>
+    <div class="comparacion">
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoAshPeso_relleno"></div>
+        </div>
+        <img id="ashPesoImg_relleno" src="https://images.wikidexcdn.net/mwuploads/wikidex/e/eb/latest/20220628064212/Ash_Masters.png">
+      </div>
+      <div class="barra-container">
+        <div class="barra">
+          <div class="relleno" id="rellenoPokemonPeso_relleno"></div>
+        </div>
+        <img id="pokemonPesoImg_relleno" src="">
+        <p id="pokemonPesoTexto_relleno"></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="info" class="info"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
