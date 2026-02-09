@@ -39,13 +39,24 @@ function cargarPokemon() {
 
 async function datos_pokemon(data) {
   console.log(data.sprites.front_default);
-  document.getElementById("pokemon-name").textContent = data.name;
-  document.getElementById("pokemon-image").src = data.sprites.front_default;
+  // Crear un elemento para el nombre dentro del div
+  const userDiv = document.getElementById("pokemon-name");
+  userDiv.innerHTML = `<span>${data.name}</span>`;
   
-  //await datos_moves(data.moves);
-  //await datos_stats(data.stats);
-  return data;
+  const imgUrl = await cargarImagen(data.sprites.other["official-artwork"].front_default || data.sprites.front_default);
+  document.getElementById("pokemon-image").src = imgUrl;  
 }
+
+// Cargar imagen segura
+async function cargarImagen(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => resolve(url);
+    img.onerror = () => resolve("https://via.placeholder.com/150?text=No+Image");
+  });
+}
+
 
 async function datos_stats(data) {
   //console.log(data);
@@ -63,10 +74,9 @@ async function datos_stats(data) {
   });
 }
 
-// ...existing code...
 async function datos_moves(moves) {
   console.log("moves count:", moves.length);
-  const tbody = document.querySelector('.recentOrders table tbody');
+  const tbody = document.querySelector(".recentOrders table tbody");
   if (!tbody) return [];
 
   // Crear una fila <tr> por cada movimiento para mantener la estructura del HTML
@@ -77,7 +87,7 @@ async function datos_moves(moves) {
   <td>$0</td>
   <td>--</td>
   <td><span class="status delivered">Delivered</span></td>
-</tr>`
+</tr>`,
     )
     .join("");
 
@@ -85,11 +95,10 @@ async function datos_moves(moves) {
 
   return moves.map((m) => ({ moveName: m.move.name }));
 }
-// ...existing code...
 
 async function datos_tyes(types) {
   console.log("types count:", types.length);
-  const tbody = document.getElementById('type_name')?.closest('tbody');
+  const tbody = document.getElementById("type_name")?.closest("tbody");
   if (!tbody) return [];
 
   // Crear una fila <tr> por cada tipo para mantener la estructura del HTML
@@ -97,7 +106,7 @@ async function datos_tyes(types) {
     .map(
       (t) => `<tr>
   <td>${t.type.name}</td>
-</tr>`
+</tr>`,
     )
     .join("");
 
@@ -110,7 +119,7 @@ async function datos_tyes(types) {
 
 async function datos_abilities(abilities) {
   console.log("abilities count:", abilities.length);
-  const tbody = document.getElementById('ability_name')?.closest('tbody');
+  const tbody = document.getElementById("ability_name")?.closest("tbody");
   if (!tbody) return [];
 
   // Crear una fila <tr> por cada habilidad para mantener la estructura del HTML
@@ -118,19 +127,13 @@ async function datos_abilities(abilities) {
     .map(
       (a) => `<tr>
   <td>${a.ability.name}</td>
-</tr>`
+</tr>`,
     )
     .join("");
 
   tbody.innerHTML = rows;
 
-  return abilities.map((a) => ({ abilityName: a.ability.name })); 
-  
-
-
-} 
-
-
-
+  return abilities.map((a) => ({ abilityName: a.ability.name }));
+}
 
 cargarPokemon();
