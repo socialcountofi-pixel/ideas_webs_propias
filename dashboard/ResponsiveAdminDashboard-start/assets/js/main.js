@@ -136,4 +136,11 @@ async function datos_abilities(abilities) {
   return abilities.map((a) => ({ abilityName: a.ability.name }));
 }
 
+function mostrarTodo() {
+  mostrarTodo.onclick = function () {
+    const allSections = document.querySelectorAll(".recentOrders, .recentCustomers, .salesAnalytics");
+    allSections.forEach(section => section.style.display = "block");
+  };  
+} 
+
 cargarPokemon();
