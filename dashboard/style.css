@@ -5,8 +5,8 @@ body {
   padding: 20px;
 }
 
-/*menu principal*/
-.menu-principal {
+/*menu principal .menu-secundario*/
+.menu-principal .menu-secundario {
   --background-color: #1ef2ee;
   color: white;
   padding: 10px;
@@ -40,27 +40,12 @@ body {
   position: absolute;
 }
 
-.PkgenC {
+.PkgenC{
   height: 200px;
   overflow-y: scroll;
 }
 
 /*menu secundario*/
-.menu-secundario {
-  --background-color: #1ef2ee;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  position: relative;
-  top: 0;
-  left: 10px;
-  width: 100%;
-  z-index: 1000;
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  position: absolute;
-}
 
 .tipos {
   margin-top: 60px;
