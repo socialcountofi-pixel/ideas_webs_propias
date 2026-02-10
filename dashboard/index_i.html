@@ -1,47 +1,63 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <!-- menu principal -->
-    <div class="menu-principal" id="menu_principal">
-      <div class="menu-primario" id="generaciones">
-        <button id="gen" class="gen_1">gen_1</button>
-        <!--<button id="gen" class="gen_2">gen_2</button>-->
-      </div>
 
-      <div class="submenu-primario" id="pokemonsGeneracion">
-        <button id="Pkgen" class="PkgenC">Pkgen_1</button>
-        <!--<button id="gen" class="gen_2">gen_2</button>-->
-      </div>
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
 
-    <!-- menu secundario -->
-    <div class="menu-secundario" id="menu_secundario">
-      <div class="menu-secundario" id="tipos">
-        <button id="tipo" class="tipo_1"> tipo 1</button>
-        <!--<button id="tipo">tipo_2</button>-->
-      </div>
-      <div class="submenu-secundario" id="pokemonTipos">
-        <button id="Pktipo" class="PktipoC">hada</button>
-        <!--<button id="tipo">tipo_2</button>-->
-      </div>
-    </div>
+<body>
 
-    <!-- contenido -->
-    <div class="contenido" id="contenido">
-      contenido
-      <p id="tipo_name"></p>
-      <div id="datos_stats">
-        <p id="stats_name"></p>
-        <p id="stats_value"></p>
-      </div>
-    </div>
 
-    <script src="script.js"></script>
-  </body>
+  <table>
+    <tr>menu 1</tr>
+    <tr>menu 2</tr>
+    <tr>contenido</tr>
+    <th> <!-- menu principal -->
+      <div class="menu-principal" id="menu_principal">
+        <div class="menu-primario" id="generaciones">
+          <button id="gen" class="gen_1">gen_1</button>
+          <!--<button id="gen" class="gen_2">gen_2</button>-->
+        </div>
+
+        <div class="submenu-primario" id="pokemonsGeneracion">
+          <button id="Pkgen" class="PkgenC">Pkgen_1</button>
+          <!--<button id="gen" class="gen_2">gen_2</button>-->
+        </div>
+      </div>
+    </th>
+    <th><!-- menu secundario -->
+      <div class="menu-secundario" id="menu_secundario">
+        <div class="menu-secundario" id="tipos">
+          <button id="tipo" class="tipo_1"> tipo 1</button>
+          <!--<button id="tipo">tipo_2</button>-->
+        </div>
+        <div class="submenu-secundario" id="pokemonTipos">
+          <button id="Pktipo" class="PktipoC">hada</button>
+          <!--<button id="tipo">tipo_2</button>-->
+        </div>
+      </div>
+    </th>
+    <th> <!-- contenido -->
+      <div class="contenido" id="contenido">
+      </div>
+    </th>
+  </table>
+
+
+
+
+  contenido
+  <p id="tipo_name"></p>
+  <div id="datos_stats">
+    <p id="stats_name"></p>
+    <p id="stats_value"></p>
+  </div>
+
+
+  <script src="script.js"></script>
+</body>
+
 </html>
