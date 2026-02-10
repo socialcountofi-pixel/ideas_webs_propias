@@ -83,7 +83,7 @@ const tipes = document.getElementById("tipo");
 tipes.addEventListener("click", () => {
   cargarTipos();
 });
-
+/* menu 2 cargamos los datos del tipo de pokemon */
 async function cargarTipos() {
   const url = `https://pokeapi.co/api/v2/type/`;
   fetch(url)
@@ -99,20 +99,19 @@ async function cargarTipos() {
         select.appendChild(option);
         option.addEventListener("click", () => {
           cargarPokemonTipos(tipo.url);
-          console.log(tipo.url)
+          console.log(tipo.url);
         });
       });
     })
     .catch((error) => console.error(error));
-
 }
 
-/* submenu 1 cargamos los datos de ese pokemon */
+/* submenu 2 cargamos los datos de ese pokemon */
 async function cargarPokemonTipos(tipoUrl) {
   fetch(tipoUrl)
     .then((response) => response.json())
     .then((data) => {
-      console.log('datatipourl', data.pokemon);
+      console.log("datatipourl", data.pokemon);
       const pokemon = data.pokemon;
       const select = document.getElementById("Pktipo");
       pokemon.forEach((pokemon) => {
@@ -127,4 +126,79 @@ async function cargarPokemonTipos(tipoUrl) {
       });
     })
     .catch((error) => console.error(error));
+}
+
+/* function de los regiones */
+const region = document.getElementById("region");
+
+region.addEventListener("click", () => {
+  cargarRegiones();
+});
+
+/* Cargamos los datos de la regiones */
+function cargarRegiones() {
+  const regionurl = `https://pokeapi.co/api/v2/region/`;
+  fetch(regionurl)
+    .then((response) => response.json())
+    .then((data) => {
+      //console.log('datatregion1', data);
+      const pokeregion = data.results;
+      const select = document.getElementById("region");
+      pokeregion.forEach((pokemon) => {
+        const option = document.createElement("option");
+        option.value = pokemon.url;
+        option.text = pokemon.name;
+        select.appendChild(option);
+        option.addEventListener("click", () => {
+          cargarPokemonRegions(pokemon.url);
+          console.log("datatregion1", pokemon.url);
+        });
+      });
+    })
+    .catch((error) => console.error(error));
+}
+
+/* submenu 3 cargamos los datos de esa region */
+async function cargarPokemonRegions(tipoUrl) {
+  fetch(tipoUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      //console.log('regiones', data);
+      const locations = data.locations;
+      const select = document.getElementById("Pkregion");
+      locations.forEach((location) => {
+        const option = document.createElement("option");
+        option.value = location.url;
+        option.text = location.name;
+        select.appendChild(option);
+        option.addEventListener("click", () => {
+          const dataurl = location.url; //.split("/").slice(-2, -1)[0];
+          cargarPokemonLocation(dataurl);
+          //console.log("location", dataid);
+        });
+      });
+    })
+    .catch((error) => console.error(error));
+}
+
+/*datos del pokemon de lacation*/
+
+async function cargarPokemonLocation(tipoUrl) {
+  try {
+    const response = await fetch(tipoUrl);
+    const data = await response.json();
+
+    // Limpiar antes de agregar datos
+    document.getElementById("stats_name").innerHTML = "";
+
+    // data.areas es el array que necesitas iterar
+    if (data.areas && Array.isArray(data.areas)) {
+      data.areas.forEach((area) => {
+        console.log(`${area.name}: `);
+        document.getElementById("stats_name").innerHTML += `${area.name}<br>`;
+      });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
 }

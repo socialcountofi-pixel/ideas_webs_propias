@@ -12,14 +12,14 @@
 
 
   <table>
-    <tr>menu 1</tr>
-    <tr>menu 2</tr>
-    <tr>menu 3</tr>
+    <tr> menu 1</tr>
+    <tr> menu 2</tr>
+    <tr> menu 3</tr>
     <tr>contenido</tr>
     <th> <!-- menu principal -->
       <div class="menu-principal" id="menu_principal">
         <div class="menu-primario" id="generaciones">
-          <button id="gen" class="gen_1">gen_1</button>
+          <button id="gen" class="gen_1">gen</button>
           <!--<button id="gen" class="gen_2">gen_2</button>-->
         </div>
 
@@ -32,31 +32,47 @@
     <th><!-- menu secundario -->
       <div class="menu-secundario" id="menu_secundario">
         <div class="menu-secundario" id="tipos">
-          <button id="tipo" class="tipo_1"> tipo 1</button>
+          <button id="tipo" class="tipo_1"> tipo</button>
           <!--<button id="tipo">tipo_2</button>-->
         </div>
         <div class="submenu-secundario" id="pokemonTipos">
-          <button id="Pktipo" class="PktipoC">hada</button>
+          <button id="Pktipo" class="PktipoC">Pktipo_1</button>
           <!--<button id="tipo">tipo_2</button>-->
+        </div>
+      </div>
+    </th>
+    <th><!-- menu terceario -->
+      <div class="menu-terceario" id="menu_terceario">
+        <div class="menu-terceario" id="regions">
+          <button id="region" class="region_1"> regiones</button>
+          <!--<button id="region">region_2</button>-->
+        </div>
+        <div class="submenu-terceario" id="pokemonRegions">
+          <button id="Pkregion" class="PkregionC">Pkregion_1</button>
+          <!--<button id="region">region_2</button>-->
         </div>
       </div>
     </th>
     <th> <!-- contenido -->
       <div class="contenido" id="contenido">
-      </div>
+        contenido
+        <p id="tipo_name"></p>
+        <div id="datos_stats">
+          <p id="stats_name"></p>
+          <p id="stats_value"></p>
+        </div>
+        <div>
+          <p id="location_name"></p>
+          <p id="locurl"></p>
+        </div>
     </th>
-    <th> regiones</th>
+
   </table>
 
 
 
 
-  contenido
-  <p id="tipo_name"></p>
-  <div id="datos_stats">
-    <p id="stats_name"></p>
-    <p id="stats_value"></p>
-  </div>
+
 
 
   <script src="script.js"></script>

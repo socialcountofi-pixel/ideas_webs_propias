@@ -1,0 +1,8 @@
+logo_baner==> 
+menuDash         submenuDash
+1 generaciones   1 al 8 pokemon con los datos de la generacion unicamente
+2 tipos          desde normal a hada...  y cargamos toda la informacion relevante ademas de los datos sin excepciones
+3 regiones       kanto a hoen
+||
+VV
+ datos1
