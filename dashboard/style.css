@@ -4,6 +4,7 @@ body {
   margin: 0;
   padding: 20px;
 }
+
 /*menu principal*/
 .menu-principal {
   --background-color: #1ef2ee;
@@ -30,6 +31,7 @@ body {
   left: 0;
   background-color: blue;
 }
+
 .pokemonsGeneracion {
   margin-top: 20px;
   display: flex;
@@ -51,7 +53,7 @@ body {
   text-align: center;
   position: relative;
   top: 0;
-  left: 0;
+  left: 10px;
   width: 100%;
   z-index: 1000;
   display: flex;
@@ -59,6 +61,31 @@ body {
   gap: 10px;
   position: absolute;
 }
+
+.tipos {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  position: absolute;
+  left: 0;
+  background-color: blue;
+}
+
+.pokemonsTipos {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  position: absolute;
+}
+
+.PktipoC {
+  height: 200px;
+  overflow-y: scroll;
+}
+
+
 /*contenido*/
 .contenido {
   margin-top: 20px;
