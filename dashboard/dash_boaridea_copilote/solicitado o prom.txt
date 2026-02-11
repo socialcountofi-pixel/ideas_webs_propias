@@ -1,4 +1,4 @@
-ability:"https://pokeapi.co/api/v2/ability/"
+teniendo en cuante revis la carpeta y su contenido y ve si falta cosas o se puede añadir  pues las apis son todas estas ability:"https://pokeapi.co/api/v2/ability/"
 berry:"https://pokeapi.co/api/v2/berry/"
 berry-firmness:"https://pokeapi.co/api/v2/berry-firmness/"
 berry-flavor:"https://pokeapi.co/api/v2/berry-flavor/"
@@ -55,3 +55,18 @@ generacion -> version -> version-group
 
 
 
+a lo cual hay mucas que no las veo o como ejemplo este es la logica de posible dash boar 
+version:"https://pokeapi.co/api/v2/version/"
+version-group:"https://pokeapi.co/api/v2/version-group/"
+
+machine:"https://pokeapi.co/api/v2/machine/" pasa los datos del movimiento 
+move-ailment:"https://pokeapi.co/api/v2/move-ailment/" para consultar datos de un movimiento
+****move:"https://pokeapi.co/api/v2/move/" tabla de datos de movimientos y los datos referentes 
+****nature:"https://pokeapi.co/api/v2/nature/" tabls de datos y todo el contenido a modo de tabla
+pokemon-form:"https://pokeapi.co/api/v2/pokemon-form/" datos de un pokemon o forma modo y unknown se basa en evoluciones 
+****pokemon:"https://pokeapi.co/api/v2/pokemon/" datos del pokemon basicos solo si se busca po id o nombre 
+****pokedex:"https://pokeapi.co/api/v2/pokedex/" datos y similar a tipos los datos pokemon datos de espacie o cualquiera
+****pokemon-species:"https://pokeapi.co/api/v2/pokemon-species/" referencia de datos a consultar
+****pokemon-habitat:"https://pokeapi.co/api/v2/pokemon-habitat/" datos pokemon
+****pokemon-color:"https://pokeapi.co/api/v2/pokemon-color/" datos pokemon
+****pokemon-shape:"https://pokeapi.co/api/v2/pokemon-shape/" datos pokemon pues hay casos de que las apis estan relacionada entre si ejemplo pokemon > stat >grafica de max min y el valos ya sea a modo de barra  paste etc y tambien recuentos  pues ya sea generacion , tipo ,region etc tiene una serie de pokemon sieno u recuento de cuanto stiene y asi cosas como ese has realizado si no apdaptala sin romper el codigo actual solo mejoralo o corrige fallo pues  tambien faltaria las evolucione o forma por ejemplo y cosas asy  sigue añadiendo ideas al doc pues se me a acurrido un apues si muestra a los stats  puede haber un menu de ballas u la lista de baya que el pokemon puede para aumetna sus stats y cuanta a modo de calculo comidea y laas idea nuevas co esta actualiza lo en la DOCUMETACION y repito revisa y actualiza y si es necesario corrige  sin romper el codigo 
