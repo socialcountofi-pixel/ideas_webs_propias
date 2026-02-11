@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Daño por Tipo</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+    .selector-tipos { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 800px; margin-bottom: 30px; }
+    button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; text-transform: uppercase; font-weight: bold; transition: 0.3s; background: #3b4cca; color: white; }
+    button:hover { background: #ef5350; transform: scale(1.05); }
+   
+    table { border-collapse: collapse; width: 100%; max-width: 700px; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    th { background-color: #333; color: white; padding: 15px; text-align: left; }
+    td { padding: 15px; border-bottom: 1px solid #eee; }
+    .valor { font-weight: bold; }
+    .x2 { color: #d32f2f; } .x05 { color: #388e3c; } .x0 { color: #7b1fa2; }
+    h2 { color: #333; }
+  </style>
+</head>
+<body>
+
+  <h2>Selecciona un Tipo de Pokémon</h2>
+  <div id="selector" class="selector-tipos">Cargando tipos...</div>
+
+  <div id="tabla-container">
+    <p>Haz clic en un tipo para ver sus relaciones de daño.</p>
+  </div>
+
+  <script>
+    // 1. Cargar los botones de tipos al iniciar
+    async function cargarSelector() {
+      try {
+        const res = await fetch('https://pokeapi.co/api/v2/type/');
+        const data = await res.json();
+       
+        const botones = data.results.map(tipo =>
+          `<button onclick="cargarDetalleDaño('${tipo.url}', '${tipo.name}')">${tipo.name}</button>`
+        ).join('');
+       
+        document.getElementById('selector').innerHTML = botones;
+      } catch (e) {
+        console.error("Error al cargar tipos", e);
+      }
+    }
+
+    // 2. Función que se dispara al pulsar un botón (recibe la URL)
+    async function cargarDetalleDaño(url, nombreTipo) {
+      try {
+        document.getElementById('tabla-container').innerHTML = "<p>Consultando datos de daño...</p>";
+       
+        const res = await fetch(url);
+        const data = await res.json();
+        const rel = data.damage_relations;
+
+        // Helper para formatear las listas de tipos
+        const lista = (arr) => arr.length > 0 ? arr.map(t => t.name.toUpperCase()).join(', ') : 'Ninguno';
+
+        const html = `
+          <h3>Relaciones de Daño: ${nombreTipo.toUpperCase()}</h3>
+          <table>
+            <thead>
+              <tr><th>Relación (Recibe Daño)</th><th>Tipos</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Daño Doble (x2)</td><td class="valor x2">${lista(rel.double_damage_from)}</td></tr>
+              <tr><td>Daño Medio (x0.5)</td><td class="valor x05">${lista(rel.half_damage_from)}</td></tr>
+              <tr><td>Sin Daño (x0)</td><td class="valor x0">${lista(rel.no_damage_from)}</td></tr>
+            </tbody>
+            <thead>
+              <tr><th>Relación (Causa Daño)</th><th>Tipos</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Efectivo contra (x2)</td><td class="valor x2">${lista(rel.double_damage_to)}</td></tr>
+              <tr><td>Poco efectivo (x0.5)</td><td class="valor x05">${lista(rel.half_damage_to)}</td></tr>
+              <tr><td>Ineficaz (x0)</td><td class="valor x0">${lista(rel.no_damage_to)}</td></tr>
+            </tbody>
+          </table>`;
+
+        document.getElementById('tabla-container').innerHTML = html;
+      } catch (e) {
+        document.getElementById('tabla-container').innerHTML = "<p>Error al cargar el detalle.</p>";
+      }
+    }
+
+    cargarSelector();
+  </script>
+</body>
+</html>

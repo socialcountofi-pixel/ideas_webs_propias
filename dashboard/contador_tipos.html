@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+
+    <title>Conteo de Pokémon por Tipo</title>
+
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        background: #f4f4f9;
+      }
+      table {
+        border-collapse: collapse;
+        width: 300px;
+        margin-top: 20px;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+      }
+      th {
+        background-color: #ef5350;
+        color: white;
+      }
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="contenedor-tabla">Cargando datos...</div>
+    <div id="tabla-container">Cargando datos...</div>
+
+    <script>
+      async function generarTablaTipos() {
+        try {
+          const response = await fetch("https://pokeapi.co/api/v2/type/");
+          const data = await response.json(); // Procesar cada tipo en paralelo para mayor velocidad
+          //console.log(data);
+          const filas = await Promise.all(
+            data.results.map(async (tipo) => {
+              const resDetalle = await fetch(tipo.url);
+              const detalle = await resDetalle.json();
+              return `<tr>
+                <td onclick="cargarDetalleDaño('${tipo.url}', '${tipo.name}')">${tipo.name.toUpperCase()}</td>
+                <td>${detalle.pokemon.length}</td>
+              </tr>`;
+            }),
+          ); // Construir la tabla final
+
+          const tablaHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filas.join("")}
+            </tbody>
+          </table>`;
+
+          document.getElementById("contenedor-tabla").innerHTML = tablaHTML;
+        } catch (error) {
+          document.getElementById("contenedor-tabla").innerHTML =
+            "Error al cargar datos.";
+        }
+      }
+
+      generarTablaTipos();
+
+      // 2. Función que se dispara al pulsar un botón (recibe la URL)
+      async function cargarDetalleDaño(url, nombreTipo) {
+        try {
+          document.getElementById("tabla-container").innerHTML =
+            "<p>Consultando datos de daño...</p>";
+
+          const res = await fetch(url);
+          const data = await res.json();
+          const rel = data.damage_relations;
+          console.log(data);
+          // Helper para formatear las listas de tipos
+          const lista = (arr) =>
+            arr.length > 0
+              ? arr.map((t) => t.name.toUpperCase()).join(", ")
+              : "Ninguno";
+
+          const html = `
+          <h3>Relaciones de Daño: ${nombreTipo.toUpperCase()}</h3>
+          <table>
+            <thead>
+              <tr><th>Tipos</th><th>Relación (Recibe Daño)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="valor x2">${lista(rel.double_damage_from)}</td><td>Daño Doble (x2)</td></tr>
+              <tr><td class="valor x05">${lista(rel.half_damage_from)}</td><td>Daño Medio (x0.5)</td></tr>
+              <tr><td class="valor x0">${lista(rel.no_damage_from)}</td><td>Sin Daño (x0)</td></tr>
+            </tbody>
+            <thead>
+              <tr><th>Relación (Causa Daño)</th><th>Tipos</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="valor x2">${lista(rel.double_damage_to)}</td><td>Efectivo contra (x2)</td></tr>
+              <tr><td class="valor x05">${lista(rel.half_damage_to)}</td><td>Poco efectivo (x0.5)</td></tr>
+              <tr><td class="valor x0">${lista(rel.no_damage_to)}</td><td>Ineficaz (x0)</td></tr>
+            </tbody>
+          </table>`;
+
+          document.getElementById("tabla-container").innerHTML = html;
+        } catch (e) {
+          document.getElementById("tabla-container").innerHTML =
+            "<p>Error al cargar el detalle.</p>";
+        }
+      }
+    </script>
+  </body>
+</html>

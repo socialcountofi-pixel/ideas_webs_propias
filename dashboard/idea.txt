@@ -6,3 +6,32 @@ menuDash         submenuDash
 ||
 VV
  datos1
+
+
+ double_damage_from
+: 
+Array(1)
+0
+: 
+{name: 'fighting', url: 'https://pokeapi.co/api/v2/type/2/'}
+length
+: 
+1
+[[Prototype]]
+: 
+Array(0)
+double_damage_to
+: 
+[]
+half_damage_from
+: 
+[]
+half_damage_to
+: 
+(2) [{…}, {…}]
+no_damage_from
+: 
+[{…}]
+no_damage_to
+: 
+[{…}]

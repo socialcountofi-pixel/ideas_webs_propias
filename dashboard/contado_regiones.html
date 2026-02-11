@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pokémon por Región</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: #f0f2f5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+      table {
+        border-collapse: collapse;
+        min-width: 350px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      th {
+        background-color: #3b4cca;
+        color: white;
+        padding: 15px;
+        text-align: left;
+        text-transform: uppercase;
+        font-size: 14px;
+      }
+      td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #eee;
+        color: #333;
+      }
+      .total-row {
+        background-color: #ffde00;
+        font-weight: bold;
+      }
+      tr:hover:not(.total-row) {
+        background-color: #f8f9ff;
+      }
+      .loading {
+        font-style: italic;
+        color: #666;
+        margin-bottom: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Pokémon por Región</h2>
+    <div id="status" class="loading">Consultando PokeAPI...</div>
+    <div id="tabla-container"></div>
+
+    <script>
+      async function obtenerConteoPorRegiones() {
+        try {
+          // 1. USANDO LA URL CORRECTA QUE MENCIONASTE
+          const response = await fetch("https://pokeapi.co/api/v2/region/");
+          const data = await response.json();
+          //console.log('1uso',data);
+          // 2. Mapear las regiones para entrar en sus pokedexes
+          const promesas = data.results.map(async (region) => {
+            const resRegion = await fetch(region.url);
+            const detalleRegion = await resRegion.json();
+            //console.log('2mapeo',data);
+            // Verificamos que la región tenga pokedexes para que no de error el [0]
+            if (detalleRegion.pokedexes && detalleRegion.pokedexes.length > 0) {
+              const resPokedex = await fetch(detalleRegion.pokedexes[0].url);
+              const detallePokedex = await resPokedex.json();
+              console.log('verifica pokedex',detallePokedex)
+              return {
+                nombre: region.name.toUpperCase(),
+                cantidad: detallePokedex.pokemon_entries.length,
+              };
+            }
+            return null;
+          });
+
+          const resultadosRaw = await Promise.all(promesas);
+          const resultados = resultadosRaw.filter((r) => r !== null);
+
+          // 3. Calcular Total
+          let totalGlobal = 0;
+          const filas = resultados.map((reg) => {
+            totalGlobal += reg.cantidad;
+            return `<tr>
+                <td>${reg.nombre}</td>
+                <td>${reg.cantidad}</td>
+              </tr>`;
+          });
+
+          // 4. Renderizar tabla final
+          const tablaHTML = `
+          <table>
+            <thead>
+              <tr>
+                <th>Región</th>
+                <th>Pokémon</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${filas.join("")}
+              <tr class="total-row">
+                <td>TOTAL ACUMULADO</td>
+                <td>${totalGlobal}</td>
+              </tr>
+            </tbody>
+          </table>`;
+
+          document.getElementById("tabla-container").innerHTML = tablaHTML;
+          document.getElementById("status").style.display = "none";
+        } catch (error) {
+          document.getElementById("status").innerText =
+            "Error al cargar los datos.";
+          console.error(error);
+        }
+      }
+
+      obtenerConteoPorRegiones();
+    </script>
+  </body>
+</html>

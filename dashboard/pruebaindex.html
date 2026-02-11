@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+function cargar(){ cargar1();
+const url = `https://pokeapi.co/api/v2/pokemon-color/9`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+    console.log('prueba',data);
+    });
+}
+
+cargar();
+
+function cargar1(){
+const url = `https://pokeapi.co/api/v2/type/1`;
+  fetch(url)
+    .then((response) => response.json())
+    .then((data) => {
+    console.log('prueba Gene',data);
+    });
+}
+
+
+</script>
+</body>
+</html>
