@@ -202,3 +202,56 @@ async function cargarPokemonLocation(tipoUrl) {
     console.error("Error:", error);
   }
 }
+
+/* function de los abilidades */
+const abilidad = document.getElementById("abilidad");
+
+abilidad.addEventListener("click", () => {
+  cargarAbilidades();
+});
+/* Cargamos los datos de la regiones */
+function cargarAbilidades() {
+  const regionurl = `https://pokeapi.co/api/v2/ability/`;
+  fetch(regionurl)
+    .then((response) => response.json())
+    .then((data) => {
+      //console.log('datatregion1', data);
+      const pokeregion = data.results;
+      const select = document.getElementById("abilidad");
+      pokeregion.forEach((pokemon) => {
+        const option = document.createElement("option");
+        option.value = pokemon.url;
+        option.text = pokemon.name;
+        select.appendChild(option);
+        option.addEventListener("click", () => {
+          cargarPokemonAbilidad(pokemon.url);
+          //console.log("datatabilidad1", pokemon.url);
+        });
+      });
+    })
+    .catch((error) => console.error(error));
+}
+
+/* submenu 4 cargamos los datos de esa abilidades */
+async function cargarPokemonAbilidad(tipoUrl) {
+  fetch(tipoUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      //console.log('abilidades', data);
+      const locations = data.pokemon;
+      const select = document.getElementById("Pkabilidad");
+      locations.forEach((location) => {
+         //console.log('abilidades', location);
+        const option = document.createElement("option");
+        option.value = location.pokemon.url;
+        option.text = location.pokemon.name;
+        select.appendChild(option);
+        option.addEventListener("click", () => {
+          const dataurl = location.pokemon.url.split("/").slice(-2, -1)[0];
+          cargaPokemon(dataurl);
+         // console.log("location", dataurl);
+        });
+      });
+    })
+    .catch((error) => console.error(error));
+}

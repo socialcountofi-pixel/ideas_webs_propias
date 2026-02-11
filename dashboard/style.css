@@ -5,8 +5,8 @@ body {
   padding: 20px;
 }
 
-/*menu principal .menu-secundario .menu-terceario*/
-.menu-principal .menu-secundario .menu-terceario{
+/*menu principal .menu-secundario .menu-terceario .menu-cuateario*/
+.menu-principal .menu-secundario .menu-terceario .menu-cuateario {
   --background-color: #1ef2ee;
   color: white;
   padding: 10px;
@@ -91,6 +91,31 @@ body {
 }
 
 .PkregionC {
+  height: 200px;
+  overflow-y: scroll;
+}
+
+/*menu cuarteario*/
+
+.abilidades {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  position: absolute;
+  left: 0;
+  background-color: blue;
+}
+
+.pokemonsAbilidades {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  position: absolute;
+}
+
+.PkabilidadC {
   height: 200px;
   overflow-y: scroll;
 }
