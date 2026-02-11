@@ -1,0 +1,22 @@
+#1 datos del pokemon y se vicualza  los datos si los tiene de la api pokemon 
+abilities:(2) [{…}, {…}] 
+base_experience :64
+cries:{latest: 'https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/latest/1.ogg', legacy: 'https://raw.githubusercontent.com/PokeAPI/cries/main/cries/pokemon/legacy/1.ogg'}
+forms:[{…}] 
+game_indices:(20) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+height:7
+held_items:[] lista si las hay
+id:1
+is_default:true (se entiende como los que se seleccionan al empezar el juego ejemplo bulbasaur , charmander , squirtle y el secrto es pikachu)
+location_area_encounters:"https://pokeapi.co/api/v2/pokemon/1/encounters" para visualizar donde se ecuenta y si es posible datos a modo de raidio de aparion o captura y el nivel ejemplo pues haz zonas
+moves:(86) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}] principio tabla de datos y solo eso la idea es que al clicar sobre el movimieto se muestre todos los datos de los movimientos necesarios
+name:"bulbasaur"
+order:1
+past_abilities:[{…}]
+past_stats:[{…}]
+past_types:[]
+species:{name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon-species/1/'}
+sprites:{back_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/1.png', back_female: null, back_shiny: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/shiny/1.png', back_shiny_female: null, front_default: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png', …}
+stats:(6) [{…}, {…}, {…}, {…}, {…}, {…}] ideas de visualizar a modo de barra y varios casos
+types:(2) [{…}, {…}] 
+weight:69

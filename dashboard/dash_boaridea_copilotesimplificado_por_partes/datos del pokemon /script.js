@@ -509,30 +509,6 @@ async function loadMenus() {
 // ====================================================
 
 /**
- * Carga y visualiza Pokémon de una generación
- */
-async function loadGenerationPokemon(generationUrl) {
-    showSection('pokemon-section');
-    
-    const pokemonList = await fetch(generationUrl)
-        .then(r => r.json())
-        .then(data => data.pokemon_species);
-    
-    const grid = document.getElementById('pokemonGrid');
-    grid.innerHTML = '';
-    
-    // Limitar a 50 para no saturar
-    const limited = pokemonList.slice(0, 50);
-    
-    for (const species of limited) {
-        const pokemon = await fetchPokemon(species.name);
-        if (pokemon) {
-            createPokemonCard(pokemon, grid);
-        }
-    }
-}
-
-/**
  * Carga y visualiza Pokémon de un tipo
  */
 async function loadTypePokemon(typeUrl) {
@@ -887,107 +863,7 @@ function createPokemonStatsChart(stats) {
 // FUNCIONES DE DETALLES DE OTRAS APIs
 // ====================================================
 
-/**
- * Muestra detalles de una habilidad
- */
-async function showAbilityDetails(abilityUrl) {
-    try {
-        const response = await fetch(abilityUrl);
-        const ability = await response.json();
-        
-        const modal = document.getElementById('modal');
-        const modalBody = document.getElementById('modalBody');
-        
-        modalBody.innerHTML = `
-            <h2>${ability.name}</h2>
-            <p><strong>Descripción:</strong> ${ability.effect_entries[0]?.effect || 'N/A'}</p>
-            <p><strong>Generación:</strong> ${ability.generation?.name}</p>
-            <p><strong>Pokémon con esta habilidad:</strong> ${ability.pokemon?.length || 0}</p>
-        `;
-        
-        modal.classList.add('show');
-    } catch (error) {
-        console.error('Error showing ability details:', error);
-    }
-}
 
-/**
- * Muestra detalles de un ítem
- */
-async function showItemDetails(itemUrl) {
-    try {
-        const response = await fetch(itemUrl);
-        const item = await response.json();
-        
-        const modal = document.getElementById('modal');
-        const modalBody = document.getElementById('modalBody');
-        
-        modalBody.innerHTML = `
-            <h2>${item.name}</h2>
-            <img src="${item.sprites?.default}" alt="${item.name}" style="max-width: 100px; margin: 1rem 0;">
-            <p><strong>Descripción:</strong> ${item.effect_entries[0]?.effect || 'N/A'}</p>
-            <p><strong>Categoría:</strong> ${item.category?.name}</p>
-            <p><strong>Costo:</strong> ${item.cost} Pokédolares</p>
-        `;
-        
-        modal.classList.add('show');
-    } catch (error) {
-        console.error('Error showing item details:', error);
-    }
-}
-
-/**
- * Muestra detalles de un movimiento
- */
-async function showMoveDetails(moveUrl) {
-    try {
-        const response = await fetch(moveUrl);
-        const move = await response.json();
-        
-        const modal = document.getElementById('modal');
-        const modalBody = document.getElementById('modalBody');
-        
-        modalBody.innerHTML = `
-            <h2>${move.name}</h2>
-            <p><strong>Tipo:</strong> ${move.type?.name}</p>
-            <p><strong>Potencia:</strong> ${move.power || 'N/A'}</p>
-            <p><strong>Precisión:</strong> ${move.accuracy || 'N/A'}</p>
-            <p><strong>PP:</strong> ${move.pp}</p>
-            <p><strong>Descripción:</strong> ${move.effect_entries[0]?.effect || 'N/A'}</p>
-            <p><strong>Clase de Daño:</strong> ${move.damage_class?.name}</p>
-        `;
-        
-        modal.classList.add('show');
-    } catch (error) {
-        console.error('Error showing move details:', error);
-    }
-}
-
-/**
- * Muestra detalles de una baya
- */
-async function showBerryDetails(berryUrl) {
-    try {
-        const response = await fetch(berryUrl);
-        const berry = await response.json();
-        
-        const modal = document.getElementById('modal');
-        const modalBody = document.getElementById('modalBody');
-        
-        modalBody.innerHTML = `
-            <h2>${berry.name}</h2>
-            <p><strong>Firmeza:</strong> ${berry.firmness?.name}</p>
-            <p><strong>Tiempo de Crecimiento:</strong> ${berry.growth_time} horas</p>
-            <p><strong>Tamaño:</strong> ${berry.size}</p>
-            <p><strong>Sabor</strong> ${berry.flavors[0]?.flavor?.name}: ${berry.flavors[0]?.potency}</p>
-            <p><strong>Suavidad:</strong> ${berry.smoothness}</p>
-        `;
-        
-        modal.classList.add('show');
-    } catch (error) {
-        console.error('Error showing berry details:', error);
-    }
-}
 
 // ====================================================
 // UTILIDADES
