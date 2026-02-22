@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard PokéAPI</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<aside class="sidebar">
+  <h2>LISTADO POKÉMON</h2>
+  <div id="poke-list" class="list"></div>
+  <div class="nav">
+    <button id="prevBtn">« Anterior</button>
+    <button id="nextBtn">Siguiente »</button>
+  </div>
+</aside>
+
+<!-- 🔵 VISTA ESTADÍSTICAS -->
+<section class="main" id="stats-view">
+
+  <div class="card">
+    <canvas id=" barChart"></canvas>
+    <canvas id=" pieChart"></canvas>
+    <canvas id=" lineChart"></canvas>
+  </div>
+
+</section>
+
+<!-- 🟢 VISTA POKÉMON -->
+<main class="main" id="dashboard-view" style="display:none;">
+
+  <div class="card" style="text-align:center;">
+    <h1 id="title">---</h1>
+    <div id="sprites-container"></div>
+  </div>
+<!--datos simples-->
+  <div class="card">
+    <p><strong>ID:</strong> <span id="p-id"></span></p>
+    <p><strong>Altura:</strong> <span id="p-height"></span></p>
+    <p><strong>Peso:</strong> <span id="p-weight"></span></p>
+    <p><strong>Experiencia Base:</strong> <span id="p-exp"></span></p>
+<p><strong>Forma por primario o defecto:</strong> <span id="p-is_default"></span></p>
+<p><strong>order:</strong> <span id="p-order"></span></p>
+   
+   <strong>sonidos:</strong> <ul id="p-cries"></ul>
+  </div>
+  <!--Habilidades-->
+   <div class="card">
+  <strong>Habilidades:</strong> <ul id="p-abilities"></ul>
+</div>
+<!--Datos Habilidades-->
+   <div class="card">
+  <strong>datos Habilidades:</strong> <ul id="a-abilities"></ul>
+</div>
+<!--Tipos-->
+  <div class="card">
+ <strong>Tipos:</strong> <div id="p-types"></div><br>
+  </div> 
+<!--estadisticas-->
+<div class="card">
+ <strong>Estadísticas:</strong> <div id="p-stats"></div><br>
+  </div> 
+
+  <!--grafica estadisticas-->
+  <div class="card">
+    <h3>Estadísticas Base</h3>
+    <canvas id=" statsChart"></canvas>
+  </div>
+<!--datos de especies -->
+ <div class="card">
+ <strong>especies:</strong> <div id="p-species"></div><br>
+  </div> 
+  <!--datos pokemon especies -->
+ <div class="card">
+ <strong>Pokemon especies:</strong> <div id="pe-pokemon_species"></div><br>
+  <strong>Pokemon especies habitat:</strong> <div id="pe-habitat"></div><br>
+   <strong>Pokemon especies color:</strong> <div id="pe-color"></div><br>
+     <strong>Pokemon especies varieties:</strong> <div id="pe-varieties"></div><br>
+      <div id="pe-sprites-varieties"></div>
+  </div> 
+   
+  <!--game_indices-->
+<div class="card">
+ <strong>datos game_index:</strong> <div id="p-game_indices"></div><br>
+  </div>
+<!--location_area_encounters-->
+<div class="card">
+ <strong>datos location_area_encounters:</strong> <div id="p-location_area_encounters"></div><br>
+  </div>
+
+<!--moves-->
+<div class="card">
+ <strong>movimientos:</strong> <div id="p-moves"></div><br>
+  </div>
+<!--datosmoves-->
+<div class="card">
+ <strong>datos movimientos:</strong> <div id="m-datos"></div><br>
+  <strong>typo movimientos:</strong> <div id="m-type"></div><br>
+  <strong>target movimientos:</strong> <div id="m-target"></div><br>
+   <strong>damage_class movimientos:</strong> <div id="m-damage_class"></div><br>
+  <strong>learned_by_pokemon movimientos:</strong> <div id="m-learned_by_pokemon"></div><br>
+  
+  </div>
+
+
+
+
+
+
+
+
+
+  <div class="card">
+    <h3>JSON Crudo</h3>
+    <pre id="json-raw"></pre>
+  </div>
+
+</main>
+
+
+
+<script src=" script.js">
+
+
+</script>
+
+</body>
+</html>
 
