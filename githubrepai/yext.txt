@@ -9,4 +9,162 @@
     /* pokedex: "https://pokeapi.co/api/v2/pokedex/" */
     generatpokedexions: null,
     /* gender: "https://pokeapi.co/api/v2/gender/" */
+
     gender: null,
+
+
+
+<div id="growth-container" style="margin: 20px; font-family: sans-serif;">
+    <label for="growthSelect">Seleccionar Ritmo de Crecimiento:</label>
+    <select id="growthSelect">
+        <option value="">Cargando opciones...</option>
+    </select>
+    
+    <div id="pokemonList" style="margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;">
+        <!-- Aquí aparecerán los nombres de los Pokémon -->
+    </div>
+</div>
+// Variable base limpia
+const API_BASE ="https://pokeapi.co/api/v2/";
+
+// 1. Cargar las opciones en el SELECT al iniciar
+async function initGrowthSelect() {
+    const select = document.getElementById('growthSelect');
+    
+    try {
+        const response = await fetch(`${API_BASE}/growth-rate`);
+        const data = await response.json();
+        
+        // Limpiamos el select y ponemos las opciones reales
+        select.innerHTML = '<option value="">-- Elige un ritmo --</option>';
+        data.results.forEach(rate => {
+            const option = document.createElement('option');
+            option.value = rate.name; // Ejemplo: "slow", "fast"
+            option.textContent = rate.name.toUpperCase();
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error al cargar ritmos:", error);
+    }
+}
+
+// 2. Mostrar la lista cuando cambies el SELECT
+async function showPokemonByGrowth(growthName) {
+    if (!growthName) return;
+    
+    const listDiv = document.getElementById('pokemonList');
+    listDiv.innerHTML = "Cargando Pokémon...";
+
+    try {
+        const response = await fetch(`${API_BASE}/growth-rate/${growthName}`);
+        const data = await response.json();
+        
+        // Limpiamos y mostramos la lista de pokemon_species
+        listDiv.innerHTML = ""; 
+        data.pokemon_species.forEach(p => {
+            const span = document.createElement('span');
+            span.textContent = p.name;
+            span.style.cssText = "padding: 5px 10px; background: #eee; border-radius: 5px; border: 1px solid #ccc; font-size: 14px;";
+            listDiv.appendChild(span);
+        });
+    } catch (error) {
+        listDiv.innerHTML = "Error al cargar la lista.";
+        console.error(error);
+    }
+}
+
+// 3. EVENTOS (Escuchar el cambio del select)
+document.getElementById('growthSelect').addEventListener('change', (e) => {
+    showPokemonByGrowth(e.target.value);
+});
+
+// Arrancar la carga inicial
+initGrowthSelect();
+// 2. Mostrar la lista, la FÓRMULA y el CONTEO cuando cambies el SELECT
+async function showPokemonByGrowth(growthName) {
+    if (!growthName) return;
+    
+    const listDiv = document.getElementById('pokemonList');
+    listDiv.innerHTML = "Cargando datos...";
+
+    try {
+        // Petición limpia a la API
+        const response = await fetch(`${API_BASE}growth-rate/${growthName}`);
+        const data = await response.json();
+        
+        // 1. LIMPIAMOS Y PONEMOS LOS DATOS IMPORTANTES ARRIBA
+        listDiv.innerHTML = `
+            <div style="background: #f4f4f4; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #ddd;">
+                <h2 style="margin:0; color: #333;">Ritmo: ${data.name.toUpperCase()}</h2>
+                <p><strong>Fórmula de Experiencia:</strong> <code>${data.formula}</code></p>
+                <p><strong>Total de Pokémon en este grupo:</strong> <span style="font-size: 1.2em; color: #e74c3c; font-weight: bold;">${data.pokemon_species.length}</span></p>
+            </div>
+            <div id="nombresContenedor" style="display: flex; flex-wrap: wrap; gap: 8px;"></div>
+        `;
+
+// Dentro del try de showPokemonByGrowth, después de mostrar la fórmula:
+
+listDiv.innerHTML += `
+    <div style="background: #2c3e50; color: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+        <h4 style="margin:0 0 10px 0;">🎮 Simulador de Entrenamiento</h4>
+        <p style="font-size: 14px;">Introduce la Experiencia actual para calcular el Nivel:</p>
+        
+        <input type="number" id="xpInput" placeholder="Ej: 5000" style="padding: 8px; border-radius: 5px; border: none; width: 150px;">
+        <button id="calcBtn" style="padding: 8px 15px; cursor: pointer; background: #e74c3c; color: white; border: none; border-radius: 5px; font-weight: bold;">Calcular</button>
+        
+        <div id="resultadoSimulador" style="margin-top: 15px; font-weight: bold; color: #f1c40f;"></div>
+    </div>
+`;
+
+// Lógica del simulador usando los datos de 'data.levels' que ya bajamos de la API
+document.getElementById('calcBtn').onclick = () => {
+    const xpUser = parseInt(document.getElementById('xpInput').value);
+    const resultado = document.getElementById('resultadoSimulador');
+    
+    if (isNaN(xpUser)) return;
+
+    // Buscamos en la lista de niveles de la API cuál corresponde a esa XP
+    const nivelActual = data.levels.filter(l => l.experience <= xpUser).pop();
+    const siguienteNivel = data.levels.find(l => l.level === (nivelActual ? nivelActual.level + 1 : 1));
+
+    if (nivelActual) {
+        let texto = `Nivel Actual: ${nivelActual.level}`;
+        if (siguienteNivel) {
+            const falta = siguienteNivel.experience - xpUser;
+            texto += `<br>✨ ¡Te faltan ${falta.toLocaleString()} XP para el nivel ${siguienteNivel.level}!`;
+        } else {
+            texto += `<br>🏆 ¡Nivel Máximo alcanzado!`;
+        }
+        resultado.innerHTML = texto;
+    } else {
+        resultado.innerHTML = "No tienes suficiente XP ni para el nivel 1.";
+    }
+};
+
+        const nombresContenedor = document.getElementById('nombresContenedor');
+
+        // 2. LISTAMOS LOS NOMBRES COMO ETIQUETAS LIMPIAS
+        data.pokemon_species.forEach(p => {
+            const el = document.createElement('span');
+            el.textContent = p.name;
+            el.style.cssText = `
+                padding: 5px 12px; 
+                background: white; 
+                border: 1px solid #ccc; 
+                border-radius: 15px; 
+                font-size: 13px; 
+                text-transform: capitalize;
+                cursor: pointer;
+            `;
+            
+            // Si quieres que al hacer clic pase algo:
+            el.onclick = () => console.log("Has clicado en:", p.name);
+
+            nombresContenedor.appendChild(el);
+        });
+
+    } catch (error) {
+        listDiv.innerHTML = "Error al obtener los datos de la API.";
+        console.error("Fallo en growth-rate:", error);
+    }
+}
