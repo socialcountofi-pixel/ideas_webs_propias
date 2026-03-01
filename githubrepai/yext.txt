@@ -327,3 +327,114 @@ document.getElementById('growthSelect').addEventListener('change', (e) => showPo
 initGrowthSelect();
 
 
+
+
+
+
+
+3 opcion del js para grrowth 
+
+// 1. URL base correcta
+const API_BASE = "https://pokeapi.co/api/v2/";
+
+// 2. Cargar las opciones en TU SELECT
+async function initGrowthSelect() {
+    const select = document.getElementById('growthSelect');
+    if (!select) return; // Seguridad por si no encuentra el ID
+
+    try {
+        const response = await fetch(`${API_BASE}growth-rate`);
+        const data = await response.json();
+        
+        select.innerHTML = '<option value="">-- Elige un ritmo --</option>';
+        data.results.forEach(rate => {
+            const option = document.createElement('option');
+            option.value = rate.name;
+            option.textContent = rate.name.toUpperCase();
+            select.appendChild(option);
+        });
+    } catch (error) {
+        console.error("Error al cargar ritmos:", error);
+    }
+}
+
+// 3. Mostrar la lista y el simulador en TU DIV 'pokemonList'
+async function showPokemonByGrowth(growthName) {
+    if (!growthName) return;
+    
+    const listDiv = document.getElementById('pokemonList');
+    listDiv.innerHTML = "<p>Cargando datos del servidor...</p>";
+
+    try {
+        const response = await fetch(`${API_BASE}growth-rate/${growthName}`);
+        const data = await response.json();
+        
+        // Sacamos la XP máxima del último nivel (nivel 100)
+        const xpMax = data.levels[data.levels.length - 1].experience;
+
+        // Renderizamos TODO dentro de tu div 'pokemonList'
+        listDiv.innerHTML = `
+            <div style="width: 100%; margin-bottom: 20px; padding: 15px; background: #f0f0f0; border-radius: 10px; border: 1px solid #ccc;">
+                <h2 style="margin-top:0;">Ritmo: ${data.name.toUpperCase()}</h2>
+                <p><strong>Fórmula:</strong> <code>${data.formula}</code></p>
+                <p><strong>Máximo de Experiencia:</strong> ${xpMax.toLocaleString()} XP</p>
+            </div>
+
+            <!-- SIMULADOR DINÁMICO -->
+            <div style="width: 100%; background: #222; color: #fff; padding: 20px; border-radius: 15px; margin-bottom: 20px;">
+                <h3 style="margin-top:0; color: #4caf50;">🎮 Calculadora de Nivel</h3>
+                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                    <input type="number" id="inputXP" placeholder="Tu XP actual..." style="flex: 1; padding: 10px; border-radius: 5px; border: none;">
+                    <button id="btnCalc" style="background: #4caf50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">CALCULAR</button>
+                </div>
+                <div style="width: 100%; height: 10px; background: #444; border-radius: 10px; overflow: hidden;">
+                    <div id="barraProgreso" style="width: 0%; height: 100%; background: #4caf50; transition: width 0.5s;"></div>
+                </div>
+                <div id="resSim" style="margin-top: 10px; color: #f1c40f; font-weight: bold;"></div>
+            </div>
+
+            <!-- CONTENEDOR DE NOMBRES -->
+            <div id="nombresGrid" style="display: flex; flex-wrap: wrap; gap: 10px; width: 100%;"></div>
+        `;
+
+        // Lógica del botón de cálculo
+        document.getElementById('btnCalc').onclick = () => {
+            const xpUser = parseInt(document.getElementById('inputXP').value) || 0;
+            const nivelActual = data.levels.filter(l => l.experience <= xpUser).pop() || {level: 1, experience: 0};
+            const proxNivel = data.levels.find(l => l.level === nivelActual.level + 1);
+
+            if (proxNivel) {
+                const totalRango = proxNivel.experience - nivelActual.experience;
+                const progresoRango = xpUser - nivelActual.experience;
+                const pct = Math.floor((progresoRango / totalRango) * 100);
+
+                document.getElementById('barraProgreso').style.width = `${pct}%`;
+                document.getElementById('resSim').innerHTML = `Estás al Nivel ${nivelActual.level}. Te faltan ${(proxNivel.experience - xpUser).toLocaleString()} XP para el nivel ${proxNivel.level}`;
+            } else {
+                document.getElementById('barraProgreso').style.width = "100%";
+                document.getElementById('resSim').innerHTML = "¡Nivel Máximo alcanzado!";
+            }
+        };
+
+        // Llenar la lista de nombres abajo
+        const nombresGrid = document.getElementById('nombresGrid');
+        data.pokemon_species.forEach(p => {
+            const span = document.createElement('span');
+            span.textContent = p.name;
+            span.style.cssText = "padding: 5px 12px; background: white; border: 1px solid #ddd; border-radius: 20px; font-size: 13px; text-transform: capitalize;";
+            nombresGrid.appendChild(span);
+        });
+
+    } catch (error) {
+        console.error("Error cargando el ritmo de crecimiento:", error);
+    }
+}
+
+// 4. EVENTOS (Asegurando que el DOM esté listo)
+document.addEventListener('DOMContentLoaded', () => {
+    initGrowthSelect();
+    const select = document.getElementById('growthSelect');
+    if (select) {
+        select.addEventListener('change', (e) => showPokemonByGrowth(e.target.value));
+    }
+});
