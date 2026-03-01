@@ -62,13 +62,6 @@
                     <div class="submenu" id="movimientosMenu"></div>
                 </div>
 
-
-                <!-- Regions -->
-                <div class="menu-item">
-                    <button class="menu-toggle">regiones</button>
-                    <div class="submenu" id="regionsMenu"></div>
-                </div>
-
                 <!-- egg_group -->
                 <div class="menu-item">
                     <button class="menu-toggle">Grupo huevo</button>
@@ -207,12 +200,6 @@
                 <div id="typesContainer" class="types-grid"></div>
             </section>
 
-            <!-- Sección de region -->
-            <section id="regions-section" class="section">
-                <h2>Explorador de region</h2>
-                <div id="regionsContainer" class="regions-grid"></div>
-            </section>
-
             <!-- Sección de pokemon color -->
             <section id="pokemoncolor-section" class="section">
                 <h2>Explorador de Tipos</h2>
@@ -238,7 +225,7 @@
                 <div id="genderContainer" class="gender-grid"></div>
             </section>
 
-            <!-- Sección de gender -->
+            <!-- Sección de trigges -->
             <section id="evolutiontrigger-section" class="section">
                 <h2>Explorador de triggers evolutivos</h2>
                 <div id="evolutiontriggerContainer" class="evolutiontrigger-grid"></div>
@@ -246,7 +233,7 @@
 
             <!-- Sección de stats -->
             <section id="stats-section" class="section">
-                <h2>Estadísticas Generales</h2>
+                <h2>Estadísticas stats Generales</h2>
                 <div class="pokemon-filters">
                     <!-- <div class="submenu" id="statsMenu"></div>-->
                     <select id="statsFilter">
@@ -259,6 +246,7 @@
                         <option value="" >Reduce las Stadisticas</option>
                     </select>
                 </div>
+                
                 <div class="stats-detail">
                     <div id="statsDetail">Detalles del Item</div>
                     <div class="chart-container">
@@ -269,7 +257,31 @@
                 </div>
             </section>
 
-
+ <!-- Sección de rgiones -->
+            <section id="regions-section" class="section">
+                <h2>Estadísticas regions Generales</h2>
+                <div class="pokemon-filters">
+                    <!-- <div class="submenu" id="regionsMenu"></div>-->
+                    <select id="regionsFilter">
+                        <option value="" >Todas las regions</option>
+                    </select>
+                    <select id="Region_Location">
+                        <option value="" >Region_Location</option>
+                    </select>
+                    <select id="Region_Location_area">
+                        <option value="" >Region_Location_area</option>
+                    </select>
+                </div>
+                
+                <div class="regions-detail">
+                    <div id="regionsDetail">Detalles del Item</div>
+                    <div class="chart-container">
+                        <h3>Distribución de Estadísticas</h3>
+                        <canvas id="chartregionsDetail"></canvas>
+                    </div>
+                    <div id="regionsTableContainer"></div>
+                </div>
+            </section>
 
 
             <!-- Sección de detalles del Pokémon -->
@@ -353,7 +365,7 @@
         </div>
     </div>
 
-    <script src="egg_group.js"></script>
+    <script src="script.js"></script>
 
 </body>
 
