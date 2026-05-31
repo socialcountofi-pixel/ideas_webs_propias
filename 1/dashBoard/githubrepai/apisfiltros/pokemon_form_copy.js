@@ -84,13 +84,11 @@ async function loadPokemonForm(typeUrl) {
     if (pokemonList) {
         const imagenspecieContenedorf = document.getElementById("pokemonImagef");
         createPokemonCard(pokemon, grid);
-        console.log(pokemon, grid);
+        console.log(typeData, grid);
+        /*  dfatos del form */
         const nuevoTexto = document.createElement("span");
-        nuevoTexto.textContent = "id :" + pokemon.id +
-            "is_battle_only :" + pokemon.is_battle_only +
-            "is_default :" + pokemon.is_default +
-            "is_mega :" + pokemon.is_mega +
-            "name :" + pokemon.name;
+        nuevoTexto.textContent = "id :" + typeData.id +
+            "is_baby :" + typeData.is_mega + "name :" + typeData.name;
 
         imagenspecieContenedorf.appendChild(nuevoTexto);
     }
