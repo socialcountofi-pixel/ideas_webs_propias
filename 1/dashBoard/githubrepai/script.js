@@ -1,585 +1,911 @@
-<!DOCTYPE html>
-<html lang="es">
+/* GIT HUB DATOS DEL POKEMON  */
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PokÃ©mon Dashboard - API Explorer</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-</head>
+/**
+ * ====================================================
+ * POKÃ‰MON DASHBOARD - JavaScript
+ * ====================================================
+ *
+ * DESCRIPCIÃ“N:
+ * Este script implementa un dashboard completo que integra
+ * todas las APIs de PokÃ©API para explorar datos de PokÃ©mon.
+ *
+ * CARACTERÃ�STICAS PRINCIPALES:
+ * - ExploraciÃ³n de Generaciones, Tipos, Regiones, Habilidades
+ * - GrÃ¡ficas de estadÃ­sticas con Chart.js
+ * - BÃºsqueda y filtrado de PokÃ©mon
+ * - Detalles completos de cada PokÃ©mon
+ * - IntegraciÃ³n de todas las APIs de PokÃ©API
+ *
+ * APIs UTILIZADAS:
+ * - Pokemon: /pokemon/
+ * - Generation: /generation/
+ * - Type: /type/
+ * - Ability: /ability/
+ * - Region: /region/
+ * - Stat: /stat/
+ * - Item: /item/
+ * - Move: /move/
+ * - Berry: /berry/ // no se puede contabilizar los pokemons
+ * - Regions: /regions/
+ * - Egg_Group: /egg-group/
+ * - Pokemon_Color: /pokemon-color/
+ * - Pokemon_Habitat: /pokemon-habitat/
+ * - Pokemon_Shape: /pokemon-shape/
+ * - pokedex: /pokedex/
+ * - Gender: /gender/
+ * Y muchas mÃ¡s...
+ *
+ * ====================================================
+ */
 
-<body>
-    <!-- Barra de navegaciÃ³n superior -->
-    <nav class="navbar">
-        <div class="navbar-container">
-            <div class="logo">PokÃ©mon Dashboard</div>
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Buscar PokÃ©mon...">
-                <button id="searchBtn">ðŸ”�</button>
-            </div>
-            <div class="nav-links">
-                <a href="#" data-section="overview">Vista General</a>
-                <a href="#" data-section="pokemon">PokÃ©mon</a>
-                <a href="#" data-section="types">Tipos</a>
-                <a href="#" data-section="stats">EstadÃ­sticas</a>
-                <a href="#" data-section="regions">regions</a>
-                <a href="#" data-section="natures">nature</a>
-                <a href="#" data-section="machines">machine</a>
-                <!--<a href="#" data-section="pokemonforms">pokemon form</a>-->
-                <a href="#" data-section="pokemonspecies">pokemon species</a>
+// ====================================================
+// CONFIGURACIÃ“N GLOBAL
+// ====================================================
+import { API_BASE, cache } from './config_apis/config_global.js';
+import { loadInitialCharts, createPokemonStatsChart } from './graficas/graficas.js';
+//const API_BASE = "https://pokeapi.co/api/v2/";
+//export const cache = {}
+
+// ====================================================
+// INICIALIZACIÃ“N
+// ====================================================
+
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("ðŸš€ Dashboard iniciado");
+
+    // Cargar datos iniciales
+    loadInitialData();
+
+    // Event listeners
+    setupEventListeners();
+});
+
+async function loadInitialData() {
+    try {
+        console.log("ðŸ“Š Cargando datos iniciales...");
+
+        // Cargar datos para los contadores
+        const [
+            pokemon,
+            generations,
+            types,
+            abilities,
+            moves,
+            egg_group,
+            pokemon_color,
+            pokemon_habitat,
+            pokemon_shape,
+            pokedex,
+            gender,
+            evolution_trigger, growth_rate, pal_park_area, pokemon_species, pokemon_form
+        ] = await Promise.all([
+            fetchPokemonCount(),
+            fetchGenerations(),
+            fetchTypes(),
+            fetchAbilities(),
+            fetchMoves(),
+            fetchEggGroup(),
+            fetchPokemonColor(),
+            fetchPokemonHabitat(),
+            fetchPokemonShape(),
+            fetchPokedex(),
+            fetchGender(),
+            fetchEvolutioTrigger(),
+            fetchGrowthRate(), fetchPalParkArea(), fetchPokemonSpecies(), fetchPokemonForm()
+        ]);
+
+        // Actualizar contadores
+        updateStats(
+            pokemon,
+            generations,
+            types,
+            abilities,
+            moves,
+            egg_group,
+            pokemon_color,
+            pokemon_habitat,
+            pokemon_shape,
+            pokedex,
+            gender,
+            evolution_trigger, growth_rate, pal_park_area, pokemon_species, pokemon_form
+        );
+
+        // Cargar menÃºs
+        await loadMenus();
+
+        // Cargar grÃ¡ficos iniciales
+        await loadInitialCharts();
+    } catch (error) {
+        console.error("â�Œ Error al cargar datos iniciales:", error);
+    }
+}
+
+// ====================================================
+// EVENT LISTENERS
+// ====================================================
+
+function setupEventListeners() {
+    // Botones del menÃº toggle
+    document.querySelectorAll(".menu-toggle").forEach((button) => {
+        button.addEventListener("click", (e) => {
+            e.preventDefault();
+            const submenu = button.nextElementSibling;
+            const isActive = submenu.classList.contains("active");
+
+            // Cerrar otros submenÃºs
+            document.querySelectorAll(".submenu.active").forEach((m) => {
+                if (m !== submenu) {
+                    m.classList.remove("active");
+                    m.previousElementSibling.classList.remove("active");
+                }
+            });
+
+            // Toggle actual
+            submenu.classList.toggle("active");
+            button.classList.toggle("active");
+        });
+    });
+
+    // Enlaces de navegaciÃ³n superior
+    document.querySelectorAll(".nav-links a").forEach((link) => {
+        link.addEventListener("click", (e) => {
+            e.preventDefault();
+            //console.log('menuderecho');
+            //console.log('link.dataset.section', link);
+            const section = link.dataset.section;
+            showSection(section + "-section");
+        });
+    });
+
+    // BÃºsqueda de PokÃ©mon
+    const searchBtn = document.getElementById("searchBtn");
+    const searchInput = document.getElementById("searchInput");
+
+    searchBtn.addEventListener("click", () => searchPokemon());
+    searchInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") searchPokemon();
+    });
+
+    // Modal close
+    document.querySelector(".close").addEventListener("click", () => {
+        document.getElementById("modal").classList.remove("show");
+    });
+
+    window.addEventListener("click", (e) => {
+        const modal = document.getElementById("modal");
+        if (e.target === modal) {
+            modal.classList.remove("show");
+        }
+    });
+}
+
+// ====================================================
+// FUNCIONES DE NAVEGACIÃ“N
+// ====================================================
+
+export function showSection(sectionId) {
+    // Ocultar todas las secciones
+    document.querySelectorAll(".section").forEach((section) => {
+        section.classList.remove("active");
+    });
+
+    // Mostrar la secciÃ³n seleccionada
+    const section = document.getElementById(sectionId);
+    if (section) {
+        section.classList.add("active");
+        window.scrollTo(0, 0);
+    }
+}
+
+// ====================================================
+// FUNCIONES DE FETCH - APIS
+// ====================================================
+
+/**
+ * Obtiene el total de PokÃ©mon
+ */
+
+async function fetchPokemonCount() {
+    try {
+        const response = await fetch(`${API_BASE}/pokemon/?limit=1`);
+        const data = await response.json();
+        return data.count;
+    } catch (error) {
+        console.error("Error fetching pokemon count:", error);
+        return 0;
+    }
+}
+
+/**
+ * Obtiene todas las generaciones
+ */
+import { fetchGenerations, loadMenusgn } from './apiscontabiliza/generation.js';
+
+/**
+ * Obtiene todos los tipos
+ */
+import { fetchTypes, loadMenust } from './apiscontabiliza/type.js';
+
+/**
+ * Obtiene todas las habilidades
+ */
+import { fetchAbilities, loadMenusa } from './apiscontabiliza/ability.js';
+
+/**
+ *  Obtiene todas los  estadÃ­sticas Pokemon 
+ */
+import { fetchMoves, loadMenusm } from './apiscontabiliza/move.js';
+
+/**
+ * Obtiene todas las grupos huevos
+ */
+import { fetchEggGroup, loadMenuseg } from './apiscontabiliza/egg_group.js';
+
+/** Obtiene todas los  Pokemon Color
+ * 
+ */
+import { fetchPokemonColor, loadMenuspc } from './apiscontabiliza/pokemon_color.js';
+
+/**
+ *  Obtiene todas los Pokemon Habitat
+ */
+import { fetchPokemonHabitat, loadMenusph } from './apiscontabiliza/pokemon_habitat.js';
+
+/**
+ *  Obtiene todas los  Pokemon Shape
+ */
+import { fetchPokemonShape, loadMenusps } from './apiscontabiliza/pokemon_shape.js';
+
+/**
+ *  Obtiene todas los  Pokedex 
+ */
+import { fetchPokedex, loadMenuspx } from './apiscontabiliza/pokedex.js';
+
+/**
+ *  Obtiene todas los  Gender
+ */
+import { fetchGender, loadMenusg } from './apiscontabiliza/gender.js';
+
+/**
+ *  Obtiene todas los  evolution trigger
+ */
+import { fetchEvolutioTrigger, loadMenuset } from './apiscontabiliza/evolution_trigger.js'; /*** Obtiene todas los  Evolution Trigers*/
+
+/**
+ *  Obtiene todas los growth-rate https://pokeapi.co/api/v2/growth-rate/    pensarlo bien contabiliza los pokemon 
+ */
+
+import { fetchGrowthRate, loadMenusgr } from './apiscontabiliza/growth_rate.js';
+/*** Obtiene todas los  Evolution Trigers*/
+
+/**
+ *  Obtiene todas los  Pokemon pal_park_area
+ */
+import { fetchPalParkArea, loadMenusppa } from './apiscontabiliza/pal_park_area.js';
+
+/**
+ * Obtiene pokemon_species
+ */
+import { fetchPokemonSpecies, loadMenuspe, loadPokemonSpecies, loaddatosPokemonSpecies } from './apisfiltros/pokemon_species_copy.js';
+/**
+ * Obtiene formas
+ */
+//import { fetchPokemonForm, loadMenuspf, pokemoformpokemon } from './//apisfiltros/pokemon_form.js';
+//import { fetchPokemonFormF, loadMenuspf } from './apiscontabiliza/pokemon_form.js';
+import { fetchPokemonForm, loadMenuspf, loadPokemonForm, loaddatosPokemonForm } from './apisfiltros/pokemon_form_copy.js';
+
+
+
+
+/**
+ *  Obtiene todas los  estadÃ­sticas region Pokemon 
+ */
+import { fetchRegions, loadMenusr } from './apisfiltros/region.js';
+
+/**
+ * Obtiene estadÃ­sticas
+ */
+import { fetchStats, loadMenuss, statMdDtos, statNdDtos } from './apisfiltros/stat.js';
+
+/**
+ * Obtiene estadÃ­sticas
+ */
+import { fetchNatures, loadMenusn, natureDatos } from './apisfiltros/nature.js';
+
+/**
+ * Obtiene machines
+ */
+import { fetchMachines, loadMenusma, datosmachine } from './apisfiltros/machine.js';
+
+
+
+/**
+ * Obtiene un PokÃ©mon especÃ­fico
+ */
+
+export async function fetchPokemon(idOrName) {
+    // 1. Miramos si ya lo tenemos en cache
+    if (cache.pokemon[idOrName]) {
+        return cache.pokemon[idOrName];
+    }
+
+    try {
+        // 2. PEDIMOS EL POKEMON PRIMERO (Esto no falla con IDs 10000+ ni nombres con -alola)
+        const response = await fetch(`${API_BASE}/pokemon/${idOrName}`);
+        //console.log('response', response);
+        if (!response.ok) {
+            throw new Error(`No existe el pokemon: ${idOrName}`);
+        }
+
+        const data = await response.json();
+        //console.log('data', data);
+        // 3. (OPCIONAL) Si necesitas los datos de especie, los pides usando la URL que ya viene en el pokemon
+        // No hace falta construirla a mano, la API te la da en data.species.url
+        const resSpecies = await fetch(data.species.url);
+        if (resSpecies.ok) {
+            const dataS = await resSpecies.json();
+            // AquÃ­ puedes mezclar los datos si te hace falta algo de la especie
+            data.speciesData = dataS;
+        }
+
+        // 4. Guardamos en cache y devolvemos los datos del pokemon
+        cache.pokemon[idOrName] = data;
+        return data;
+
+    } catch (error) {
+        console.error(`Error fetching pokemon ${idOrName}:`, error);
+        return null;
+    }
+}
+
+
+// ====================================================
+// FUNCIONES DE ACTUALIZACIÃ“N DE DATA
+// ====================================================
+
+/**
+ * Actualiza los contadores estadÃ­sticos
+ */
+async function updateStats(
+    pokemon, generations, types, abilities, move, egg_group, pokemon_color, pokemon_habitat, pokemon_shape, pokedex, gender, evolution_trigger, growth_rate, pal_park_area, pokemon_species, pokemon_form
+) {
+    document.getElementById("totalPokemon").textContent = pokemon.toLocaleString();
+    document.getElementById("totalGenerations").textContent = generations.count;
+    document.getElementById("totalTypes").textContent = types; //cantidad al se array complejo [{}{}]
+    document.getElementById("totalAbilities").textContent = abilities;
+    document.getElementById("totalMove").textContent = move.count;
+    document.getElementById("totalEggGroup").textContent = egg_group.count;
+    document.getElementById("totalPokemonColor").textContent = pokemon_color.count;
+    document.getElementById("totalPokemonHabitat").textContent = pokemon_habitat.count; //cantidad al se array simple {}
+    document.getElementById("totalPokemonShape").textContent = pokemon_shape.count;
+    document.getElementById("totalPokedex").textContent = pokedex.count;
+    document.getElementById("totalGender").textContent = gender.count;
+    document.getElementById("totalEvolutionTrigger").textContent = evolution_trigger.count;
+    document.getElementById("totalGrowthRate").textContent = growth_rate.count;
+    document.getElementById("totalPalParkArea").textContent = pal_park_area.count;
+    document.getElementById("totalPokemonSpecies").textContent = pokemon_species.count;
+    document.getElementById("totalPokemonForm").textContent = pokemon_form.count;
+}
+
+/**
+ * Carga los menÃºs laterales
+ */
+async function loadMenus() {
+    try {
+        // Generaciones
+        loadMenusgn();
+        // Tipos
+        loadMenust();
+        // Habilidades (mostrar solo algunas)
+        loadMenusa();
+        //egg_goup
+        loadMenuseg();
+        //pokemon_color 
+        loadMenuspc();
+        //pokemon_habitat
+        loadMenusph();
+        //pokemon_shape
+        loadMenusps();
+        //pokedex
+        loadMenuspx();
+        // gender
+        loadMenusg();
+        // trigger
+        loadMenuset();
+        // growh rate
+        loadMenusgr();
+        // pal park area
+        loadMenusppa();
+        // Movimientos
+        loadMenusm();
+        // Regiones 
+        loadMenusr();
+        // EstadÃ­sticas
+        loadMenuss();
+        //Nature affecting_natures
+        loadMenusn();
+        //machine 
+        loadMenusma();
+
+
+        //pokemon-form 
+        loadMenuspf();
+        //species
+        loadMenuspe(); //se enlaza con evoluciones de la especie
+
+    } catch (error) {
+        console.error("Error loading menus:", error);
+    }
+}
+
+// ====================================================
+// FUNCIONES DE VISUALIZACIÃ“N - POKÃ‰MON
+// ====================================================
+
+/**
+ * Crea una tarjeta de PokÃ©mon
+ */
+export async function createPokemonCard(pokemon, container) {
+    //console.log('card', pokemon, container)
+    const card = document.createElement("div");
+    card.className = "pokemon-card";
+
+    const types = pokemon.types.map((t) => t.type.name).join(", ");
+
+    card.innerHTML = `
+        <div class="pokemon-card-image">
+            <img src="${pokemon.sprites.other["official-artwork"].front_default || pokemon.sprites.front_default}" 
+                 alt="${pokemon.name}" onerror="this.src='https://via.placeholder.com/150'">
+        </div>
+        <div class="pokemon-card-content">
+            <h4>#${pokemon.id} - ${pokemon.name}</h4>
+            <p><strong>Altura:</strong> ${pokemon.height / 10} m</p>
+            <p><strong>Peso:</strong> ${pokemon.weight / 10} kg</p>
+            <div>
+                ${pokemon.types
+            .map(
+                (t) =>
+                    `<span class="type-badge ${t.type.name}">${t.type.name}</span>`,
+            )
+            .join("")}
             </div>
         </div>
-    </nav>
+    `;
+
+    card.addEventListener("click", () => showPokemonDetail(pokemon));
+    container.appendChild(card);
+
+   
+    
+}
+
+
+
+ /* url de pokemon form preparar */
+//console.log(pokemon.forms);
+/*const typeDatas = await fetch("https://pokeapi.co/api/v2/pokemon/669/").then((r) => r.json());
+typeDatas.forms.map((f)=>{
+console.log(f)//    showPokemonDetail(f.name)
+}).join(" ");
+console.log('typeDatas',typeDatas);*/
+/* fim url de pokemon form  */
+
+
+
+
+/**
+ * Muestra los detalles completos de un PokÃ©mon
+ */
+async function showPokemonDetail(pokemon) {
+    //console.log('showPokemonDetail', pokemon);
+    showSection("pokemon-detail-section");
+
+    // InformaciÃ³n bÃ¡sica
+    document.getElementById("pokemonDetailTitle").textContent =
+        `${pokemon.name} (#${pokemon.id})`;
+    document.getElementById("pokemonImage").src =
+        pokemon.sprites.other["official-artwork"].front_default ||
+        pokemon.sprites.front_default;
+    document.getElementById("pokemonName").textContent = pokemon.name;
+    document.getElementById("pokemonId").textContent = `#${pokemon.id}`;
+//formas 
+forma2(pokemon);
+//formas
+
+//formas 
+forma(pokemon);
+//formas
+ 
+
+
+
+    // Tipos
+    const types = pokemon.types
+        .map((t) => `<span class="type-badge ${t.type.name}">${t.type.name}</span>`)
+        .join(" ");
+    document.getElementById("pokemonTypes").innerHTML = types;
+
+    // Habilidades
+    const abilities = pokemon.abilities
+        .map((a) => `<span class="type-badge">${a.ability.name}</span>`)
+        .join(" ");
+    document.getElementById("pokemonAbilities").innerHTML = abilities;
+
+    // --- LA SOLUCIÃ“N PARA QUE FUNCIONE EL CLICK ---
+
+    document.getElementById("pokemonAbilities").addEventListener("click", async (e) => {
+        if (e.target.tagName === 'SPAN') {
+            const nombreHabilidad = e.target.innerText.toLowerCase();
+
+            try {
+                const response = await fetch("https://pokeapi.co/api/v2/ability/" + nombreHabilidad);
+                const data = await response.json();
+
+
+
+                // Buscamos la efeccto de entrada sin usar el signo '?'  language
+                let descripcionEntrada = "DescripciÃ³n no encontrada";
+                const entrada = data.effect_entries;
+
+                if (entrada) {
+                    for (let i = 0; i < entrada.length; i++) {
+                        if (entrada[i].language.name === "en") {
+                            descripcionEntrada = entrada[i].flavor_text;
+                            break; // Ya lo encontramos, salimos del bucle
+                        }
+                    }
+                }
+                // Buscamos la descripciÃ³n sin usar el signo '?'  language
+                let descripcion = "DescripciÃ³n no encontrada";
+                const entradas = data.flavor_text_entries;
+
+                if (entradas) {
+                    for (let i = 0; i < entradas.length; i++) {
+                        if (entradas[i].language.name === "ens") {
+                            descripcion = entradas[i].flavor_text;
+                            break; // Ya lo encontramos, salimos del bucle
+                        }
+                    }
+                }
+
+
+                // Buscamos el pokemon sin usar el signo '?'  language
+                const pokemonab = data.pokemon
+                    .map((t) => {
+                        /* se puede aÃ±adir una clase o id i dar color a dicho texto segun si es oculta o no  */
+                        if (t.is_hidden) {
+                            return t.pokemon.name + ' : (oculta)'
+
+                        } else {
+                            return t.pokemon.name + ' : (natural)'
+                        }
+                    })
+                    .join(" ");
+
+
+                // Inyectamos el resultado
+                document.getElementById("resultadoabilidades").innerHTML = `
+        <div class="habilidad-data">
+
+          <p><b>Efecto:</b> ${descripcion}</p><!--language-->
+           <p><b>Efecto entrada:</b> ${descripcionEntrada}</p><!--language-->
+         <p><b> id: </b> ${data.nide}</p>
+<p><b>is_main_series:</b> ${data.is_main_series}</p>
+<p><b>Habilidad name: </b> ${data.name}</p>
+<p><b>generation name: </b> ${data.generation.name}</p>
+ <p><b>Pokeon con esa abilidad:</b> ${pokemonab}</p><!--pokemons-->
 
-    <!-- Contenedor principal -->
-    <div class="container">
-        <!-- Sidebar de navegaciÃ³n -->
-        <aside class="sidebar">
-            <h3>Explorar APIs</h3>
-            <div class="nav-menu">
-                <!-- Generaciones -->
-                <div class="menu-item">
-                    <button class="menu-toggle">Generaciones</button>
-                    <div class="submenu" id="generationsMenu"></div>
-                </div>
-
-                <!-- Tipos -->
-                <div class="menu-item">
-                    <button class="menu-toggle">Tipos</button>
-                    <div class="submenu" id="typesMenu"></div>
-                </div>
-
-                <!-- Habilidades -->
-                <div class="menu-item">
-                    <button class="menu-toggle">Habilidades</button>
-                    <div class="submenu" id="habilidadesMenu"></div>
-                </div>
-
-
-                <!-- Movimientos -->
-                <div class="menu-item">
-                    <button class="menu-toggle">Movimientos</button>
-                    <div class="submenu" id="movesMenu"></div>
-                </div>
-
-                <!-- egg_group -->
-                <div class="menu-item">
-                    <button class="menu-toggle">Grupo huevo</button>
-                    <div class="submenu" id="egggroupMenu"></div>
-                </div>
-
-
-                <!--  pokemon_color -->
-                <div class="menu-item">
-                    <button class="menu-toggle">pokemon_color</button>
-                    <div class="submenu" id="pokemoncolorMenu"></div>
-                </div>
-                <!-- pokemon_habitat -->
-                <div class="menu-item">
-                    <button class="menu-toggle">pokemon_habitat</button>
-                    <div class="submenu" id="pokemonhabitatMenu"></div>
-                </div>
-                <!--   pokemon_shape -->
-                <div class="menu-item">
-                    <button class="menu-toggle">pokemon_shape</button>
-                    <div class="submenu" id="pokemonshapeMenu"></div>
-                </div>
-                <!-- pokedex -->
-                <div class="menu-item">
-                    <button class="menu-toggle">pokedex</button>
-                    <div class="submenu" id="pokedexMenu"></div>
-                </div>
-                <!--  gender -->
-                <div class="menu-item">
-                    <button class="menu-toggle">gender</button>
-                    <div class="submenu" id="genderMenu"></div>
-                </div>
-                <!--  evolution  trigger  -->
-                <div class="menu-item">
-                    <button class="menu-toggle">teigger evol</button>
-                    <div class="submenu" id="evolutiontriggerMenu"></div>
-                </div>
-                <!--   grow  -->
-                <div class="menu-item">
-                    <button class="menu-toggle">growth rate Menu</button>
-                    <div class="submenu" id="growthrateMenu"></div>
-                </div>
-
-                <!-- pal park area  -->
-                <div class="menu-item">
-                    <button class="menu-toggle">pal park area Menu</button>
-                    <div class="submenu" id="palparkareaMenu"></div>
-                </div>
-
-                <!-- pokemon species  -->
-                <div class="menu-item">
-                    <button class="menu-toggle">pokemon species Menu</button>
-                    <div class="submenu" id="pokemonspeciesMenu"></div>
-                </div>
-                <!-- pokemon form -->
-                <div class="menu-item">
-                    <button class="menu-toggle">pokemon form Menu</button>
-                    <div class="submenu" id="pokemonformMenu"></div>
-                </div>
-
-            </div>
-        </aside>
-
-        <!-- Ã�rea de contenido principal -->
-        <main class="main-content">
-            <!-- SecciÃ³n de vista general -->
-            <section id="overview-section" class="section active">
-                <h2>Resumen del Dashboard</h2>
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <h4>Total PokÃ©mon</h4>
-                        <p id="totalPokemon" class="stat-value">-</p>
-                    </div>
-                    <div class="stat-card">
-                        <h4>Total Generaciones</h4>
-                        <p id="totalGenerations" class="stat-value">-</p>
-                    </div>
-                    <div class="stat-card">
-                        <h4>Total Tipos</h4>
-                        <p id="totalTypes" class="stat-value">-</p>
-                    </div>
-                    <div class="stat-card">
-                        <h4>Total Habilidades</h4>
-                        <p id="totalAbilities" class="stat-value">-</p>
-                    </div>
-                    <div class="stat-card">
-                        <h4>Total movimientos</h4>
-                        <p id="totalMove" class="stat-value">-</p>
-                    </div>
-                    <div class="stat-card">
-                        <h4>Total Grupo huevos</h4>
-                        <p id="totalEggGroup" class="stat-value">-</p>
-                    </div>
-                    <div class="stat-card">
-                        <h4>Total Pokemon Color</h4>
-                        <p id="totalPokemonColor" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total Pokemon Habitat</h4>
-                        <p id="totalPokemonHabitat" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total Pokemon Shape</h4>
-                        <p id="totalPokemonShape" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total Pokedex</h4>
-                        <p id="totalPokedex" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total Genero </h4>
-                        <p id="totalGender" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total trigers </h4>
-                        <p id="totalEvolutionTrigger" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total growth rate </h4>
-                        <p id="totalGrowthRate" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total Pal Park Area </h4>
-                        <p id="totalPalParkArea" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total Species </h4>
-                        <p id="totalPokemonSpecies" class="stat-value">-</p>
-                    </div>
-
-                    <div class="stat-card">
-                        <h4>Total Form </h4>
-                        <p id="totalPokemonForm" class="stat-value">-</p>
-                    </div>
-
-                </div>
-
-                <!-- GrÃ¡fico de distribuciÃ³n de tipos -->
-                <div class="chart-container">
-                    <h3>DistribuciÃ³n de Tipos (Primeros 50 PokÃ©mon)</h3>
-                    <canvas id="chartTypes"></canvas>
-                </div>
-
-                <!-- GrÃ¡fico de comparaciÃ³n de estadÃ­sticas -->
-                <div class="chart-container">
-                    <h3>EstadÃ­sticas Base Promedio por Tipo</h3>
-                    <canvas id="chartStats"></canvas>
-                </div>
-            </section>
-
-            <!-- SecciÃ³n de PokÃ©mon -->
-            <section id="pokemon-section" class="section">
-                <h2>Explorador de PokÃ©mon</h2>
-                <div class="pokemon-filters">
-                    <select id="generacionFilter">
-                        <option value="">Todas las Generaciones</option>
-                    </select>
-                    <select id="typeFilter">
-                        <option value="">Todos los Tipos</option>
-                    </select>
-                    <select id="habilidadFilter">
-                        <option value="">Todas las Habilidades</option>
-                    </select>
-                </div>
-                <div class="pokemon-grid" id="pokemonGrid"></div>
-            </section>
-
-            <!-- SecciÃ³n de Tipos -->
-            <section id="types-section" class="section">
-                <h2>Explorador de Tipos</h2>
-                <div id="typesContainer" class="types-grid"></div>
-            </section>
-
-            <!-- SecciÃ³n de pokemon color -->
-            <section id="pokemoncolor-section" class="section">
-                <h2>Explorador de Tipos</h2>
-                <div id="pokemoncolorContainer" class="pokemoncolor-grid"></div>
-            </section>
-
-            <!-- SecciÃ³n de shape -->
-            <section id="pokemonshape-section" class="section">
-                <h2>Explorador de Shapes</h2>
-                <div id="pokemonshapeContainer" class="pokemonshape-grid"></div>
-            </section>
-
-            <!-- SecciÃ³n de pokedex -->
-            <section id="pokedex-section" class="section">
-                <h2>Explorador de Tipos</h2>
-                <div id="pokedexContainer" class="pokedex-grid"></div>
-            </section>
-
-
-            <!-- SecciÃ³n de gender -->
-            <section id="gender-section" class="section">
-                <h2>Explorador de generos</h2>
-                <div id="genderContainer" class="gender-grid"></div>
-            </section>
-
-            <!-- SecciÃ³n de trigges -->
-            <section id="evolutiontrigger-section" class="section">
-                <h2>Explorador de triggers evolutivos</h2>
-                <div id="evolutiontriggerContainer" class="evolutiontrigger-grid"></div>
-            </section>
-
-            <!-- SecciÃ³n de pal park area -->
-            <section id="totalpalparkarea-section" class="section">
-                <h2>Explorador de triggers evolutivos</h2>
-                <div id="totalpalparkarea" class="totalpalparkarea-grid"></div>
-            </section>
-
-            <!-- SecciÃ³n de moveas -->
-            <section id="move-section" class="section">
-                <h2>Explorador de triggers evolutivos</h2>
-                <div id="moveContainer" class="move-grid"></div>
-            </section>
-
-            <!-- SecciÃ³n de egggroup-section -->
-            <section id="egggroup-section" class="section">
-                <h2>Explorador de eggg secc</h2>
-                <div id="moveContainer" class="egggroup-grid"></div>
-            </section>
-
-
-
-
-
-            <!-- SecciÃ³n de stats -->
-            <section id="stats-section" class="section">
-                <h2>EstadÃ­sticas stats Generales</h2>
-                <div class="pokemon-filters">
-                    <!-- <div class="submenu" id="statsMenu"></div>-->
-                    <select id="statsFilter">
-                        <option value="" >Todas las Stadistcas</option>
-                    </select>
-                    <br>
-                    <select id="statsFilterIncreaseN"> <!--incrementenaturalesas-->
-                        <option value="" >Naturaleza Incrementa las Stadisticas</option>
-                    </select>
-                    <select id="statsFilterDecreaseN">
-                        <option value="" >Naturaleza Reduce las Stadisticas</option>
-                    </select>
-                    <br>
-                    <select id="statsFilterIncreaseM">
-                        <option value="" >Movimiento Incrementa las Stadisticas</option>
-                    </select>
-                    <select id="statsFilterDecreaseM">
-                        <option value="" >Movimiento Reduce las Stadisticas</option>
-                    </select>
-                </div>
-
-                <div class="stats-detail">
-                    <div id="statsDetail">Detalles del Item</div>
-                    <div class="chart-container">
-                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
-                        <canvas id="chartStatsDetail"></canvas>
-                    </div>
-                    <div id="statsTableContainer"></div>
-                </div>
-            </section>
-
-
-            <!-- SecciÃ³n de rgiones -->
-            <section id="regions-section" class="section">
-                <h2>EstadÃ­sticas regions Generales</h2>
-                <div class="pokemon-filters">
-                    <!-- <div class="submenu" id="regionsMenu"></div>-->
-                    <select id="regionsFilter">
-                        <option value="" >Todas las regions</option>
-                    </select>
-                    <select id="Region_Location">
-                        <option value="" >Region_Location</option>
-                    </select>
-                    <select id="Region_Location_area">
-                        <option value="" >Region_Location_area</option>
-                    </select>
-                </div>
-
-                <div class="regions-detail">
-                    <div id="regionsDetail">Detalles del Item</div>
-                    <div class="chart-container">
-                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
-                        <canvas id="chartregionsDetail"></canvas>
-                    </div>
-                    <div id="regionsTableContainer"></div>
-                </div>
-            </section>
-
-            <!-- SecciÃ³n de naturesa -->
-            <section id="natures-section" class="section">
-                <h2>EstadÃ­sticas regions Generales</h2>
-                <div class="pokemon-filters">
-                    <!-- <div class="submenu" id="regionsMenu"></div>-->
-                    <select id="naturesFilter">
-                        <option value="" >Todas las natures</option>
-                    </select>
-                    <select id="NatureDecreasedStat">
-                        <option value="" >Nature Decreased Stat</option>
-                    </select>
-                    <select id="NatureIncreasedStat">
-                        <option value="" >Nature Increased Stat</option>
-                    </select>
-                </div>
-
-                <div class="natures-detail">
-                    <div id="naturesDetail">Detalles del Item</div>
-                    <div class="chart-container">
-                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
-                        <canvas id="chartnaturesDetail"></canvas>
-                    </div>
-                    <div id="naturesTableContainer"></div>
-                </div>
-            </section>
-
-
-
-
-            <!-- SecciÃ³n de stats -->
-            <section id="machines-section" class="section">
-                <h2>EstadÃ­sticas stats Generales</h2>
-                <div class="pokemon-filters">
-                    <!-- <div class="submenu" id="statsMenu"></div>-->
-                    <select id="machinesFilter">
-                        <option value="" >Todas las machines</option>
-                    </select>
-                    <br>
-                    <select id="machinesDatos"> <!--incrementenaturalesas-->
-                        <option value="" >machines Incrementa las Stadisticas</option>
-                    </select>
-
-                </div>
-
-                <div class="machines-detail">
-                    <div id="machinesDetail">Detalles del machines</div>
-                    <div class="chart-container">
-                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
-                        <canvas id="chartMachinesDetail"></canvas>
-                    </div>
-                    <div id="statsTableContainer"></div>
-                </div>
-            </section>
-
-
-            <!-- SecciÃ³n de pokemon form -->
-            <section id="pokemonforms-section" class="section">
-                <h2>pokemon forms</h2>
-                <div class="pokemon-filters">
-                    <!-- <div class="submenu" id="regionsMenu"></div>-->
-                    <select id="pokemonformsFilter">
-                        <option value="" >Todas las natures</option>
-                    </select>
-                    <select id="pokemonformFilter2">
-                        <option value="" >pokemonform Decreased Stat</option>
-                    </select>
-
-                </div>
-
-                <div class="pokemonforms-detail">
-                    <div id="pokemonformsDetail">Detalles del Item</div>
-                    <div class="chart-container">
-                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
-                        <canvas id="chartnaturesDetail"></canvas>
-                    </div>
-                    <div id="pokemonformsTableContainer"></div>
-                </div>
-            </section>
-
-
-            <!-- SecciÃ³n de pokemon species -->
-            <section id="pokemonspecies-section" class="section">
-                <h2>pokemon species</h2>
-                <div class="pokemon-filters">
-                    <!-- <div class="submenu" id="regionsMenu"></div>-->
-                    <select id="pokemonspeciesFilter">
-                        <option value="" >Todas las species</option>
-                    </select>
-                    <select id="pokemonspeciesFilter2">
-                        <option value="" >pokemonform Decreased Stat</option>
-                    </select>
-
-                </div>
-
-                <div class="pokemonspecies-detail">
-                    <div id="pokemonspeciesDetail">Detalles del Item</div>
-                    <div class="chart-container">
-                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
-                        <canvas id="chartnaturesDetail"></canvas>
-                    </div>
-                    <div id="pokemonspeciesTableContainer"></div>
-                </div>
-            </section>
-
-            <!-- SecciÃ³n de detalles del PokÃ©mon -->
-            <section id="pokemon-detail-section" class="section">
-                <h2 id="pokemonDetailTitle">Detalles del PokÃ©mon</h2>
-                <div class="pokemon-detail">
-                    <!--contendor la imagen pokemon-->
-                    <div class="pokemon-image-container">
-                        <img id="pokemonImage" src="" alt="PokÃ©mon">
-                    </div>
-
-                    <!--contendor de la informacion del pokemon-->
-                    <div class="pokemon-info">
-                        <div class="info-row">
-                            <label>Nombre:</label>
-                            <span id="pokemonName"></span>
-                        </div>
-                        <div class="info-row">
-                            <label>ID:</label>
-                            <span id="pokemonId"></span>
-                        </div>
-                        <div class="info-row">
-                            <label>Tipo(s):</label>
-                            <span id="pokemonTypes"></span>
-                        </div>
-
-                        <div class="info-row">
-                            <label>Habilidades:</label>
-                            <span id="pokemonAbilities"></span>
-                            <span id="resultadoabilidades"></span>
-                        </div>
-                        <div class="info-row">
-                            <label>Altura:</label>
-                            <span id="pokemonHeight"></span>
-                        </div>
-                        <div class="info-row">
-                            <label>Peso:</label>
-                            <span id="pokemonWeight"></span>
-                        </div>
-                    </div>
-
-                    <!--contendor de las species-->
-                    <div class="pokemon-image-container"> <label>especies:</label>
-                        <div id="pokemonSpecies" src="" alt="PokÃ©mon">
-
-                        </div>
-                        <div id="pokemonVarieties" src="" alt="PokÃ©mon">
-
-
-                        </div>
-                    </div>
-
-                    <!--contendor de las formas-->
-                    <div class="pokemon-image-container"> <label>Formas:</label>
-                        <div id="pokemonImagef" src="" alt="PokÃ©mon">
-
-                        </div>
-                    </div>
-                    <!--contenedor de las evoluciones-->
-                    <div class="pokemon-image-container"> <label>Evoluciones:</label>
-                        <div id="pokemonImageV" src="" alt="PokÃ©mon">
-
-                        </div>
-                    </div>
-
-
-                </div>
-                <div id="pokemon-detail">
-
-                </div>
-
-                <!-- GrÃ¡fico de estadÃ­sticas del PokÃ©mon -->
-                <div class="chart-container">
-                    <h3>EstadÃ­sticas del PokÃ©mon</h3>
-                    <!--lista de berrie para agregar al pokemon y aumenta las estadisticas-->
-                    <div class="berries">berries
-                        <h3>berri 1</h3>
-                        <h3>berri 2</h3>
-                        <div>
-                            <h3>aÃ±adir</h3>
-                            <!--aÃ±ade las bayas segun la cantidad seleccionada por defecto 1-->
-                            <h3>numero de bayas</h3>
-                            <!--si se aÃ±ade se actualiza la stat que le correspona siendo un maximo de 5 bayas por cada stats-->
-                            <!--Siendo lo importante que se vea o difiera los cambios con un colo diferente al actualÃ±-->
-                        </div>
-                    </div>
-                    <canvas id="chartPokemonStats"></canvas>
-                </div>
-
-                <!--es mejor en pantalla ya que debe mostra los datos de todos los ataque y datos ejemplo machine y sus dats-->
-                <div>
-                    <h3>lista objetos</h3>
-                    <!--carga los objetos para aumentar la cantidad de movimientos-->
-                    <h3>aÃ±adir</h3>
-                    <!--se anade una cantidad de pp o ph al atake-->
-                    <h3>cantidad de item</h3>
-                    <!--cantidad de item que se aÃ±ade y se ve en pantalla ejemplo 10(30) siendo 10  por defecto de la base ded datos y (30)lo que ha aumentado segun la cantidad seleccionada-->
-                </div>
-
-                <!-- Movimientos del PokÃ©mon -->
-                <div class="moves-container">
-                    <h3>Movimientos</h3>
-                    <div id="movesTable"></div>
-
-                </div>
-            </section>
-        </main>
-    </div>
-
-    <!-- Modal para mostrar informaciÃ³n adicional -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div id="modalBody"></div>
         </div>
-    </div>
+      `;
 
-    <script type="module" src="script.js"></script>
-    <!--<script src="egg_group.js"></script>-->
-    <!--pruebas en caso de que funcione solo esto-->
-</body>
+            } catch (error) {
+                console.error("Hubo un problema:", error);
+            }
+        }
+    });
 
-</html>
+
+    /* 
+effect_changes: [{â€¦}]
+effect_entries: (3) [{â€¦}, {â€¦}, {â€¦}]
+ */
+
+
+
+    // Altura y peso
+    document.getElementById("pokemonHeight").textContent =
+        `${pokemon.height / 10} m`;
+    document.getElementById("pokemonWeight").textContent =
+        `${pokemon.weight / 10} kg`;
+
+        console.log(pokemon);
+  
+        /*pokemonSpecies*/
+      const pokemones = loaddatosPokemonSpecies(pokemon.species.url);
+ //console.log('pokemonesespcies',pokemones);
+ /*fin pokemon species */
+ 
+/*pokemonFormas */
+const pokemoneformas = loaddatosPokemonForm(pokemon.forms);
+console.log('pokemonesformas',pokemon.forms);
+/*fin pokeformas */
+
+
+    /* Graficas de pokemon pesado (weight) */
+    /* Graficas de pokemon alto (height) */
+
+    // GrÃ¡fico de estadÃ­sticas
+    createPokemonStatsChart(pokemon.stats);
+
+    // Movimientos
+    displayPokemonMoves(pokemon.moves.slice(0, 15)); // Mostrar solo 15 primeros
+
+
+       
+/*
+    <div class="pokemon-card-content">
+    <p><strong>base_happiness:</strong> ${pokemon.base_happiness} </p>
+            <p><strong>capture_rate:</strong> ${pokemon.capture_rate} </p>
+</div>*/
+}
+
+/* INICIO FORMAS*/
+
+/**
+ *  Obtiene todas los  Pokedex 
+ */
+
+
+async function forma2(pokemon){
+//console.log('formas pokemon',pokemon.forms,'fin');
+
+//0: {name: 'flabebe-red', url: 'https://pokeapi.co/api/v2/pokemon-form/669/'}
+//1: {name: 'flabebe-yellow', url: 'https://pokeapi.co/api/v2/pokemon-form/10103/'}
+//2: {name: 'flabebe-orange', url: 'https://pokeapi.co/api/v2/pokemon-form/10104/'}
+//3: {name: 'flabebe-blue', url: 'https://pokeapi.co/api/v2/pokemon-form/10105/'}
+//4: {name: 'flabebe-white', url: 'https://pokeapi.co/api/v2/pokemon-form/10106/'}
+
+//fetchPokemonForms(pokemon.forms);//forma 2 de visualizara
+
+}
+
+
+//import { fetchPokemonFormF ,loadMenuspf} from './apiscontabiliza/pokemon_form.js';
+ 
+async function forma(pokemon){
+
+//console.log('formas pokemon',pokemon.forms,'fin');
+
+//0: {name: 'flabebe-red', url: 'https://pokeapi.co/api/v2/pokemon-form/669/'}
+//1: {name: 'flabebe-yellow', url: 'https://pokeapi.co/api/v2/pokemon-form/10103/'}
+//2: {name: 'flabebe-orange', url: 'https://pokeapi.co/api/v2/pokemon-form/10104/'}
+//3: {name: 'flabebe-blue', url: 'https://pokeapi.co/api/v2/pokemon-form/10105/'}
+//4: {name: 'flabebe-white', url: 'https://pokeapi.co/api/v2/pokemon-form/10106/'}
+
+//console.log('fofofo',pokemon.forms);
+
+//fetchPokemonForms(pokemon.forms);
+loadMenuspf(pokemon);
+
+}
+
+
+/* FIN FORMAS*/
+
+
+
+/* INICIO EVOLUCIONES*/
+
+ import { loadMenuspev} from './apisfiltros/pokemon_evolution-chain.js';
+/* FIN EVOLUCIONES*/
+
+/**
+ * Muestra los movimientos del PokÃ©mon
+ */
+function displayPokemonMoves(moves) {
+    const container = document.getElementById("movesTable");
+
+    if (moves.length === 0) {
+        container.innerHTML =
+            '<p class="empty-state">Sin movimientos registrados</p>';
+        return;
+    }
+
+    let html = `
+        <table class="moves-table">
+            <thead>
+                <tr>
+                    <th>Movimiento</th>
+                    <th>MÃ©todo de Aprendizaje</th>
+                    <!--anadir un forma de visualizar solo metodos es decir huevos mto  genereacion y otro asi es mas didactico-->
+                    <th>GeneraciÃ³n</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    moves.forEach((move) => {
+        const method =
+            move.version_group_details[0]?.move_learn_method?.name || "N/A";
+        const generation =
+            move.version_group_details[0]?.version_group?.name || "N/A";
+
+        html += `
+            <tr>
+                <td>${move.move.name}</td>
+                <td>${method}</td>
+                <td>${generation}</td>
+            </tr>
+        `;
+    });
+
+    html += "</tbody></table>";
+    container.innerHTML = html;
+}
+
+/**
+ * Busca un PokÃ©mon especÃ­fico
+ */
+async function searchPokemon() {
+    const query = document
+        .getElementById("searchInput")
+        .value.toLowerCase()
+        .trim();
+
+    if (!query) {
+        console.log("Por favor ingresa un PokÃ©mon");
+        return;
+    }
+
+    try {
+        const pokemon = await fetchPokemon(query);
+        if (pokemon) {
+            showPokemonDetail(pokemon);
+        } else {
+            alert("PokÃ©mon no encontrado");
+        }
+    } catch (error) {
+        console.error("Error searching pokemon:", error);
+        alert("Error al buscar el PokÃ©mon");
+    }
+}
+
+// ====================================================
+// FUNCIONES DE DETALLES DE OTRAS APIs
+// ====================================================
+
+// ====================================================
+// UTILIDADES
+// ====================================================
+
+/**
+ * Muestra notificaciÃ³n de carga
+ */
+function showLoading(container, show = true) {
+    if (show) {
+        container.innerHTML = '<div class="loading">Cargando datos...</div>';
+    }
+}
+
+/**
+ * Muestra mensaje de error
+ */
+function showError(container, message) {
+    container.innerHTML = `<div class="error">${message}</div>`;
+}
+
+/**
+ * Muestra estado vacÃ­o
+ */
+function showEmpty(container, message = "Sin datos disponibles") {
+    container.innerHTML = `<div class="empty-state"><p>${message}</p></div>`;
+}
+
+console.log("âœ… Dashboard JavaScript cargado correctamente");
+//apis();
+async function apis() {
+    const API_BASE = "https://pokeapi.co/api/v2/";
+    const API_FINAL = "item";// "evolution-chain";
+//machine => item
+    console.log(API_BASE + API_FINAL);
+
+    const response = await fetch(API_BASE + API_FINAL);
+    const data = await response.json();
+
+    console.log(data);
+
+    const response2 = await fetch(API_BASE + API_FINAL + "/" + 306);
+    const data2 = await response2.json();
+
+    console.log(data2);
+
+    /*
+  crear ficher para cada api
+  crear un iport para cada fichero
+  pensar mejor como cargar los datos en el pokemon principal
+  
+   */
+    /* // APIS QUE SE PUEDEN CONTABILIZAR DATOS CON POKEMON 
+  
+  */
+
+    /*
+  --  
+  berry:"https://pokeapi.co/api/v2/berry/"
+  berry-firmness:"https://pokeapi.co/api/v2/berry-firmness/"
+  berry-flavor:"https://pokeapi.co/api/v2/berry-flavor/"
+  characteristic:"https://pokeapi.co/api/v2/characteristic/"
+  contest-effect:"https://pokeapi.co/api/v2/contest-effect/"
+  contest-type:"https://pokeapi.co/api/v2/contest-type/"
+  encounter-condition:"https://pokeapi.co/api/v2/encounter-condition/"
+  encounter-condition-value:"https://pokeapi.co/api/v2/encounter-condition-value/"
+  encounter-method:"https://pokeapi.co/api/v2/encounter-method/"
+  item:"https://pokeapi.co/api/v2/item/"
+  item-attribute:"https://pokeapi.co/api/v2/item-attribute/"
+  item-category:"https://pokeapi.co/api/v2/item-category/"
+  item-fling-effect:"https://pokeapi.co/api/v2/item-fling-effect/"
+  item-pocket:"https://pokeapi.co/api/v2/item-pocket/"
+  language:"https://pokeapi.co/api/v2/language/"
+  region :=>  location:"https://pokeapi.co/api/v2/location/" ,=>  location-area:"https://pokeapi.co/api/v2/location-area/"
+  machine:"https://pokeapi.co/api/v2/machine/"
+  move-ailment:"https://pokeapi.co/api/v2/move-ailment/"
+  move-battle-style:"https://pokeapi.co/api/v2/move-battle-style/"
+  move-category:"https://pokeapi.co/api/v2/move-category/"
+  move-damage-class:"https://pokeapi.co/api/v2/move-damage-class/"
+  move-learn-method:"https://pokeapi.co/api/v2/move-learn-method/"
+  move-target:"https://pokeapi.co/api/v2/move-target/"
+  nature:"https://pokeapi.co/api/v2/nature/"
+  pokeathlon-stat:"https://pokeapi.co/api/v2/pokeathlon-stat/"
+  pokemon:"https://pokeapi.co/api/v2/pokemon/"
+  pokemon-form:"https://pokeapi.co/api/v2/pokemon-form/"
+  super-contest-effect:"https://pokeapi.co/api/v2/super-contest-effect/"
+  version:"https://pokeapi.co/api/v2/version/"
+  version-group:"https://pokeapi.co/api/v2/version-group/"
+    */
+    console.log();
+}
+
+completados();
+async function completados() {
+    document.getElementById("generationsMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("typesMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("habilidadesMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("pokemoncolorMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("genderMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("pokemonshapeMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("pokemonhabitatMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("egggroupMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("evolutiontriggerMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("pokedexMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("growthrateMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("movesMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("palparkareaMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("pokemonspeciesMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("pokemonformMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+}
+
+import { resultadosApis } from './CountDataApis.js';
+/* muestra lso resultados de las api */
+//resultadosApis();
+
+
+ // pruebasconsoledata(2) ;
+
+async function pruebasconsoledata() {
+    const API_BASE = "https://pokeapi.co/api/v2/";
+    const API_FINAL = "pokemon-form";// "evolution-chain";
+//machine => item
+//"https://pokeapi.co/api/v2/machine/",
+    console.log(API_BASE , API_FINAL);
+
+    const response = await fetch(API_BASE + API_FINAL);
+    const data = await response.json();
+
+    console.log(API_FINAL,' 1 ' ,data);
+
+    const response2 = await fetch(API_BASE + API_FINAL + "/" + 3);
+    const data2 = await response2.json();
+
+    console.log(API_FINAL,' 2 ',data2);
+
+}
