@@ -22,18 +22,18 @@ async function fetchPokemonForm() {
 }
 
 // ====================================================
-// FUNCIONES DE ACTUALIZACIÓN DE DATA
+// FUNCIONES DE ACTUALIZACIÃ“N DE DATA
 // ====================================================
 
 export
 /**
- * Carga los menús laterales
+ * Carga los menÃºs laterales
  */
 async function loadMenuspf() {
     //pokemon_form
     const pokemonform = await fetchPokemonForm();
     const pokemonformMenu = document.getElementById("pokemonformMenu");
-    /* FUNCIONES CONTABILIZACIÓN - POKÉMON*/
+    /* FUNCIONES CONTABILIZACIÃ“N - POKÃ‰MON*/
     pokemonform.results.forEach((pokemonform) => {
         const link = document.createElement("a");
         link.href = "#";
@@ -49,19 +49,19 @@ async function loadMenuspf() {
 }
 
 // ====================================================
-// FUNCIONES DE VISUALIZACIÓN - POKÉMON
+// FUNCIONES DE VISUALIZACIÃ“N - POKÃ‰MON
 // ====================================================
 
 export
 /**
- * Carga y visualiza Pokémon de un Pokemon_Form
+ * Carga y visualiza PokÃ©mon de un Pokemon_Form
  */
 async function loadPokemonForm(typeUrl) {
     showSection("pokemon-section"); //muestra los datos de los pokemon
     const typeData = await fetch(typeUrl).then((r) => r.json());
 
     console.log('typeData', typeData);
-    const pokemonList = typeData.pokemon;
+    const pokemonList = typeData.name;
     console.log('pokemonList', pokemonList);
 
     const grid = document.getElementById("pokemonGrid");
@@ -78,11 +78,22 @@ async function loadPokemonForm(typeUrl) {
     //const pokemon = await fetchPokemon(typeData2.id); //[{} {}] id "id": 413, form.name
     /*name giratina- : 'https://pokeapi.co/api/v2/pokemon/giratina'*/
 
-    const imagenspecieContenedor = document.getElementById("pokemonSpecies");
+
+    const pokemon = await fetchPokemon(pokemonList); //[{} {}]
 
     if (pokemonList) {
-        createPokemonCard(pokemonList, grid);
+        const imagenspecieContenedorf = document.getElementById("pokemonImagef");
+        createPokemonCard(pokemon, grid);
+        console.log(pokemon, grid);
+        const nuevoTexto = document.createElement("span");
+        nuevoTexto.textContent = "id :" + pokemon.id +
+            "is_battle_only :" + pokemon.is_battle_only +
+            "is_default :" + pokemon.is_default +
+            "is_mega :" + pokemon.is_mega +
+            "name :" + pokemon.name;
 
+        imagenspecieContenedorf.appendChild(nuevoTexto);
     }
     //}
+
 }
