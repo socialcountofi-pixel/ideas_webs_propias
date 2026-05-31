@@ -94,9 +94,10 @@ async function loadPokemonSpecies(typeUrl) {
     if (pokemonList) {
         const imagenspecieContenedor = document.getElementById("pokemonSpecies");
         createPokemonCard(pokemon, grid);
+        /*datos dela especie */
         const nuevoTexto = document.createElement("span");
-        nuevoTexto.textContent = 'base_happiness :' + pokemon.base_happiness +
-            "  capture_rate :" + 225;
+        nuevoTexto.textContent = 'base_happiness :' + typeData.base_happiness +
+            "  capture_rate :" + typeData.capture_rate;
 
         imagenspecieContenedor.appendChild(nuevoTexto);
     }
