@@ -156,8 +156,8 @@ async function loaddatosPokemonSpecies(typeUrl) {
         );
 
     }
-
-    //}
+    loadMenuspev(typeData.evolution_chain.url)
+        //}
 }
 
 async function imagenesvariedades(variedades) {
@@ -179,4 +179,5 @@ async function imagenesvariedades(variedades) {
         nuevoTexto.textContent = pokemon.name;
         imagenformContenedor.appendChild(nuevoTexto);
     }
+
 }
