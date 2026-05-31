@@ -69,7 +69,7 @@ export
  * Carga y visualiza Pokémon de un Pokemon_Species
  */
 async function loadPokemonSpecies(typeUrl) {
-    showSection("pokemon-section"); //muestra los datos de los pokemon
+    showSection("pokemon-section"); //muestra los datos de los pokemon desde el menu desplegable
     const typeData = await fetch(typeUrl).then((r) => r.json());
     console.log('typeData', typeData);
     const pokemonList = typeData.name;
@@ -102,4 +102,81 @@ async function loadPokemonSpecies(typeUrl) {
         imagenspecieContenedor.appendChild(nuevoTexto);
     }
     //}
+}
+
+
+
+export
+/**
+ * Carga y visualiza Pokémon de un Pokemon_Species
+ */
+async function loaddatosPokemonSpecies(typeUrl) {
+    //showSection("pokemon-section"); //muestra los datos de los pokemon desde el menu desplegable
+    const typeData = await fetch(typeUrl).then((r) => r.json());
+    //console.log('typeData', typeData);
+    const pokemonList = typeData.name;
+    //console.log('pokemonList', pokemonList);
+    const grid = document.getElementById("pokemonGrid");
+    grid.innerHTML = "";
+
+    // Limitar a 50
+    //const limited = pokemonList.slice(0, 50);
+
+    //for (const species of limited) {
+    //console.log('species', species.url);
+    //const typeData = await fetch(species.url).then((r) => r.json());
+    //console.log('typeData', typeData);
+    //const pokemonList = typeData.id; //pokemon_species_details// para cada poemon que tiene evllucion
+    //console.log('pokemonList', pokemonList);
+
+
+
+    const pokemon = await fetchPokemon(pokemonList); //[{} {}]
+
+    if (pokemonList) {
+        const imagenspecieContenedor = document.getElementById("pokemonSpecies");
+        createPokemonCard(pokemon, grid);
+        /*datos dela especie */
+        const nuevoTexto = document.createElement("span");
+        nuevoTexto.textContent = 'base_happiness :' + typeData.base_happiness +
+            "  capture_rate :" + typeData.capture_rate;
+
+        imagenspecieContenedor.appendChild(nuevoTexto);
+
+        /* imagenes variedades */
+        const imagenformContenedor = document.getElementById("pokemonImagef");
+        //console.log(typeData.varieties);
+
+        typeData.varieties.forEach((element) =>
+
+            //console.log(element.pokemon.name)
+
+            imagenesvariedades(element.pokemon.name)
+
+        );
+
+    }
+
+    //}
+}
+
+async function imagenesvariedades(variedades) {
+    document.getElementById("pokemonImagef").innerHTML = "";
+    const pokemon = await fetchPokemon(variedades);
+    //console.log(pokemon);
+
+    const imagenformContenedor = document.getElementById("pokemonVarieties");
+
+    if (pokemon.sprites.front_default && imagenformContenedor) {
+
+        const nuevaImg = document.createElement("img");
+        nuevaImg.src = pokemon.sprites.front_default;
+        nuevaImg.alt = pokemon.name || "Forma Pokemon";
+        nuevaImg.alt = pokemon.name || "Forma Pokemon";
+        imagenformContenedor.appendChild(nuevaImg);
+
+        const nuevoTexto = document.createElement("span");;
+        nuevoTexto.textContent = pokemon.name;
+        imagenformContenedor.appendChild(nuevoTexto);
+    }
 }
