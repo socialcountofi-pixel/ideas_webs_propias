@@ -2,19 +2,19 @@
 
 /**
  * ====================================================
- * POKÉMON DASHBOARD - JavaScript
+ * POKÃ‰MON DASHBOARD - JavaScript
  * ====================================================
  *
- * DESCRIPCIÓN:
+ * DESCRIPCIÃ“N:
  * Este script implementa un dashboard completo que integra
- * todas las APIs de PokéAPI para explorar datos de Pokémon.
+ * todas las APIs de PokÃ©API para explorar datos de PokÃ©mon.
  *
- * CARACTERÝSTICAS PRINCIPALES:
- * - Exploración de Generaciones, Tipos, Regiones, Habilidades
- * - Gráficas de estadísticas con Chart.js
- * - Búsqueda y filtrado de Pokémon
- * - Detalles completos de cada Pokémon
- * - Integración de todas las APIs de PokéAPI
+ * CARACTERÃ�STICAS PRINCIPALES:
+ * - ExploraciÃ³n de Generaciones, Tipos, Regiones, Habilidades
+ * - GrÃ¡ficas de estadÃ­sticas con Chart.js
+ * - BÃºsqueda y filtrado de PokÃ©mon
+ * - Detalles completos de cada PokÃ©mon
+ * - IntegraciÃ³n de todas las APIs de PokÃ©API
  *
  * APIs UTILIZADAS:
  * - Pokemon: /pokemon/
@@ -33,13 +33,13 @@
  * - Pokemon_Shape: /pokemon-shape/
  * - pokedex: /pokedex/
  * - Gender: /gender/
- * Y muchas más...
+ * Y muchas mÃ¡s...
  *
  * ====================================================
  */
 
 // ====================================================
-// CONFIGURACIÓN GLOBAL
+// CONFIGURACIÃ“N GLOBAL
 // ====================================================
 import { API_BASE, cache } from './config_apis/config_global.js';
 import { loadInitialCharts, createPokemonStatsChart } from './graficas/graficas.js';
@@ -47,11 +47,11 @@ import { loadInitialCharts, createPokemonStatsChart } from './graficas/graficas.
 //export const cache = {}
 
 // ====================================================
-// INICIALIZACIÓN
+// INICIALIZACIÃ“N
 // ====================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("🚀 Dashboard iniciado");
+    console.log("ðŸš€ Dashboard iniciado");
 
     // Cargar datos iniciales
     loadInitialData();
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadInitialData() {
     try {
-        console.log("📊 Cargando datos iniciales...");
+        console.log("ðŸ“Š Cargando datos iniciales...");
 
         // Cargar datos para los contadores
         const [
@@ -110,13 +110,13 @@ async function loadInitialData() {
             evolution_trigger, growth_rate, pal_park_area, pokemon_species, pokemon_form
         );
 
-        // Cargar menús
+        // Cargar menÃºs
         await loadMenus();
 
-        // Cargar gráficos iniciales
+        // Cargar grÃ¡ficos iniciales
         await loadInitialCharts();
     } catch (error) {
-        console.error("❌ Error al cargar datos iniciales:", error);
+        console.error("â�Œ Error al cargar datos iniciales:", error);
     }
 }
 
@@ -125,14 +125,14 @@ async function loadInitialData() {
 // ====================================================
 
 function setupEventListeners() {
-    // Botones del menú toggle
+    // Botones del menÃº toggle
     document.querySelectorAll(".menu-toggle").forEach((button) => {
         button.addEventListener("click", (e) => {
             e.preventDefault();
             const submenu = button.nextElementSibling;
             const isActive = submenu.classList.contains("active");
 
-            // Cerrar otros submenús
+            // Cerrar otros submenÃºs
             document.querySelectorAll(".submenu.active").forEach((m) => {
                 if (m !== submenu) {
                     m.classList.remove("active");
@@ -146,7 +146,7 @@ function setupEventListeners() {
         });
     });
 
-    // Enlaces de navegación superior
+    // Enlaces de navegaciÃ³n superior
     document.querySelectorAll(".nav-links a").forEach((link) => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
@@ -157,7 +157,7 @@ function setupEventListeners() {
         });
     });
 
-    // Búsqueda de Pokémon
+    // BÃºsqueda de PokÃ©mon
     const searchBtn = document.getElementById("searchBtn");
     const searchInput = document.getElementById("searchInput");
 
@@ -180,7 +180,7 @@ function setupEventListeners() {
 }
 
 // ====================================================
-// FUNCIONES DE NAVEGACIÓN
+// FUNCIONES DE NAVEGACIÃ“N
 // ====================================================
 
 export function showSection(sectionId) {
@@ -189,7 +189,7 @@ export function showSection(sectionId) {
         section.classList.remove("active");
     });
 
-    // Mostrar la sección seleccionada
+    // Mostrar la secciÃ³n seleccionada
     const section = document.getElementById(sectionId);
     if (section) {
         section.classList.add("active");
@@ -202,7 +202,7 @@ export function showSection(sectionId) {
 // ====================================================
 
 /**
- * Obtiene el total de Pokémon
+ * Obtiene el total de PokÃ©mon
  */
 
 async function fetchPokemonCount() {
@@ -232,7 +232,7 @@ import { fetchTypes, loadMenust } from './apiscontabiliza/type.js';
 import { fetchAbilities, loadMenusa } from './apiscontabiliza/ability.js';
 
 /**
- *  Obtiene todas los  estadísticas Pokemon 
+ *  Obtiene todas los  estadÃ­sticas Pokemon 
  */
 import { fetchMoves, loadMenusm } from './apiscontabiliza/move.js';
 
@@ -298,17 +298,17 @@ import { fetchPokemonForm, loadMenuspf, loadPokemonForm } from './apisfiltros/po
 
 
 /**
- *  Obtiene todas los  estadísticas region Pokemon 
+ *  Obtiene todas los  estadÃ­sticas region Pokemon 
  */
 import { fetchRegions, loadMenusr } from './apisfiltros/region.js';
 
 /**
- * Obtiene estadísticas
+ * Obtiene estadÃ­sticas
  */
 import { fetchStats, loadMenuss, statMdDtos, statNdDtos } from './apisfiltros/stat.js';
 
 /**
- * Obtiene estadísticas
+ * Obtiene estadÃ­sticas
  */
 import { fetchNatures, loadMenusn, natureDatos } from './apisfiltros/nature.js';
 
@@ -320,7 +320,7 @@ import { fetchMachines, loadMenusma, datosmachine } from './apisfiltros/machine.
 
 
 /**
- * Obtiene un Pokémon específico
+ * Obtiene un PokÃ©mon especÃ­fico
  */
 
 export async function fetchPokemon(idOrName) {
@@ -344,7 +344,7 @@ export async function fetchPokemon(idOrName) {
         const resSpecies = await fetch(data.species.url);
         if (resSpecies.ok) {
             const dataS = await resSpecies.json();
-            // Aquí puedes mezclar los datos si te hace falta algo de la especie
+            // AquÃ­ puedes mezclar los datos si te hace falta algo de la especie
             data.speciesData = dataS;
         }
 
@@ -360,11 +360,11 @@ export async function fetchPokemon(idOrName) {
 
 
 // ====================================================
-// FUNCIONES DE ACTUALIZACIÓN DE DATA
+// FUNCIONES DE ACTUALIZACIÃ“N DE DATA
 // ====================================================
 
 /**
- * Actualiza los contadores estadísticos
+ * Actualiza los contadores estadÃ­sticos
  */
 async function updateStats(
     pokemon, generations, types, abilities, move, egg_group, pokemon_color, pokemon_habitat, pokemon_shape, pokedex, gender, evolution_trigger, growth_rate, pal_park_area, pokemon_species, pokemon_form
@@ -388,7 +388,7 @@ async function updateStats(
 }
 
 /**
- * Carga los menús laterales
+ * Carga los menÃºs laterales
  */
 async function loadMenus() {
     try {
@@ -420,7 +420,7 @@ async function loadMenus() {
         loadMenusm();
         // Regiones 
         loadMenusr();
-        // Estadísticas
+        // EstadÃ­sticas
         loadMenuss();
         //Nature affecting_natures
         loadMenusn();
@@ -438,11 +438,11 @@ async function loadMenus() {
 }
 
 // ====================================================
-// FUNCIONES DE VISUALIZACIÓN - POKÉMON
+// FUNCIONES DE VISUALIZACIÃ“N - POKÃ‰MON
 // ====================================================
 
 /**
- * Crea una tarjeta de Pokémon
+ * Crea una tarjeta de PokÃ©mon
  */
 export async function createPokemonCard(pokemon, container) {
     //console.log('card', pokemon, container)
@@ -493,13 +493,13 @@ console.log('typeDatas',typeDatas);*/
 
 
 /**
- * Muestra los detalles completos de un Pokémon
+ * Muestra los detalles completos de un PokÃ©mon
  */
 async function showPokemonDetail(pokemon) {
     //console.log('showPokemonDetail', pokemon);
     showSection("pokemon-detail-section");
 
-    // Información básica
+    // InformaciÃ³n bÃ¡sica
     document.getElementById("pokemonDetailTitle").textContent =
         `${pokemon.name} (#${pokemon.id})`;
     document.getElementById("pokemonImage").src =
@@ -532,7 +532,7 @@ specie(pokemon);
         .join(" ");
     document.getElementById("pokemonAbilities").innerHTML = abilities;
 
-    // --- LA SOLUCIÓN PARA QUE FUNCIONE EL CLICK ---
+    // --- LA SOLUCIÃ“N PARA QUE FUNCIONE EL CLICK ---
 
     document.getElementById("pokemonAbilities").addEventListener("click", async (e) => {
         if (e.target.tagName === 'SPAN') {
@@ -545,7 +545,7 @@ specie(pokemon);
 
 
                 // Buscamos la efeccto de entrada sin usar el signo '?'  language
-                let descripcionEntrada = "Descripción no encontrada";
+                let descripcionEntrada = "DescripciÃ³n no encontrada";
                 const entrada = data.effect_entries;
 
                 if (entrada) {
@@ -556,8 +556,8 @@ specie(pokemon);
                         }
                     }
                 }
-                // Buscamos la descripción sin usar el signo '?'  language
-                let descripcion = "Descripción no encontrada";
+                // Buscamos la descripciÃ³n sin usar el signo '?'  language
+                let descripcion = "DescripciÃ³n no encontrada";
                 const entradas = data.flavor_text_entries;
 
                 if (entradas) {
@@ -573,7 +573,7 @@ specie(pokemon);
                 // Buscamos el pokemon sin usar el signo '?'  language
                 const pokemonab = data.pokemon
                     .map((t) => {
-                        /* se puede añadir una clase o id i dar color a dicho texto segun si es oculta o no  */
+                        /* se puede aÃ±adir una clase o id i dar color a dicho texto segun si es oculta o no  */
                         if (t.is_hidden) {
                             return t.pokemon.name + ' : (oculta)'
 
@@ -607,8 +607,8 @@ specie(pokemon);
 
 
     /* 
-effect_changes: [{…}]
-effect_entries: (3) [{…}, {…}, {…}]
+effect_changes: [{â€¦}]
+effect_entries: (3) [{â€¦}, {â€¦}, {â€¦}]
  */
 
 
@@ -622,7 +622,7 @@ effect_entries: (3) [{…}, {…}, {…}]
     /* Graficas de pokemon pesado (weight) */
     /* Graficas de pokemon alto (height) */
 
-    // Gráfico de estadísticas
+    // GrÃ¡fico de estadÃ­sticas
     createPokemonStatsChart(pokemon.stats);
 
     // Movimientos
@@ -702,7 +702,7 @@ async function specie(pokemon){
 /* FIN EVOLUCIONES*/
 
 /**
- * Muestra los movimientos del Pokémon
+ * Muestra los movimientos del PokÃ©mon
  */
 function displayPokemonMoves(moves) {
     const container = document.getElementById("movesTable");
@@ -718,9 +718,9 @@ function displayPokemonMoves(moves) {
             <thead>
                 <tr>
                     <th>Movimiento</th>
-                    <th>Método de Aprendizaje</th>
+                    <th>MÃ©todo de Aprendizaje</th>
                     <!--anadir un forma de visualizar solo metodos es decir huevos mto  genereacion y otro asi es mas didactico-->
-                    <th>Generación</th>
+                    <th>GeneraciÃ³n</th>
                 </tr>
             </thead>
             <tbody>
@@ -746,7 +746,7 @@ function displayPokemonMoves(moves) {
 }
 
 /**
- * Busca un Pokémon específico
+ * Busca un PokÃ©mon especÃ­fico
  */
 async function searchPokemon() {
     const query = document
@@ -755,7 +755,7 @@ async function searchPokemon() {
         .trim();
 
     if (!query) {
-        console.log("Por favor ingresa un Pokémon");
+        console.log("Por favor ingresa un PokÃ©mon");
         return;
     }
 
@@ -764,11 +764,11 @@ async function searchPokemon() {
         if (pokemon) {
             showPokemonDetail(pokemon);
         } else {
-            alert("Pokémon no encontrado");
+            alert("PokÃ©mon no encontrado");
         }
     } catch (error) {
         console.error("Error searching pokemon:", error);
-        alert("Error al buscar el Pokémon");
+        alert("Error al buscar el PokÃ©mon");
     }
 }
 
@@ -781,7 +781,7 @@ async function searchPokemon() {
 // ====================================================
 
 /**
- * Muestra notificación de carga
+ * Muestra notificaciÃ³n de carga
  */
 function showLoading(container, show = true) {
     if (show) {
@@ -797,13 +797,13 @@ function showError(container, message) {
 }
 
 /**
- * Muestra estado vacío
+ * Muestra estado vacÃ­o
  */
 function showEmpty(container, message = "Sin datos disponibles") {
     container.innerHTML = `<div class="empty-state"><p>${message}</p></div>`;
 }
 
-console.log("✅ Dashboard JavaScript cargado correctamente");
+console.log("âœ… Dashboard JavaScript cargado correctamente");
 //apis();
 async function apis() {
     const API_BASE = "https://pokeapi.co/api/v2/";
@@ -882,6 +882,8 @@ async function completados() {
     document.getElementById("growthrateMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
     document.getElementById("movesMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
     document.getElementById("palparkareaMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("pokemonspeciesMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
+    document.getElementById("pokemonformMenu").style.backgroundColor = "rgba(255, 107, 107, 0.1)";
 }
 
 import { resultadosApis } from './CountDataApis.js';
