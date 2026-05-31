@@ -4,25 +4,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon Dashboard - API Explorer</title>
+    <title>PokÃ©mon Dashboard - API Explorer</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 </head>
 
 <body>
-    <!-- Barra de navegación superior -->
+    <!-- Barra de navegaciÃ³n superior -->
     <nav class="navbar">
         <div class="navbar-container">
-            <div class="logo">Pokémon Dashboard</div>
+            <div class="logo">PokÃ©mon Dashboard</div>
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Buscar Pokémon...">
-                <button id="searchBtn">🔝</button>
+                <input type="text" id="searchInput" placeholder="Buscar PokÃ©mon...">
+                <button id="searchBtn">ðŸ”�</button>
             </div>
             <div class="nav-links">
                 <a href="#" data-section="overview">Vista General</a>
-                <a href="#" data-section="pokemon">Pokémon</a>
+                <a href="#" data-section="pokemon">PokÃ©mon</a>
                 <a href="#" data-section="types">Tipos</a>
-                <a href="#" data-section="stats">Estadísticas</a>
+                <a href="#" data-section="stats">EstadÃ­sticas</a>
                 <a href="#" data-section="regions">regions</a>
                 <a href="#" data-section="natures">nature</a>
                 <a href="#" data-section="machines">machine</a>
@@ -34,7 +34,7 @@
 
     <!-- Contenedor principal -->
     <div class="container">
-        <!-- Sidebar de navegación -->
+        <!-- Sidebar de navegaciÃ³n -->
         <aside class="sidebar">
             <h3>Explorar APIs</h3>
             <div class="nav-menu">
@@ -126,14 +126,14 @@
             </div>
         </aside>
 
-        <!-- Ýrea de contenido principal -->
+        <!-- Ã�rea de contenido principal -->
         <main class="main-content">
-            <!-- Sección de vista general -->
+            <!-- SecciÃ³n de vista general -->
             <section id="overview-section" class="section active">
                 <h2>Resumen del Dashboard</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h4>Total Pokémon</h4>
+                        <h4>Total PokÃ©mon</h4>
                         <p id="totalPokemon" class="stat-value">-</p>
                     </div>
                     <div class="stat-card">
@@ -208,22 +208,22 @@
 
                 </div>
 
-                <!-- Gráfico de distribución de tipos -->
+                <!-- GrÃ¡fico de distribuciÃ³n de tipos -->
                 <div class="chart-container">
-                    <h3>Distribución de Tipos (Primeros 50 Pokémon)</h3>
+                    <h3>DistribuciÃ³n de Tipos (Primeros 50 PokÃ©mon)</h3>
                     <canvas id="chartTypes"></canvas>
                 </div>
 
-                <!-- Gráfico de comparación de estadísticas -->
+                <!-- GrÃ¡fico de comparaciÃ³n de estadÃ­sticas -->
                 <div class="chart-container">
-                    <h3>Estadísticas Base Promedio por Tipo</h3>
+                    <h3>EstadÃ­sticas Base Promedio por Tipo</h3>
                     <canvas id="chartStats"></canvas>
                 </div>
             </section>
 
-            <!-- Sección de Pokémon -->
+            <!-- SecciÃ³n de PokÃ©mon -->
             <section id="pokemon-section" class="section">
-                <h2>Explorador de Pokémon</h2>
+                <h2>Explorador de PokÃ©mon</h2>
                 <div class="pokemon-filters">
                     <select id="generacionFilter">
                         <option value="">Todas las Generaciones</option>
@@ -238,56 +238,56 @@
                 <div class="pokemon-grid" id="pokemonGrid"></div>
             </section>
 
-            <!-- Sección de Tipos -->
+            <!-- SecciÃ³n de Tipos -->
             <section id="types-section" class="section">
                 <h2>Explorador de Tipos</h2>
                 <div id="typesContainer" class="types-grid"></div>
             </section>
 
-            <!-- Sección de pokemon color -->
+            <!-- SecciÃ³n de pokemon color -->
             <section id="pokemoncolor-section" class="section">
                 <h2>Explorador de Tipos</h2>
                 <div id="pokemoncolorContainer" class="pokemoncolor-grid"></div>
             </section>
 
-            <!-- Sección de shape -->
+            <!-- SecciÃ³n de shape -->
             <section id="pokemonshape-section" class="section">
                 <h2>Explorador de Shapes</h2>
                 <div id="pokemonshapeContainer" class="pokemonshape-grid"></div>
             </section>
 
-            <!-- Sección de pokedex -->
+            <!-- SecciÃ³n de pokedex -->
             <section id="pokedex-section" class="section">
                 <h2>Explorador de Tipos</h2>
                 <div id="pokedexContainer" class="pokedex-grid"></div>
             </section>
 
 
-            <!-- Sección de gender -->
+            <!-- SecciÃ³n de gender -->
             <section id="gender-section" class="section">
                 <h2>Explorador de generos</h2>
                 <div id="genderContainer" class="gender-grid"></div>
             </section>
 
-            <!-- Sección de trigges -->
+            <!-- SecciÃ³n de trigges -->
             <section id="evolutiontrigger-section" class="section">
                 <h2>Explorador de triggers evolutivos</h2>
                 <div id="evolutiontriggerContainer" class="evolutiontrigger-grid"></div>
             </section>
 
-            <!-- Sección de pal park area -->
+            <!-- SecciÃ³n de pal park area -->
             <section id="totalpalparkarea-section" class="section">
                 <h2>Explorador de triggers evolutivos</h2>
                 <div id="totalpalparkarea" class="totalpalparkarea-grid"></div>
             </section>
 
-            <!-- Sección de moveas -->
+            <!-- SecciÃ³n de moveas -->
             <section id="move-section" class="section">
                 <h2>Explorador de triggers evolutivos</h2>
                 <div id="moveContainer" class="move-grid"></div>
             </section>
 
-            <!-- Sección de egggroup-section -->
+            <!-- SecciÃ³n de egggroup-section -->
             <section id="egggroup-section" class="section">
                 <h2>Explorador de eggg secc</h2>
                 <div id="moveContainer" class="egggroup-grid"></div>
@@ -297,9 +297,9 @@
 
 
 
-            <!-- Sección de stats -->
+            <!-- SecciÃ³n de stats -->
             <section id="stats-section" class="section">
-                <h2>Estadísticas stats Generales</h2>
+                <h2>EstadÃ­sticas stats Generales</h2>
                 <div class="pokemon-filters">
                     <!-- <div class="submenu" id="statsMenu"></div>-->
                     <select id="statsFilter">
@@ -324,7 +324,7 @@
                 <div class="stats-detail">
                     <div id="statsDetail">Detalles del Item</div>
                     <div class="chart-container">
-                        <h3>Distribución de Estadísticas</h3>
+                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
                         <canvas id="chartStatsDetail"></canvas>
                     </div>
                     <div id="statsTableContainer"></div>
@@ -332,9 +332,9 @@
             </section>
 
 
-            <!-- Sección de rgiones -->
+            <!-- SecciÃ³n de rgiones -->
             <section id="regions-section" class="section">
-                <h2>Estadísticas regions Generales</h2>
+                <h2>EstadÃ­sticas regions Generales</h2>
                 <div class="pokemon-filters">
                     <!-- <div class="submenu" id="regionsMenu"></div>-->
                     <select id="regionsFilter">
@@ -351,16 +351,16 @@
                 <div class="regions-detail">
                     <div id="regionsDetail">Detalles del Item</div>
                     <div class="chart-container">
-                        <h3>Distribución de Estadísticas</h3>
+                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
                         <canvas id="chartregionsDetail"></canvas>
                     </div>
                     <div id="regionsTableContainer"></div>
                 </div>
             </section>
 
-            <!-- Sección de naturesa -->
+            <!-- SecciÃ³n de naturesa -->
             <section id="natures-section" class="section">
-                <h2>Estadísticas regions Generales</h2>
+                <h2>EstadÃ­sticas regions Generales</h2>
                 <div class="pokemon-filters">
                     <!-- <div class="submenu" id="regionsMenu"></div>-->
                     <select id="naturesFilter">
@@ -377,7 +377,7 @@
                 <div class="natures-detail">
                     <div id="naturesDetail">Detalles del Item</div>
                     <div class="chart-container">
-                        <h3>Distribución de Estadísticas</h3>
+                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
                         <canvas id="chartnaturesDetail"></canvas>
                     </div>
                     <div id="naturesTableContainer"></div>
@@ -387,9 +387,9 @@
 
 
 
-            <!-- Sección de stats -->
+            <!-- SecciÃ³n de stats -->
             <section id="machines-section" class="section">
-                <h2>Estadísticas stats Generales</h2>
+                <h2>EstadÃ­sticas stats Generales</h2>
                 <div class="pokemon-filters">
                     <!-- <div class="submenu" id="statsMenu"></div>-->
                     <select id="machinesFilter">
@@ -405,7 +405,7 @@
                 <div class="machines-detail">
                     <div id="machinesDetail">Detalles del machines</div>
                     <div class="chart-container">
-                        <h3>Distribución de Estadísticas</h3>
+                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
                         <canvas id="chartMachinesDetail"></canvas>
                     </div>
                     <div id="statsTableContainer"></div>
@@ -413,7 +413,7 @@
             </section>
 
 
-            <!-- Sección de pokemon form -->
+            <!-- SecciÃ³n de pokemon form -->
             <section id="pokemonforms-section" class="section">
                 <h2>pokemon forms</h2>
                 <div class="pokemon-filters">
@@ -430,7 +430,7 @@
                 <div class="pokemonforms-detail">
                     <div id="pokemonformsDetail">Detalles del Item</div>
                     <div class="chart-container">
-                        <h3>Distribución de Estadísticas</h3>
+                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
                         <canvas id="chartnaturesDetail"></canvas>
                     </div>
                     <div id="pokemonformsTableContainer"></div>
@@ -438,7 +438,7 @@
             </section>
 
 
-            <!-- Sección de pokemon species -->
+            <!-- SecciÃ³n de pokemon species -->
             <section id="pokemonspecies-section" class="section">
                 <h2>pokemon species</h2>
                 <div class="pokemon-filters">
@@ -455,20 +455,20 @@
                 <div class="pokemonspecies-detail">
                     <div id="pokemonspeciesDetail">Detalles del Item</div>
                     <div class="chart-container">
-                        <h3>Distribución de Estadísticas</h3>
+                        <h3>DistribuciÃ³n de EstadÃ­sticas</h3>
                         <canvas id="chartnaturesDetail"></canvas>
                     </div>
                     <div id="pokemonspeciesTableContainer"></div>
                 </div>
             </section>
 
-            <!-- Sección de detalles del Pokémon -->
+            <!-- SecciÃ³n de detalles del PokÃ©mon -->
             <section id="pokemon-detail-section" class="section">
-                <h2 id="pokemonDetailTitle">Detalles del Pokémon</h2>
+                <h2 id="pokemonDetailTitle">Detalles del PokÃ©mon</h2>
                 <div class="pokemon-detail">
                     <!--contendor la imagen pokemon-->
                     <div class="pokemon-image-container">
-                        <img id="pokemonImage" src="" alt="Pokémon">
+                        <img id="pokemonImage" src="" alt="PokÃ©mon">
                     </div>
 
                     <!--contendor de la informacion del pokemon-->
@@ -503,20 +503,24 @@
 
                     <!--contendor de las species-->
                     <div class="pokemon-image-container"> <label>especies:</label>
-                        <div id="pokemonSpecies" src="" alt="Pokémon">
+                        <div id="pokemonSpecies" src="" alt="PokÃ©mon">
+
+                        </div>
+                        <div id="pokemonVarieties" src="" alt="PokÃ©mon">
+
 
                         </div>
                     </div>
 
                     <!--contendor de las formas-->
                     <div class="pokemon-image-container"> <label>Formas:</label>
-                        <div id="pokemonImagef" src="" alt="Pokémon">
+                        <div id="pokemonImagef" src="" alt="PokÃ©mon">
 
                         </div>
                     </div>
                     <!--contenedor de las evoluciones-->
                     <div class="pokemon-image-container"> <label>Evoluciones:</label>
-                        <div id="pokemonImageV" src="" alt="Pokémon">
+                        <div id="pokemonImageV" src="" alt="PokÃ©mon">
 
                         </div>
                     </div>
@@ -527,19 +531,19 @@
 
                 </div>
 
-                <!-- Gráfico de estadísticas del Pokémon -->
+                <!-- GrÃ¡fico de estadÃ­sticas del PokÃ©mon -->
                 <div class="chart-container">
-                    <h3>Estadísticas del Pokémon</h3>
+                    <h3>EstadÃ­sticas del PokÃ©mon</h3>
                     <!--lista de berrie para agregar al pokemon y aumenta las estadisticas-->
                     <div class="berries">berries
                         <h3>berri 1</h3>
                         <h3>berri 2</h3>
                         <div>
-                            <h3>añadir</h3>
-                            <!--añade las bayas segun la cantidad seleccionada por defecto 1-->
+                            <h3>aÃ±adir</h3>
+                            <!--aÃ±ade las bayas segun la cantidad seleccionada por defecto 1-->
                             <h3>numero de bayas</h3>
-                            <!--si se añade se actualiza la stat que le correspona siendo un maximo de 5 bayas por cada stats-->
-                            <!--Siendo lo importante que se vea o difiera los cambios con un colo diferente al actualñ-->
+                            <!--si se aÃ±ade se actualiza la stat que le correspona siendo un maximo de 5 bayas por cada stats-->
+                            <!--Siendo lo importante que se vea o difiera los cambios con un colo diferente al actualÃ±-->
                         </div>
                     </div>
                     <canvas id="chartPokemonStats"></canvas>
@@ -549,13 +553,13 @@
                 <div>
                     <h3>lista objetos</h3>
                     <!--carga los objetos para aumentar la cantidad de movimientos-->
-                    <h3>añadir</h3>
+                    <h3>aÃ±adir</h3>
                     <!--se anade una cantidad de pp o ph al atake-->
                     <h3>cantidad de item</h3>
-                    <!--cantidad de item que se añade y se ve en pantalla ejemplo 10(30) siendo 10  por defecto de la base ded datos y (30)lo que ha aumentado segun la cantidad seleccionada-->
+                    <!--cantidad de item que se aÃ±ade y se ve en pantalla ejemplo 10(30) siendo 10  por defecto de la base ded datos y (30)lo que ha aumentado segun la cantidad seleccionada-->
                 </div>
 
-                <!-- Movimientos del Pokémon -->
+                <!-- Movimientos del PokÃ©mon -->
                 <div class="moves-container">
                     <h3>Movimientos</h3>
                     <div id="movesTable"></div>
@@ -565,7 +569,7 @@
         </main>
     </div>
 
-    <!-- Modal para mostrar información adicional -->
+    <!-- Modal para mostrar informaciÃ³n adicional -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
