@@ -2,19 +2,19 @@
 
 /**
  * ====================================================
- * POKÃ‰MON DASHBOARD - JavaScript
+ * POKÉMON DASHBOARD - JavaScript
  * ====================================================
  *
- * DESCRIPCIÃ“N:
+ * DESCRIPCIÓN:
  * Este script implementa un dashboard completo que integra
- * todas las APIs de PokÃ©API para explorar datos de PokÃ©mon.
+ * todas las APIs de PokéAPI para explorar datos de Pokémon.
  *
- * CARACTERÃ�STICAS PRINCIPALES:
- * - ExploraciÃ³n de Generaciones, Tipos, Regiones, Habilidades
- * - GrÃ¡ficas de estadÃ­sticas con Chart.js
- * - BÃºsqueda y filtrado de PokÃ©mon
- * - Detalles completos de cada PokÃ©mon
- * - IntegraciÃ³n de todas las APIs de PokÃ©API
+ * CARACTERÝSTICAS PRINCIPALES:
+ * - Exploración de Generaciones, Tipos, Regiones, Habilidades
+ * - Gráficas de estadísticas con Chart.js
+ * - Búsqueda y filtrado de Pokémon
+ * - Detalles completos de cada Pokémon
+ * - Integración de todas las APIs de PokéAPI
  *
  * APIs UTILIZADAS:
  * - Pokemon: /pokemon/
@@ -33,13 +33,13 @@
  * - Pokemon_Shape: /pokemon-shape/
  * - pokedex: /pokedex/
  * - Gender: /gender/
- * Y muchas mÃ¡s...
+ * Y muchas más...
  *
  * ====================================================
  */
 
 // ====================================================
-// CONFIGURACIÃ“N GLOBAL
+// CONFIGURACIÓN GLOBAL
 // ====================================================
 import { API_BASE, cache } from './config_apis/config_global.js';
 import { loadInitialCharts, createPokemonStatsChart } from './graficas/graficas.js';
@@ -47,11 +47,11 @@ import { loadInitialCharts, createPokemonStatsChart } from './graficas/graficas.
 //export const cache = {}
 
 // ====================================================
-// INICIALIZACIÃ“N
+// INICIALIZACIÓN
 // ====================================================
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("ðŸš€ Dashboard iniciado");
+    console.log("🚀 Dashboard iniciado");
 
     // Cargar datos iniciales
     loadInitialData();
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function loadInitialData() {
     try {
-        console.log("ðŸ“Š Cargando datos iniciales...");
+        console.log("📊 Cargando datos iniciales...");
 
         // Cargar datos para los contadores
         const [
@@ -110,13 +110,13 @@ async function loadInitialData() {
             evolution_trigger, growth_rate, pal_park_area, pokemon_species, pokemon_form
         );
 
-        // Cargar menÃºs
+        // Cargar menús
         await loadMenus();
 
-        // Cargar grÃ¡ficos iniciales
+        // Cargar gráficos iniciales
         await loadInitialCharts();
     } catch (error) {
-        console.error("â�Œ Error al cargar datos iniciales:", error);
+        console.error("❌ Error al cargar datos iniciales:", error);
     }
 }
 
@@ -125,14 +125,14 @@ async function loadInitialData() {
 // ====================================================
 
 function setupEventListeners() {
-    // Botones del menÃº toggle
+    // Botones del menú toggle
     document.querySelectorAll(".menu-toggle").forEach((button) => {
         button.addEventListener("click", (e) => {
             e.preventDefault();
             const submenu = button.nextElementSibling;
             const isActive = submenu.classList.contains("active");
 
-            // Cerrar otros submenÃºs
+            // Cerrar otros submenús
             document.querySelectorAll(".submenu.active").forEach((m) => {
                 if (m !== submenu) {
                     m.classList.remove("active");
@@ -146,7 +146,7 @@ function setupEventListeners() {
         });
     });
 
-    // Enlaces de navegaciÃ³n superior
+    // Enlaces de navegación superior
     document.querySelectorAll(".nav-links a").forEach((link) => {
         link.addEventListener("click", (e) => {
             e.preventDefault();
@@ -157,7 +157,7 @@ function setupEventListeners() {
         });
     });
 
-    // BÃºsqueda de PokÃ©mon
+    // Búsqueda de Pokémon
     const searchBtn = document.getElementById("searchBtn");
     const searchInput = document.getElementById("searchInput");
 
@@ -180,7 +180,7 @@ function setupEventListeners() {
 }
 
 // ====================================================
-// FUNCIONES DE NAVEGACIÃ“N
+// FUNCIONES DE NAVEGACIÓN
 // ====================================================
 
 export function showSection(sectionId) {
@@ -189,7 +189,7 @@ export function showSection(sectionId) {
         section.classList.remove("active");
     });
 
-    // Mostrar la secciÃ³n seleccionada
+    // Mostrar la sección seleccionada
     const section = document.getElementById(sectionId);
     if (section) {
         section.classList.add("active");
@@ -202,7 +202,7 @@ export function showSection(sectionId) {
 // ====================================================
 
 /**
- * Obtiene el total de PokÃ©mon
+ * Obtiene el total de Pokémon
  */
 
 async function fetchPokemonCount() {
@@ -232,7 +232,7 @@ import { fetchTypes, loadMenust } from './apiscontabiliza/type.js';
 import { fetchAbilities, loadMenusa } from './apiscontabiliza/ability.js';
 
 /**
- *  Obtiene todas los  estadÃ­sticas Pokemon 
+ *  Obtiene todas los  estadísticas Pokemon 
  */
 import { fetchMoves, loadMenusm } from './apiscontabiliza/move.js';
 
@@ -286,29 +286,29 @@ import { fetchPalParkArea, loadMenusppa } from './apiscontabiliza/pal_park_area.
 /**
  * Obtiene pokemon_species
  */
-import { fetchPokemonSpecies, loadMenuspe, loadPokemonSpecies, loaddatosPokemonSpecies } from './apisfiltros/pokemon_species_copy.js';
+import { fetchPokemonSpecies, loadMenuspe, loadPokemonSpecies, loaddatosPokemonSpecies } from './apisfiltros/pokemon_species.js';
 /**
  * Obtiene formas
  */
 //import { fetchPokemonForm, loadMenuspf, pokemoformpokemon } from './//apisfiltros/pokemon_form.js';
 //import { fetchPokemonFormF, loadMenuspf } from './apiscontabiliza/pokemon_form.js';
-import { fetchPokemonForm, loadMenuspf, loadPokemonForm, loaddatosPokemonForm } from './apisfiltros/pokemon_form_copy.js';
+import { fetchPokemonForm, loadMenuspf, loadPokemonForm, loaddatosPokemonForm } from './apisfiltros/pokemon_form.js';
 
 
 
 
 /**
- *  Obtiene todas los  estadÃ­sticas region Pokemon 
+ *  Obtiene todas los  estadísticas region Pokemon 
  */
 import { fetchRegions, loadMenusr } from './apisfiltros/region.js';
 
 /**
- * Obtiene estadÃ­sticas
+ * Obtiene estadísticas
  */
 import { fetchStats, loadMenuss, statMdDtos, statNdDtos } from './apisfiltros/stat.js';
 
 /**
- * Obtiene estadÃ­sticas
+ * Obtiene estadísticas
  */
 import { fetchNatures, loadMenusn, natureDatos } from './apisfiltros/nature.js';
 
@@ -320,7 +320,7 @@ import { fetchMachines, loadMenusma, datosmachine } from './apisfiltros/machine.
 
 
 /**
- * Obtiene un PokÃ©mon especÃ­fico
+ * Obtiene un Pokémon específico
  */
 
 export async function fetchPokemon(idOrName) {
@@ -344,7 +344,7 @@ export async function fetchPokemon(idOrName) {
         const resSpecies = await fetch(data.species.url);
         if (resSpecies.ok) {
             const dataS = await resSpecies.json();
-            // AquÃ­ puedes mezclar los datos si te hace falta algo de la especie
+            // Aquí puedes mezclar los datos si te hace falta algo de la especie
             data.speciesData = dataS;
         }
 
@@ -360,11 +360,11 @@ export async function fetchPokemon(idOrName) {
 
 
 // ====================================================
-// FUNCIONES DE ACTUALIZACIÃ“N DE DATA
+// FUNCIONES DE ACTUALIZACIÓN DE DATA
 // ====================================================
 
 /**
- * Actualiza los contadores estadÃ­sticos
+ * Actualiza los contadores estadísticos
  */
 async function updateStats(
     pokemon, generations, types, abilities, move, egg_group, pokemon_color, pokemon_habitat, pokemon_shape, pokedex, gender, evolution_trigger, growth_rate, pal_park_area, pokemon_species, pokemon_form
@@ -388,7 +388,7 @@ async function updateStats(
 }
 
 /**
- * Carga los menÃºs laterales
+ * Carga los menús laterales
  */
 async function loadMenus() {
     try {
@@ -420,7 +420,7 @@ async function loadMenus() {
         loadMenusm();
         // Regiones 
         loadMenusr();
-        // EstadÃ­sticas
+        // Estadísticas
         loadMenuss();
         //Nature affecting_natures
         loadMenusn();
@@ -439,11 +439,11 @@ async function loadMenus() {
 }
 
 // ====================================================
-// FUNCIONES DE VISUALIZACIÃ“N - POKÃ‰MON
+// FUNCIONES DE VISUALIZACIÓN - POKÉMON
 // ====================================================
 
 /**
- * Crea una tarjeta de PokÃ©mon
+ * Crea una tarjeta de Pokémon
  */
 export async function createPokemonCard(pokemon, container) {
     //console.log('card', pokemon, container)
@@ -494,13 +494,13 @@ console.log('typeDatas',typeDatas);*/
 
 
 /**
- * Muestra los detalles completos de un PokÃ©mon
+ * Muestra los detalles completos de un Pokémon
  */
 async function showPokemonDetail(pokemon) {
     //console.log('showPokemonDetail', pokemon);
     showSection("pokemon-detail-section");
 
-    // InformaciÃ³n bÃ¡sica
+    // Información básica
     document.getElementById("pokemonDetailTitle").textContent =
         `${pokemon.name} (#${pokemon.id})`;
     document.getElementById("pokemonImage").src =
@@ -508,15 +508,6 @@ async function showPokemonDetail(pokemon) {
         pokemon.sprites.front_default;
     document.getElementById("pokemonName").textContent = pokemon.name;
     document.getElementById("pokemonId").textContent = `#${pokemon.id}`;
-//formas 
-forma2(pokemon);
-//formas
-
-//formas 
-forma(pokemon);
-//formas
- 
-
 
 
     // Tipos
@@ -531,7 +522,7 @@ forma(pokemon);
         .join(" ");
     document.getElementById("pokemonAbilities").innerHTML = abilities;
 
-    // --- LA SOLUCIÃ“N PARA QUE FUNCIONE EL CLICK ---
+    // --- LA SOLUCIÓN PARA QUE FUNCIONE EL CLICK ---
 
     document.getElementById("pokemonAbilities").addEventListener("click", async (e) => {
         if (e.target.tagName === 'SPAN') {
@@ -544,7 +535,7 @@ forma(pokemon);
 
 
                 // Buscamos la efeccto de entrada sin usar el signo '?'  language
-                let descripcionEntrada = "DescripciÃ³n no encontrada";
+                let descripcionEntrada = "Descripción no encontrada";
                 const entrada = data.effect_entries;
 
                 if (entrada) {
@@ -555,8 +546,8 @@ forma(pokemon);
                         }
                     }
                 }
-                // Buscamos la descripciÃ³n sin usar el signo '?'  language
-                let descripcion = "DescripciÃ³n no encontrada";
+                // Buscamos la descripción sin usar el signo '?'  language
+                let descripcion = "Descripción no encontrada";
                 const entradas = data.flavor_text_entries;
 
                 if (entradas) {
@@ -572,7 +563,7 @@ forma(pokemon);
                 // Buscamos el pokemon sin usar el signo '?'  language
                 const pokemonab = data.pokemon
                     .map((t) => {
-                        /* se puede aÃ±adir una clase o id i dar color a dicho texto segun si es oculta o no  */
+                        /* se puede añadir una clase o id i dar color a dicho texto segun si es oculta o no  */
                         if (t.is_hidden) {
                             return t.pokemon.name + ' : (oculta)'
 
@@ -606,8 +597,8 @@ forma(pokemon);
 
 
     /* 
-effect_changes: [{â€¦}]
-effect_entries: (3) [{â€¦}, {â€¦}, {â€¦}]
+effect_changes: [{…}]
+effect_entries: (3) [{…}, {…}, {…}]
  */
 
 
@@ -618,7 +609,7 @@ effect_entries: (3) [{â€¦}, {â€¦}, {â€¦}]
     document.getElementById("pokemonWeight").textContent =
         `${pokemon.weight / 10} kg`;
 
-        console.log(pokemon);
+        //console.log(pokemon);
   
         /*pokemonSpecies*/
       const pokemones = loaddatosPokemonSpecies(pokemon.species.url);
@@ -626,15 +617,18 @@ effect_entries: (3) [{â€¦}, {â€¦}, {â€¦}]
  /*fin pokemon species */
  
 /*pokemonFormas */
-const pokemoneformas = loaddatosPokemonForm(pokemon.forms);
-console.log('pokemonesformas',pokemon.forms);
+pokemon.forms
+        .map((t) => loaddatosPokemonForm(t.url))
+        ;
+//const pokemoneformas = loaddatosPokemonForm(pokemon.forms);
+//console.log('pokemonesformas',pokemon.forms);
 /*fin pokeformas */
 
 
     /* Graficas de pokemon pesado (weight) */
     /* Graficas de pokemon alto (height) */
 
-    // GrÃ¡fico de estadÃ­sticas
+    // Gráfico de estadísticas
     createPokemonStatsChart(pokemon.stats);
 
     // Movimientos
@@ -649,50 +643,6 @@ console.log('pokemonesformas',pokemon.forms);
 </div>*/
 }
 
-/* INICIO FORMAS*/
-
-/**
- *  Obtiene todas los  Pokedex 
- */
-
-
-async function forma2(pokemon){
-//console.log('formas pokemon',pokemon.forms,'fin');
-
-//0: {name: 'flabebe-red', url: 'https://pokeapi.co/api/v2/pokemon-form/669/'}
-//1: {name: 'flabebe-yellow', url: 'https://pokeapi.co/api/v2/pokemon-form/10103/'}
-//2: {name: 'flabebe-orange', url: 'https://pokeapi.co/api/v2/pokemon-form/10104/'}
-//3: {name: 'flabebe-blue', url: 'https://pokeapi.co/api/v2/pokemon-form/10105/'}
-//4: {name: 'flabebe-white', url: 'https://pokeapi.co/api/v2/pokemon-form/10106/'}
-
-//fetchPokemonForms(pokemon.forms);//forma 2 de visualizara
-
-}
-
-
-//import { fetchPokemonFormF ,loadMenuspf} from './apiscontabiliza/pokemon_form.js';
- 
-async function forma(pokemon){
-
-//console.log('formas pokemon',pokemon.forms,'fin');
-
-//0: {name: 'flabebe-red', url: 'https://pokeapi.co/api/v2/pokemon-form/669/'}
-//1: {name: 'flabebe-yellow', url: 'https://pokeapi.co/api/v2/pokemon-form/10103/'}
-//2: {name: 'flabebe-orange', url: 'https://pokeapi.co/api/v2/pokemon-form/10104/'}
-//3: {name: 'flabebe-blue', url: 'https://pokeapi.co/api/v2/pokemon-form/10105/'}
-//4: {name: 'flabebe-white', url: 'https://pokeapi.co/api/v2/pokemon-form/10106/'}
-
-//console.log('fofofo',pokemon.forms);
-
-//fetchPokemonForms(pokemon.forms);
-loadMenuspf(pokemon);
-
-}
-
-
-/* FIN FORMAS*/
-
-
 
 /* INICIO EVOLUCIONES*/
 
@@ -700,7 +650,7 @@ loadMenuspf(pokemon);
 /* FIN EVOLUCIONES*/
 
 /**
- * Muestra los movimientos del PokÃ©mon
+ * Muestra los movimientos del Pokémon
  */
 function displayPokemonMoves(moves) {
     const container = document.getElementById("movesTable");
@@ -716,9 +666,9 @@ function displayPokemonMoves(moves) {
             <thead>
                 <tr>
                     <th>Movimiento</th>
-                    <th>MÃ©todo de Aprendizaje</th>
+                    <th>Método de Aprendizaje</th>
                     <!--anadir un forma de visualizar solo metodos es decir huevos mto  genereacion y otro asi es mas didactico-->
-                    <th>GeneraciÃ³n</th>
+                    <th>Generación</th>
                 </tr>
             </thead>
             <tbody>
@@ -744,7 +694,7 @@ function displayPokemonMoves(moves) {
 }
 
 /**
- * Busca un PokÃ©mon especÃ­fico
+ * Busca un Pokémon específico
  */
 async function searchPokemon() {
     const query = document
@@ -753,7 +703,7 @@ async function searchPokemon() {
         .trim();
 
     if (!query) {
-        console.log("Por favor ingresa un PokÃ©mon");
+        console.log("Por favor ingresa un Pokémon");
         return;
     }
 
@@ -762,11 +712,11 @@ async function searchPokemon() {
         if (pokemon) {
             showPokemonDetail(pokemon);
         } else {
-            alert("PokÃ©mon no encontrado");
+            alert("Pokémon no encontrado");
         }
     } catch (error) {
         console.error("Error searching pokemon:", error);
-        alert("Error al buscar el PokÃ©mon");
+        alert("Error al buscar el Pokémon");
     }
 }
 
@@ -779,7 +729,7 @@ async function searchPokemon() {
 // ====================================================
 
 /**
- * Muestra notificaciÃ³n de carga
+ * Muestra notificación de carga
  */
 function showLoading(container, show = true) {
     if (show) {
@@ -795,13 +745,13 @@ function showError(container, message) {
 }
 
 /**
- * Muestra estado vacÃ­o
+ * Muestra estado vacío
  */
 function showEmpty(container, message = "Sin datos disponibles") {
     container.innerHTML = `<div class="empty-state"><p>${message}</p></div>`;
 }
 
-console.log("âœ… Dashboard JavaScript cargado correctamente");
+console.log("✅ Dashboard JavaScript cargado correctamente");
 //apis();
 async function apis() {
     const API_BASE = "https://pokeapi.co/api/v2/";

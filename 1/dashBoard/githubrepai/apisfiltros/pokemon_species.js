@@ -10,184 +10,174 @@ pokemon-species:"https://pokeapi.co/api/v2/pokemon-species/"
 // =>
 evolution-chain:"https://pokeapi.co/api/v2/evolution-chain/"
 */
-/// ====================================================
+// ====================================================
+// ====================================================
 // FUNCIONES DE FETCH - APIS
 // ====================================================
-//pokemonSpecies
+
 export
 /**
- *  Obtiene todas los  formas contabilizadas
+ *  Obtiene todas los  Pokemon Species
  */
 async function fetchPokemonSpecies() {
-    if (cache.pokemon_form) return cache.pokemon_form;
-
+    if (cache.pokemon_species) return cache.pokemon_species;
     try {
         const response = await fetch(`${API_BASE}/pokemon-species/?limit=100`);
         const data = await response.json();
-        cache.pokemon_form = data.results;
-        return (data.results);
+        return (data.count, data);
     } catch (error) {
-        console.error("Error fetching pokemonforms:", error);
+        console.error("Error fetching pokemon-species:", error);
         return 0;
     }
 }
 
-
 // ====================================================
-// FUNCIONES DE ACTUALIZACIÃ“N DE DATA
+// FUNCIONES DE ACTUALIZACIÓN DE DATA
 // ====================================================
-
 
 export
 /**
- * Carga los menÃºs laterales
+ * Carga los menús laterales 
  */
-async function loadMenuspcvv() {
-    //pokemon_color 
+async function loadMenuspe() {
+    //pokemon_species 
     const pokemonspecies = await fetchPokemonSpecies();
     const pokemonspeciesMenu = document.getElementById("pokemonspeciesMenu");
     //console.log('params ', params, 'paramsMenu ', paramsMenu, ' ');
-    /* FUNCIONES CONTABILIZACIÃ“N - POKÃ‰MON*/
-    pokemonspecies.results.forEach((pokemonspecie) => {
+    /* FUNCIONES CONTABILIZACIÓN - POKÉMON*/
+    pokemonspecies.results.forEach((pokemonspecies) => {
         //console.log(' pokemonspecies', pokemonspecies);
         const link = document.createElement("a");
         link.href = "#";
-        link.textContent = pokemonspecie.name;
+        link.textContent = pokemonspecies.name;
         link.addEventListener("click", (e) => {
             //console.log(' e ', e);
             e.preventDefault();
             showSection("pokemonspecies-section");
-            loadpokemonspecies(pokemonspecies.url);
+            loadPokemonSpecies(pokemonspecies.url);
         });
         pokemonspeciesMenu.appendChild(link);
     });
 }
 
-
-
-
 // ====================================================
-// FUNCIONES DE ACTUALIZACIÃ“N DE DATA
+// FUNCIONES DE VISUALIZACIÓN - POKÉMON
 // ====================================================
-
-
 
 export
 /**
- * Carga los menÃºs laterales
+ * Carga y visualiza Pokémon de un Pokemon_Species
  */
-async function loadMenuspSp(formasDato) { //(pokemon);//del origen
+async function loadPokemonSpecies(typeUrl) {
+    showSection("pokemon-section"); //muestra los datos de los pokemon desde el menu desplegable
+    const typeData = await fetch(typeUrl).then((r) => r.json());
+    console.log('typeData', typeData);
+    const pokemonList = typeData.name;
+    console.log('pokemonList', pokemonList);
+    const grid = document.getElementById("pokemonGrid");
+    grid.innerHTML = "";
 
-    const pokemonspecies = await fetchPokemonSpecies();
-    const pokemonspeciesMenu = document.getElementById("pokemonspeciesFilter");
-    pokemonspeciesMenu.style.width = "150px"; //tamaÃ±o tempora pues haba que ver como mejorarlo
-    //console.log('pokemonspecies', pokemonspecies, 'pokemonspeciesMenu', pokemonspeciesMenu);
-    pokemonspecies.forEach((natures) => {
-        //console.log('pokemonspecies', pokemonspecies);
-        const option = document.createElement("option");
-        option.href = "#";
-        ((option.value = natures.url), natures.name); // cambia la , por + para saber que esta se ha pulsado
-        option.textContent = natures.name;
-        pokemonspeciesMenu.appendChild(option);
-    });
-    pokemonspeciesMenu.addEventListener("change", (e) => {
-        console.log('ha pulsado ', e.target.value);
-        const s = e.target.value;
-        //datosnature(s); //datos de la nature
-    });
+    // Limitar a 50
+    //const limited = pokemonList.slice(0, 50);
 
-    //console.log('epecies', formasDato);
-
-    pokemospeciepokemon(formasDato.url);
-
-
-    //formasDato.map((forma) => {
-
-    //pokemospeciepokemon(forma.species);
-    //console.log(forma.species, 'pokemonformwwws');
-
-    //});
-
-
-    /*
-    https://pokeapi.co/api/v2/pokemon-species/669/
-  */
+    //for (const species of limited) {
+    //console.log('species', species.url);
+    //const typeData = await fetch(species.url).then((r) => r.json());
+    //console.log('typeData', typeData);
+    //const pokemonList = typeData.id; //pokemon_species_details// para cada poemon que tiene evllucion
+    //console.log('pokemonList', pokemonList);
 
 
 
+    const pokemon = await fetchPokemon(pokemonList); //[{} {}]
+
+    if (pokemonList) {
+        const imagenspecieContenedor = document.getElementById("pokemonSpecies");
+        createPokemonCard(pokemon, grid);
+        /*datos dela especie */
+        const nuevoTexto = document.createElement("span");
+        nuevoTexto.textContent = 'base_happiness :' + typeData.base_happiness +
+            "  capture_rate :" + typeData.capture_rate;
+
+        imagenspecieContenedor.appendChild(nuevoTexto);
+    }
+    //}
 }
 
 
-// ====================================================
-// FUNCIONES DE VISUALIZACIÃ“N - POKÃ‰MON
-// ====================================================
-/* solo si se carga los datos */
 
 export
 /**
- * Carga y visualiza PokÃ©mon de un pokemonform 
+ * Carga y visualiza Pokémon de un Pokemon_Species
  */
-async function pokemospeciepokemon(typeUrl) {
-    showSection("pokemon-section"); //muestra los datos de los pokemon
+async function loaddatosPokemonSpecies(typeUrl) {
+    //showSection("pokemon-section"); //muestra los datos de los pokemon desde el menu desplegable
     const typeData = await fetch(typeUrl).then((r) => r.json());
-    // console.log('typeData', typeData);
-    const pokemonList = typeData.pokemon_species;
+    //console.log('typeData', typeData);
+    const pokemonList = typeData.name;
     //console.log('pokemonList', pokemonList);
     const grid = document.getElementById("pokemonGrid");
     grid.innerHTML = "";
 
     // Limitar a 50
-    const limited = pokemonList.slice(0, 50);
+    //const limited = pokemonList.slice(0, 50);
 
-    for (const species of limited) {
-        //console.log('species', species.url);
-        const typeData = await fetch(species.url).then((r) => r.json());
-        //console.log('typeData', typeData);
-        const pokemonList = typeData.id; //pokemon_species_details// para cada poemon que tiene evllucion
-        //console.log('pokemonList', pokemonList);
-
-        const pokemon = await fetchPokemon(pokemonList); //[{} {}]
-
-        if (pokemon) {
-            createPokemonCard(pokemon, grid);
-        }
-    }
+    //for (const species of limited) {
+    //console.log('species', species.url);
+    //const typeData = await fetch(species.url).then((r) => r.json());
+    //console.log('typeData', typeData);
+    //const pokemonList = typeData.id; //pokemon_species_details// para cada poemon que tiene evllucion
+    //console.log('pokemonList', pokemonList);
 
 
 
-    //document.getElementById("pokemonSpecies").innerHTML = "";
-
-    //console.log('pokemon', specie, 'id', specie.id);
-    const response = await fetch(specie);
-    const datassdf = await response.json();
-    //cache.pokemon_form = data.results;
-    //return (data.results);
-    // console.log('datasaprites', datassdf);
-
-    //console.log('datasapritesform', datassdf.sprites.front_default);
-
-    const imagenspecieContenedor = document.getElementById("pokemonSpecies");
-
-    if (datassdf.name && imagenspecieContenedor) {
-
-
+    const pokemon = await fetchPokemon(pokemonList); //[{} {}]
+    document.getElementById("pokemonImagef").innerHTML = "";
+    if (pokemonList) {
+        const imagenspecieContenedor = document.getElementById("pokemonSpecies");
+        createPokemonCard(pokemon, grid);
+        /*datos dela especie */
         const nuevoTexto = document.createElement("span");
-        nuevoTexto.textContent = 'base_happiness :' + datassdf.base_happiness +
-            "  capture_rate :" + 225;
+        nuevoTexto.textContent = 'base_happiness :' + typeData.base_happiness +
+            "  capture_rate :" + typeData.capture_rate;
 
         imagenspecieContenedor.appendChild(nuevoTexto);
+
+        /* imagenes variedades */
+        const imagenformContenedor = document.getElementById("pokemonImagef");
+        //console.log(typeData.varieties);
+
+        typeData.varieties.forEach((element) =>
+
+            //console.log(element.pokemon.name)
+
+            imagenesvariedades(element.pokemon.name)
+
+        );
+
     }
+    loadMenuspev(typeData.evolution_chain.url)
+        //}
+}
 
-    /*
-    
-  "evolution_chain": {
-    "url": "https://pokeapi.co/api/v2/evolution-chain/344/"
-  },
-   */
-    //evolucion
-    /////////////evolucion(pokemon)
+async function imagenesvariedades(variedades) {
+    document.getElementById("pokemonVarieties").innerHTML = "";
+    const pokemon = await fetchPokemon(variedades);
+    //console.log(pokemon);
 
-    loadMenuspev(datassdf.evolution_chain.url)
-        //evolucion
+    const imagenformContenedor = document.getElementById("pokemonVarieties");
+
+    if (pokemon.sprites.front_default && imagenformContenedor) {
+
+        const nuevaImg = document.createElement("img");
+        nuevaImg.src = pokemon.sprites.front_default;
+        nuevaImg.alt = pokemon.name || "Forma Pokemon";
+        nuevaImg.alt = pokemon.name || "Forma Pokemon";
+        imagenformContenedor.appendChild(nuevaImg);
+
+        const nuevoTexto = document.createElement("span");;
+        nuevoTexto.textContent = pokemon.name;
+        imagenformContenedor.appendChild(nuevoTexto);
+    }
 
 }

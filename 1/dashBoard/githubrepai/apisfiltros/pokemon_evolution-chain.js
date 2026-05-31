@@ -16,7 +16,7 @@ async function fetchPokemonEvol() {
     if (cache.pokemon_form) return cache.pokemon_form;
 
     try {
-        const response = await fetch(`${API_BASE}/pokemon-form/?limit=100`);
+        const response = await fetch(`${API_BASE}/pokemon-evolution-chains/?limit=100`);
         const data = await response.json();
         cache.pokemon_form = data.results;
         return (data.results);
