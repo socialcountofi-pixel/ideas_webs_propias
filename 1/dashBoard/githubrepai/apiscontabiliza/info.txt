@@ -1,0 +1,44 @@
+esta apis permiter contabilizar los pokemon rapidamente  con su url y su url/1
+
+    /* stat:"https://pokeapi.co/api/v2/stat/" */
+    stat: null,
+    /* generation:"https://pokeapi.co/api/v2/generation/" */
+    generation: null,
+    /* type: "https://pokeapi.co/api/v2/type/" */
+    type: null,
+    /* ability:"https://pokeapi.co/api/v2/ability/" */
+    ability: null,
+    /* move:"https://pokeapi.co/api/v2/move/" */
+    move: null,
+    /* egg-group: "https://pokeapi.co/api/v2/egg-group/" */
+    egg_group: null,
+    /* pokemon-color: "https://pokeapi.co/api/v2/pokemon-color/" */
+    pokemon_color: null,
+    /* pokemon-habitat: "https://pokeapi.co/api/v2/pokemon-habitat/" */
+    pokemon_habitat: null,
+    /* pokemon-shape: "https://pokeapi.co/api/v2/pokemon-shape/" */
+    pokemon_shape: null,
+    /* pokedex: "https://pokeapi.co/api/v2/pokedex/" */
+    pokedex: null,
+    /* gender: "https://pokeapi.co/api/v2/gender/" */
+    gender: null,
+    /* evolution-trigger: "https://pokeapi.co/api/v2/evolution-trigger/" */
+    evolution_trigger: null,
+    /*growth-rate:"https://pokeapi.co/api/v2/growth-rate/"    pensarlo bien contabiliza los pokemon */
+    growth_rate: null,
+    /*pal-park-area:"https://pokeapi.co/api/v2/pal-park-area/"*/
+    pal_park_area: null,
+
+    /*"https://pokeapi.co/api/v2/pokemon-species/",*/
+pokemon_species: null,
+/*"https://pokeapi.co/api/v2/pokemon-form/",*/
+pokemon_form: null,
+    en config_global se ve el ejemplo ordenado en : export const cache = {
+
+        idea de variable si es necesario 
+        stat,stats,Stat ,Stats : cual seria la logica del capitalcase or  camelcase
+    caso: evolution-trigger se pasa ability
+        evolution_trigger,evolutiontrigger,evolutiontriggers,EvolutionTrigger,evolutionTrigger,EvolutionTriggers,evolutionTriggers
+
+
+        furfrou (#676) revisar ya qu no evoluciona y aparece en evoluciones

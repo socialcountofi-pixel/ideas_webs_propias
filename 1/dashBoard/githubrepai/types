@@ -1,0 +1,82 @@
+ /* stat:"https://pokeapi.co/api/v2/stat/" */
+ 
+ stat: null,
+ statMenu,
+ statFilter,
+ stat-secction,
+ const statf=await fetchStat();
+ const statMenu=document.getElementById("statFilter");
+ revisar los contabilizadores las cargas pues cada carga tiene sus respectivos datos es decir species.pokemon.name,
+ species.name,
+ menus superiores <a href="#" data-section="nature">nature</a>,
+ menus laterales statMenu
+
+ pruebas para muetiples apis relacionadas
+
+ function fectchHijo(){const data2 = '';
+    const response21 = await fetch(data2.move.url);
+    const data21 = await response21.json();
+
+    //console.log(API_FINAL, 'move' ,' 1 ',data21);
+
+const response22 = await fetch(data2.move.url);
+    const data22 = await response22.json();
+
+    console.log(API_FINAL, 'move' ,' 2 ',data22.learned_by_pokemon);
+
+
+
+
+
+//"https://pokeapi.co/api/v2/item/",
+    const responsei = await fetch(API_BASE + 'item');
+    const datai = await responsei.json();
+
+    console.log('item',' 1 ' ,datai);
+
+    const response3 = await fetch(data2.item.url);
+    const data3 = await response3.json();
+
+    console.log('item',' 2 ',data3);//.category.name);
+//item-attribute:"https://pokeapi.co/api/v2/item-attribute/"
+const responseia = await fetch(API_BASE + 'item-attribute'+'/countable');
+    const dataia = await responseia.json();
+
+    console.log('item attribute',' 1 ' ,dataia);
+
+    const response4 = await fetch(data2.item.url);
+    const data4 = await response4.json();
+
+    console.log('item attribute',' 2 ',data4);
+  //item-category:"https://pokeapi.co/api/v2/item-category/"
+const responseic = await fetch(API_BASE + 'item-category');
+    const dataic = await responseic.json();
+
+    console.log('item-category',' 1 ' ,dataic);
+
+    const response5 = await fetch(API_BASE + 'item-category' + "/" + datas);
+    const data5 = await response5.json();
+
+    console.log('item-category',' 2 ',data5);
+  //item-fling-effect:"https://pokeapi.co/api/v2/item-fling-effect/"
+const responseife = await fetch(API_BASE + 'item-fling-effect'+'/burn');
+    const dataife = await responseife.json();
+
+    console.log('item-fling-effect',' 1 ' ,dataife);
+
+    const response6 = await fetch(API_BASE + 'item-fling-effect'  + "/" + datas);
+    const data6 = await response6.json();
+
+    console.log('item-fling-effect',' 2 ',data6);
+  //tem-pocket:"https://pokeapi.co/api/v2/item-pocket/"
+const responseip = await fetch(API_BASE + 'item-pocket');
+    const dataip = await responseip.json();
+
+    console.log('item-pocket',' 1 ' ,dataip);
+
+    const response7 = await fetch(API_BASE + 'item-pocket'  + "/" + datas);
+    const data7 = await response7.json();
+
+    console.log('item-pocket',' 2 ',data7);
+    
+}

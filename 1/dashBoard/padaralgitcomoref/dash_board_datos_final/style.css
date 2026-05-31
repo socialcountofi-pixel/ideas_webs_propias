@@ -1,0 +1,264 @@
+:root {
+    --main: #ef5350;
+    --blue: #063970;
+    --bg: #e2e8f0;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background: var(--bg);
+}
+
+
+/* Panel Izquierdo */
+
+.sidebar {
+    width: 320px;
+    background: #fff;
+    border-right: 2px solid #cbd5e1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    background: var(--main);
+    color: white;
+    margin: 0;
+    padding: 20px;
+    font-size: 1.2rem;
+}
+
+.list {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.item {
+    padding: 12px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.item:hover {
+    background: #fee2e2;
+    color: var(--main);
+}
+
+.nav {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 2px solid #eee;
+}
+
+button {
+    padding: 8px 12px;
+    cursor: pointer;
+    background: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 4px;
+}
+
+
+/* Panel de Datos (Dashboard) */
+
+.main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+h3 {
+    border-bottom: 2px solid var(--main);
+    padding-bottom: 5px;
+    color: var(--blue);
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 4px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.9rem;
+}
+
+.badge {
+    background: #334155;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    margin-right: 5px;
+}
+
+#json-raw {
+    background: #1e293b;
+    color: #38bdf8;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    overflow-x: auto;
+}
+
+#statsChart {
+    width: 250px;
+    height: 250px;
+}
+
+
+/*types*/
+
+#p-types_damages {
+    overflow-y: scroll;
+    width: 150px;
+    height: 150px;
+}
+
+#p-types_poekmons {
+    overflow-y: scroll;
+    width: 150px;
+    height: 150px;
+}
+
+#p-abilities_poekmons {
+    overflow-y: scroll;
+    width: 150px;
+    height: 150px;
+}
+
+
+/*variedades*/
+
+.varieties {
+    background: #e9fbe9;
+    /*se modifica segun el js*/
+    /*border: 2px solid #a6d3a6;*/
+    border-radius: 12px;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+}
+
+.varieties img {
+    width: 120px;
+    height: 120px;
+    margin: 5px auto;
+}
+
+
+/*evoluciones*/
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(180deg, #c3f0c8, #a6e6b6);
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    color: #2d572c;
+}
+
+#pokemon-container {
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 95%;
+    max-width: 900px;
+}
+
+.buttons {
+    margin: 20px;
+}
+
+button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.evolution-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.evo {
+    background: #e9fbe9;
+    border: 2px solid #a6d3a6;
+    border-radius: 12px;
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+}
+
+.evo img {
+    width: 120px;
+    height: 120px;
+    margin: 5px auto;
+}
+
+.conditions {
+    font-size: 0.85em;
+    text-align: left;
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 8px;
+}
+
+.conditions ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.conditions li {
+    margin: 3px 0;
+}
+
+.is-baby {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 10px;
+}

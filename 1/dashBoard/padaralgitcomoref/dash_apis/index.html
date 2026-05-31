@@ -1,0 +1,135 @@
+<!--const GENERO_URL = "https://pokeapi.co/api/v2/gender/"; 
+/*pokemon_species_details.LENGTH */
+const MOVE_URL = "https://pokeapi.co/api/v2/move/"; 
+/* learned_by_pokemon.length */
+const POKECOLOR_URL = "https://pokeapi.co/api/v2/pokemon-color/"; 
+/* "pokemon_species.lenrght */
+-->
+
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard PokéAPI - Datos Completos</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css" type="text/css">
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <h2>Grficas apis</h2>
+        <div id="gen-list" class="list"></div>
+        <div class="nav">
+            <button id="prevBtn">« Anterior</button>
+            <button id="nextBtn">Siguiente »</button>
+        </div>
+    </aside>
+    <section class="main" id="global-view">
+
+
+        <div class="card">
+
+
+            <h2>Estadísticas Globales</h2>
+
+            <div style="margin-bottom:15px;">
+                <button onclick="mostrarGeneraciones()">Generaciones</button>
+                <button onclick="mostrarTipos()">Tipos</button>
+                <button onclick="mostrarHabilidades()">Habilidades</button>
+                <button onclick="mostrarPokedex()">pokedex</button>
+                <button onclick="mostrarGrupoHuevo()">Grupo huevos</button>
+                <button onclick="mostrarGenero()">genero</button>
+                <button onclick="mostrarMove()">movimiento</button>
+                <button onclick="mostrarPokeColor()">pokemon color</button>
+            </div>
+
+            <canvas id="barChart"></canvas>
+            <canvas id="pieChart"></canvas>
+            <canvas id="lineChart"></canvas>
+
+        </div>
+
+    </section>
+
+    <main class="main" id="dashboard-view" style="display:none;">
+
+        <div class="card" id="globalCharts">
+            <h3>Estadísticas Globales</h3>
+
+            <div style="margin-bottom:15px;">
+                <button onclick="mostrarGeneraciones()">Generaciones</button>
+                <button onclick="mostrarTipos()">Tipos</button>
+                <button onclick="mostrarHabilidades()">Habilidades</button>
+                <button onclick="mostrarPokedex()">Pokedex</button>
+                <button onclick="mostrarGrupoHuevo()">Grupo huevos</button>
+                <button onclick="mostrarGenero()">Genero </button>
+                <button onclick="mostrarMove()">Movimiento</button>
+                <button onclick="mostrarPokeColor()">Poemon Color</button>
+            </div>
+
+            <canvas id="barChart"></canvas>
+            <canvas id="pieChart"></canvas>
+            <canvas id="lineChart"></canvas>
+        </div>
+
+
+
+
+
+        <div class="card" style="text-align:center;">
+            <h1 id="title">---</h1>
+            <div id="sprites-container"></div>
+        </div>
+
+        <div class="grid">
+            <!-- Stats con Gráfica -->
+            <div class="card">
+                <h3>Estadísticas Base</h3>
+                <canvas id="statsChart"></canvas>
+
+
+
+            </div>
+
+            <!-- Tipos y Habilidades -->
+            <div class="card">
+                <h3>Información General</h3>
+                <p><strong>ID:</strong> <span id="p-id"></span></p>
+                <p><strong>Altura:</strong> <span id="p-height"></span></p>
+                <p><strong>Peso:</strong> <span id="p-weight"></span></p>
+                <p><strong>Experiencia Base:</strong> <span id="p-exp"></span></p>
+                <strong>Tipos:</strong>
+                <div id="p-types"></div><br>
+                <strong>Habilidades:</strong>
+                <ul id="p-abilities"></ul>
+            </div>
+
+            <!-- Movimientos -->
+            <div class="card">
+                <h3>Movimientos (Moves)</h3>
+                <div id="p-moves" style="max-height: 200px; overflow-y: scroll;"></div>
+            </div>
+
+            <!-- Índices de Juego -->
+            <div class="card">
+                <h3>Game Indices</h3>
+                <div id="p-indices" style="max-height: 200px; overflow-y: scroll;"></div>
+            </div>
+        </div>
+
+        <!-- JSON Bruto -->
+        <div class="card">
+            <h3>JSON Crudo (Todos los datos de la API)</h3>
+            <pre id="json-raw"></pre>
+        </div>
+
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

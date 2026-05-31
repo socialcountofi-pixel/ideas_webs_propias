@@ -1,0 +1,7 @@
+lo primeroi seria que al cargar te muestre un porcentajes de los datos de la apis es decir pokemon 2000 en graficas senumeros por generacio 
+ grafica de numero de generacions pues son 9
+ y los datos de tipos de pokemomn 
+
+y claro com tenemos el menú de explorara según lo solicitado
+
+regiongrafica con datos 

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Dashboard PokéAPI - Datos Completos</title>
+
+    <script src="https://cdn.jsdelivr.net"></script>
+    <!-- falla por seguridad de la empresa-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- menus -->
+    <aside class="sidebar">
+        <!-- menu de pokemons -->
+        <h2>LISTADO POKÉMON</h2>
+
+        <div id="poke-list" class="list"></div>
+
+        <div class="nav">
+            <button id="prevBtn">« Anterior</button> <button id="nextBtn">Siguiente »</button> </div>
+
+    </aside>
+
+    <main class="main" id="dashboard-view" style="display:none;">
+
+        <div class="card" style="text-align:center;">
+
+            <h1 id="title">---</h1>
+
+            <div id="sprites-container"></div>
+
+            <!-- Stats con Gráfica -->
+
+            <div class="card">
+
+                <h3>Estadísticas Base</h3>
+                <canvas id="statsChart"></canvas>
+            </div>
+
+
+
+        </div>
+
+
+        <div class="grid">
+
+
+            <!-- Informacion general -->
+
+            <div class="card">
+
+                <h3>Información General</h3>
+
+                <p><strong>ID:</strong> <span id="p-id"></span></p>
+
+                <p><strong>Experiencia Base:</strong> <span id="p-exp"></span></p>
+
+                <p><strong>is_default:</strong> <span id="p-isdef"></span></p>
+
+                <p><strong>order:</strong> <span id="p-order"></span></p>
+
+            </div>
+
+            <!-- Comparacion -->
+
+            <div class="card">
+
+                <h3>Información General</h3>
+
+                <p><strong>Altura:</strong> <span id="p-height"></span></p>
+
+                <p><strong>Peso:</strong> <span id="p-weight"></span></p>
+
+            </div>
+
+            <!-- tipos -->
+
+            <div class="card">
+
+                <h3>Información tipos</h3>
+
+                <strong>Tipos:</strong>
+                <div id="p-types"></div>
+
+            </div>
+            <!-- abilidades -->
+
+            <div class="card">
+
+
+                <h3>Información abilidades</h3>
+                <strong>Habilidades:</strong>
+                <ul id="p-abilities"></ul>
+
+            </div>
+
+            <!-- Movimientos -->
+
+            <div class="card">
+
+                <h3>Movimientos (Moves)</h3>
+
+                <div id="p-moves" style="max-height: 200px; overflow-y: scroll;"></div>
+            </div>
+
+            <!-- local areas -->
+
+            <div class="card">
+
+                <h3>location_area_encounters</h3>
+
+                <p><strong>location_area_encounters:</strong> <span id="p-larea"></span></p>
+            </div>
+
+            <!-- Índices de Juego -->
+
+            <div class="card">
+
+                <h3>Game Indices</h3>
+
+                <div id="p-indices" style="max-height: 200px; overflow-y: scroll;"></div>
+            </div>
+
+
+
+            <!-- past_abilities -->
+
+            <div class="card">
+
+                <h3>past abilities</h3>
+
+                <div id="p-past_abilities" style="max-height: 200px; overflow-y: scroll;"></div>
+                <div id="p-past_abilities_gen" style="max-height: 200px; overflow-y: scroll;"></div>
+
+            </div>
+
+            <!-- forms -->
+
+            <div class="card">
+
+                <h3>forms</h3>
+
+                <div id="p-forms" style="max-height: 200px; overflow-y: scroll;"></div>
+            </div>
+
+            <!-- past_stats -->
+
+            <div class="card">
+
+                <h3>past stats</h3>
+
+                <div id="p-past_stats_gen" style="max-height: 200px; overflow-y: scroll;"></div>
+                <div id="p-past_stats" style="max-height: 200px; overflow-y: scroll;"></div>
+
+            </div>
+
+            <!-- past_types -->
+
+            <div class="card">
+
+                <h3>past types</h3>
+
+                <div id="p-past_types" style="max-height: 200px; overflow-y: scroll;"></div>
+            </div>
+        </div>
+        <!-- JSON Bruto -->
+
+        <div class="card">
+
+            <h3>JSON Crudo (Todos los datos de la API)</h3>
+            <pre id="json-raw"></pre> </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,13 @@
+impor para trabajar en ditintos js ytendria su repectivo css
+
+import 
+
+main pokemon
+1 stats 
+2 locali
+3 tipos
+4 abilidades
+5 items
+6 movimieto
+7 games indice
+8 especies para evoluciones

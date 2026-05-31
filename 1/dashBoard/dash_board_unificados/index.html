@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Dashboard PokéAPI - Datos Completos</title>
+
+    <script src="https://cdn.jsdelivr.net"></script>
+    <!-- falla por seguridad de la empresa-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+    <aside class="sidebar">
+
+        <h2>Busqueda POKÉMON</h2>
+        <div class="nav"><input type="text" id="pokemonm" placeholder="inserte pokemon">
+            <button type="submit" id="searchBtn">
+                       buscar
+                    </button></div>
+
+
+        <h2>LISTADO POKÉMON</h2>
+
+        <div id="poke-list" class="list"></div>
+
+        <div class="nav">
+            <button id="prevBtn">« Anterior</button> <button id="nextBtn">Siguiente »</button> </div>
+    </aside>
+
+    <main class="main" id="dashboard-view" style="display:none;">
+
+        <div class="card" style="text-align:center; 
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;">
+
+            <!--idea de una visualizacion la cual es borrable-->
+            <!-- Informacion general -->
+            <table style="display: none;">
+                <tr>
+                    <th>
+                        <h1 id="title2">---</h1>
+                    </th>
+                    <th rowspan="2">
+                        <h3>Información General</h3>
+
+                        <!--<p><strong>ID:</strong> <span id="p-id">id</span></p>
+
+                            <p><strong>Experiencia Base:</strong> <span id="p-exp"></span></p>
+
+                            <p><strong>is_default forma primaria o principal:</strong> <span id="p-isdef"></span></p>
+
+                            <p><strong>order:</strong> <span id="p-order"></span></p>-->
+                    </th>
+                    <th>
+                        <!--<h3 id="title2">Stat</h3>
+                        <p id="title2">stat : 1</p>
+                        <p id="title2">stat : 2</p>
+                        <p id="title2">stat : 3</p>
+                        <p id="title2">stat : 4</p>
+                        <p id="title2">stat : 5</p>
+                        <p id="title2">stat : 6</p>-->
+                    </th>
+                </tr>
+                <tr>
+                    <th>
+                        <!--div id="img-container2"></div>-->
+                    </th>
+                    <th>
+                        <!--graficas-->
+                    </th>
+
+                </tr>
+                <tr>
+
+                    <th colspan="2">
+                        <!--
+                        <h3>evoluciones</h3>
+                        <p><strong>Nombre:</strong> <span id="e-name"></span></p>
+                        <p><strong>Trigger:</strong> <span id="e-trigegr"></span></p>-->
+                        <!-- nivel intercambio objetos-->
+                        <!--<p><strong>Datos del triger:</strong> <span id="e-d_trigegr"></span></p>-->
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <!--<h3>Formas </h3>
+                        <p><strong>Nombre:</strong> <span id="F-name"></span></p>-->
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <!--
+                        <h3 id="title2">imagenes</h3>
+
+                        <div id="sprites-container2"></div>-->
+
+                    </th>
+                </tr>
+
+            </table>
+            <!-- Informacion general -->
+
+            <div class="card">
+
+                <h1 id="title">---</h1>
+                <div id="img-container"></div>
+            </div>
+            <div class="card">
+
+                <h3>Información General</h3>
+
+                <p><strong>ID:</strong> <span id="p-id"></span></p>
+
+                <p><strong>Experiencia Base:</strong> <span id="p-exp"></span></p>
+
+                <p><strong>is_default forma primaria o principal:</strong> <span id="p-isdef"></span></p>
+
+                <p><strong>order:</strong> <span id="p-order"></span></p>
+            </div>
+
+            <div class="card">
+                <h3>evoluciones</h3>
+
+                <!--<div id="is-baby-info"></div>-->
+
+                <div class="evolution-list" id="evolution-chain"></div>
+            </div>
+
+            <div class="card">
+                <div id="pokemon-container">
+                    <strong>Pokemon especies Formas varieties:</strong>
+                    <div id="psp-varieties" style="display: none;"></div><br>
+                    <div id="psp-sprites-varieties">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card"></div>
+            <h1 id="title">sprites</h1>
+
+            <div id="sprites-container"></div>
+        </div>
+
+        </div>
+
+
+        <div class="grid">
+            <!-- Stats con Gráfica -->
+
+            <div class="card">
+
+
+
+                <h3>Estadísticas Base </h3>
+                <p><strong>hp:</strong> <span id="p-hp"></span></p>
+                <p><strong>attack:</strong> <span id="p-attack"></span></p>
+                <p><strong>defense:</strong> <span id="p-defense"></span></p>
+                <p><strong>special-attack:</strong> <span id="p-special-attack"></span></p>
+                <p><strong>special-defense:</strong> <span id="p-special-defense"></span></p>
+                <p><strong>speed:</strong> <span id="p-speed"></span></p>
+                <p><strong>TOTAL:</strong> <span id="p-Total"></span></p>
+            </div>
+
+            <div class="card">
+                <h3>Estadísticas grafica 1</h3>
+                <canvas id="statsChart-"></canvas>
+                <h3>Estadísticas grafica 2</h3>
+                <canvas id="statsChart2-"></canvas>
+
+
+            </div>
+
+
+
+
+
+            <!-- Comparacion -->
+
+            <div class="card">
+
+                <h3>Altura Peso</h3>
+
+                <h3>Altura</h3>
+
+                <p><strong>Altura:</strong> <span id="p-height"></span></p>
+
+                <p><strong>comparativa visual:</strong> <span id="p-cheight"></span></p>
+
+                <h3>Peso</h3>
+
+                <h3>Comparacion Peso</h3>
+
+                <p><strong>Peso:</strong> <span id="p-weight"></span></p>
+
+                <p><strong>comparativa visual:</strong> <span id="p-cweight"></span></p>
+
+            </div>
+
+
+
+            <!-- Informacion General areas -->
+
+            <div class="card">
+
+                <h3>Información General Detallada</h3>
+
+                <p><strong>location_area_encounters:</strong> <span id="p-larea"></span></p>
+                <p><strong>location_area_datas:</strong> <span id="p-location_area" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span></p>
+            </div>
+
+
+
+            <!-- Informacion General tipos -->
+
+            <div class="card">
+
+                <h3>Información General Detallada</h3>
+                <strong>Tipos:</strong>
+                <div id="p-types"></div>
+
+                <div id="p-types_poekmons"> Pokemons con el mismo tipos :</div>
+
+                <div id="p-types_moves" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"> <span id="t-typo_move"> Movimientos con el mismo tipo:</span></div>
+
+                <div id="p-types_moves_class" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"> <span id="t-typo_move"> Clase de daño del movimiento:</span></div>
+
+                <div id="t-types_generations" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"> <span id="t-typo_moves"> Generacion del tipo:</span></div>
+
+                <div id="t-types_game_indice" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"> <span id="t-typo_moves"> Games indices del tipo:</span></div>
+
+
+            </div>
+            <div class="card">
+                <h1>Tabal dde daños segun el tipo</h1>
+                <div class="container">
+                    <div id="results"></div>
+                </div>
+            </div>
+
+            <!-- Informacion  habilidades -->
+
+            <div class="card">
+                <br> <strong>Habilidades:</strong>
+                <ul id="p-abilities"></ul>
+                <div id="a-abilities_datas"> Tipos pokemons:</div>
+                <div id="a-abilities_generacion"><span id="t-typo_moves"> Tipos generaciom pokemons:</span></div>
+                <div id="a-abilities_pokemons"> <span id="t-typo_moves"></span>pokemons con la misma habilidad :</span>
+                </div>
+                <div id="p-abilities_effect_entries"> effect_entries habilidades:</div>
+                <div id="p-effect_changes"> effect_changes habilidades</div>
+
+            </div>
+
+            <!-- Stats con Gráfica -->
+
+            <div class="card">
+
+                <h3>Información item imagen Stats</h3>
+
+                <p><strong>hp:</strong> <span id="p-hp"></span>
+
+                    <strong>item:</strong> <span id="i-hp"></span>
+
+                    <img src="" id="img-hpd"> <strong>imagen:</strong><span id="img-hp"></span>
+
+                    <strong>affecting_moves decrease:</strong> <span id="affecting_moves_d-hp" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                    <strong>affecting_moves:</strong> <span id="affecting_moves_i-hp" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                </p>
+
+                <p><strong>attack:</strong> <span id="p-attack"></span>
+
+                    <strong>item:</strong> <span id="i-attack"></span>
+
+                    <img src="" id="img-attackd"><strong>imagen:</strong><span id="img-attack"></span>
+
+                    <strong>affecting_moves decrease:</strong> <span id="affecting_moves_d-attack" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                    <strong>affecting_moves increase:</strong> <span id="affecting_moves_i-attack" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+
+                </p>
+
+                <p><strong>defense:</strong> <span id="p-defense"></span>
+
+                    <strong>item:</strong> <span id="i-defense"></span>
+
+                    <img src="" id="img-defensed"><strong>imagen:</strong><span id="img-defense"></span>
+
+                    <strong>affecting_moves decrease:</strong> <span id="affecting_moves_d-defense" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                    <strong>affecting_moves increase:</strong> <span id="affecting_moves_i-defense" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                </p>
+
+                <p><strong>special-attack:</strong> <span id="p-special-attack"></span>
+
+                    <strong>item:</strong> <span id="i-special-attack"></span>
+
+                    <img src="" id="img-special-attackd"><strong>imagen:</strong><span id="img-special-attack"></span>
+
+                    <strong>affecting_moves decrease:</strong> <span id="affecting_moves_d-special-attack" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                    <strong>affecting_moves increase:</strong> <span id="affecting_moves_i-special-attack" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                </p>
+
+                <p><strong>special-defense:</strong> <span id="p-special-defense"></span>
+
+                    <strong>item:</strong> <span id="i-special-defense"></span>
+
+                    <img src="" id="img-special-defensed"><strong>imagen:</strong><span id="img-special-defense"></span>
+
+                    <strong>affecting_moves decrease:</strong> <span id="affecting_moves_d-special-defensa" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                    <strong>affecting_moves increase:</strong> <span id="affecting_moves_i-special-defensa" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                </p>
+
+                <p><strong>speed:</strong> <span id="p-speed"></span>
+
+                    <strong>item:</strong> <span id="i-speed"></span>
+
+                    <img src="" id="img-speedd"><strong>imagen:</strong><span id="img-speed"></span>
+
+                    <strong>affecting_moves decrease:</strong> <span id="affecting_moves_d-speed" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                    <strong>affecting_moves increase:</strong> <span id="affecting_moves_i_speed" style="
+    display: inline-block;
+    overflow-y: scroll;
+    height: 100px;
+    width: auto;"></span>
+
+                </p>
+
+            </div>
+
+
+
+
+
+            <!-- Movimientos -->
+
+            <div class="card">
+
+                <h3>Movimientos (Moves)</h3>
+
+                <div id="p-moves" style="max-height: 200px; overflow-y: scroll;"></div>
+
+                <div id="m-moves_datos"></div>
+                <div id="m-moves_datos2"></div>
+                <div id="m-moves_datos3"></div>
+                <div id="m-moves_datos4"></div>
+            </div>
+
+            <!-- especies de pokemon-species-->
+            <div class="card">
+                <h3>especies</h3>
+
+
+
+                <strong>Pokemon especies:</strong>
+                <div id="psp-pokemon_species"></div><br>
+                <strong>Pokemon especies habitat:</strong>
+                <div id="psp-habitat"></div><br>
+                <strong>Pokemon especies color:</strong>
+                <div id="psp-color"></div><br>
+                <!--<div id="pokemon-container">
+                    <strong>Pokemon especies varieties:</strong>
+                    <div id="psp-varieties"></div><br>
+                    <div id="psp-sprites-varieties">
+                    </div>
+
+                </div>-->
+                <div id="ps-shape">shape</div>
+
+
+            </div>
+
+            <!--evoluciones-->
+            <!-- <div class="card">
+                <h3>evoluciones</h3>
+
+                <div id="is-baby-info"></div>
+
+                <div class="evolution-list" id="evolution-chain"></div>
+
+            </div>-->
+
+        </div>
+
+
+        <!-- Índices de Juego -->
+
+        <div class="card">
+
+            <h3>Game Indices</h3>
+
+            <div id="p-indices" style="max-height: 200px; overflow-y: scroll;"></div>
+        </div>
+        </div>
+
+
+        <!-- JSON Bruto -->
+
+        <div class="card">
+
+            <h3>JSON Crudo (Todos los datos de la API)</h3>
+            <pre id="json-raw" style="
+   
+    overflow-y: scroll;
+    height: 100px;
+    "></pre> </div>
+    </main>
+
+    <script src="script.js" type="module"></script>
+</body>
+
+</html>
